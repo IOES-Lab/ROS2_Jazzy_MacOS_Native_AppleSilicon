@@ -80,10 +80,10 @@ fi
 
 # Print welcome message
 echo -e "\033[32m\n"
-echo "---------------------------------------------------------"
-echo "| 👋 Welcome to the MacOS installation of ROS2 Jazzy 🚧 |"
-echo "| 🍎 (Apple Silicon) + 🤖 = 🚀❤️       by Choi Woen-Sug  |"
-echo "---------------------------------------------------------"
+echo "----------------------------------------------------------------------------"
+echo "| 👋 Welcome to the MacOS (Apple Silicon) Native Install of ROS2 Jazzy  🚧 |"
+echo "| 🍎 (Apple Silicon) + 🤖 = 🚀❤️🤩🎉🥳                    by Choi Woen-Sug  |"
+echo "----------------------------------------------------------------------------"
 echo -e Target Jazzy Release Version  : "\033[94m$JAZZY_RELEASE_TAG\033[0m"
 echo -e Target Installation Directory: "\033[94m$HOME/$ROS_INSTALL_ROOT\033[0m"
 echo -e Virtual Environment Directory: "\033[94m$HOME/$VIRTUAL_ENV_ROOT\033[0m"
@@ -94,9 +94,9 @@ echo -e "\033[33mWARNING: The FAN WILL BURST out and make macbook to take off. B
 echo -e "\033[33m         To terminate at any process, press Ctrl+C.\033[0m"
 # ------------------------------------------------------------------------------
 # Check System
-printf '\n\n\033[34m'; printf '=%.0s' {1..56}; printf '\033[0m\n'
+printf '\n\n\033[34m'; printf '=%.0s' {1..78}; printf '\033[0m\n'
 echo -e "\033[34m### [1/6] Checking System Requirements\033[0m"
-printf '\033[34m%.0s=\033[0m' {1..56} && echo
+printf '\033[34m%.0s=\033[0m' {1..78} && echo
 # ------------------------------------------------------------------------------
 echo -e "Checking System Requirements..."
 # Check XCode installation"
@@ -181,6 +181,8 @@ if [ -d "$HOME/$ROS_INSTALL_ROOT" ]; then
         echo -e "\033[33mPerforming clean reinstall...\033[0m"
         # shellcheck disable=SC2115
         rm -rf "$HOME/$ROS_INSTALL_ROOT"
+        # shellcheck disable=SC2115
+        rm -rf "$HOME/$VIRTUAL_ENV_ROOT"
     else
         echo -e "\033[31mInstallation aborted.\033[0m"
         exit 1
@@ -201,9 +203,9 @@ pushd "$HOME/$ROS_INSTALL_ROOT" || {
 
 # ------------------------------------------------------------------------------
 # Install Dendencies
-printf '\n\n\033[34m'; printf '=%.0s' {1..56}; printf '\033[0m\n'
+printf '\n\n\033[34m'; printf '=%.0s' {1..78}; printf '\033[0m\n'
 echo -e "\033[34m### [2/6] Installing Dependencies with Brew and PIP\033[0m"
-printf '\033[34m%.0s=\033[0m' {1..56} && echo
+printf '\033[34m%.0s=\033[0m' {1..78} && echo
 # ------------------------------------------------------------------------------
 # Installing ros2 dependencies with brew
 echo -e "\033[36m> Installing ROS2 dependencies with Brew...\033[0m"
@@ -285,9 +287,9 @@ echo -e "\033[36m> Packages installation with PIP completed.\033[0m"
 
 # ------------------------------------------------------------------------------
 # Downloading ROS2 Jazzy Source Code
-printf '\n\n\033[34m'; printf '=%.0s' {1..56}; printf '\033[0m\n'
+printf '\n\n\033[34m'; printf '=%.0s' {1..78}; printf '\033[0m\n'
 echo -e "\033[34m### [3/6] Downloading ROS2 Jazzy Source Code\033[0m"
-printf '\033[34m%.0s=\033[0m' {1..56} && echo
+printf '\033[34m%.0s=\033[0m' {1..78} && echo
 # ------------------------------------------------------------------------------
 # Get ROS2 Jazzy Source Code (Jazzy-Release Version of $JAZZY_RELEASE_TAG)
 echo -e "\033[36m> Getting ROS2 Jazzy Source Code (Jazzy-Release tag of $JAZZY_RELEASE_TAG)...\033[0m"
@@ -323,9 +325,9 @@ colcon build --symlink-install  --cmake-args -DBUILD_TESTING=OFF -Wno-dev --pack
 
 # ------------------------------------------------------------------------------
 # Patch files for Mac OS X Installation
-printf '\n\n\033[34m'; printf '=%.0s' {1..56}; printf '\033[0m\n'
+printf '\n\n\033[34m'; printf '=%.0s' {1..78}; printf '\033[0m\n'
 echo -e "\033[34m### [4/6] Patching files for Mac OS X (Apple Silicon) Installation\033[0m"
-printf '\033[34m%.0s=\033[0m' {1..56} && echo
+printf '\033[34m%.0s=\033[0m' {1..78} && echo
 # ------------------------------------------------------------------------------
 # Apply patch for cyclonedds
 echo -e "\033[36m> Applying patch for cyclonedds...\033[0m"
@@ -378,8 +380,11 @@ brew unlink qt && brew link qt@5
 
 # Revert python_orocos_kdl_vendor back to 0.4.1
 echo -e "\033[36m> Reverting python_orocos_kdl_vendor back to 0.4.1...\033[0m"
-rm -rf ./src/ros2/orocos_kdl_vendor/python_orocos_kdl_vendor
-git clone --depth 1 --branch 0.4.1 https://github.com/ros2/orocos_kdl_vendor.git ./src/ros2/orocos_kdl_vendor/python_orocos_kdl_vendor
+if [ -d "src/ros2/orocos_kdl_vendor/python_orocos_kdl_vendor" ]; then
+    rm -rf src/ros2/orocos_kdl_vendor/python_orocos_kdl_vendor
+    git clone --depth 1 --branch 0.4.1 https://github.com/ros2/orocos_kdl_vendor.git \
+                                       src/ros2/orocos_kdl_vendor/python_orocos_kdl_vendor
+fi
 
 # Remove eclipse-cyclonedds (compile error)
 echo -e "\033[36m> Removing eclipse-cyclonedds (compile errors)\033[0m"
@@ -389,9 +394,9 @@ fi
 
 # ------------------------------------------------------------------------------
 # Building ROS2 Jazzy
-printf '\n\n\033[34m'; printf '=%.0s' {1..56}; printf '\033[0m\n'
+printf '\n\n\033[34m'; printf '=%.0s' {1..78}; printf '\033[0m\n'
 echo -e "\033[34m### [5/6] Building ROS2 Jazzy (This may take about 15 minutes)\033[0m"
-printf '\033[34m%.0s=\033[0m' {1..56} && echo
+printf '\033[34m%.0s=\033[0m' {1..78} && echo
 # ------------------------------------------------------------------------------
 # if ! colcon build --symlink-install --cmake-args -DBUILD_TESTING=OFF -Wno-dev --packages-skip-by-dep python_qt_binding;
 if ! python3.11 -m colcon build  --symlink-install \
@@ -410,9 +415,9 @@ fi
 
 # ------------------------------------------------------------------------------
 # Post Installation Configuration
-printf '\n\n\033[34m'; printf '=%.0s' {1..56}; printf '\033[0m\n'
+printf '\n\n\033[34m'; printf '=%.0s' {1..78}; printf '\033[0m\n'
 echo -e "\033[34m### [6/6] Post Installation Configuration\033[0m"
-printf '\033[34m%.0s=\033[0m' {1..56} && echo
+printf '\033[34m%.0s=\033[0m' {1..78} && echo
 # ------------------------------------------------------------------------------
 # save JAZZY_RELEASE_TAG, VIRTUAL_ENV_ROOT, VIRTUAL_ENV_ROOT in a file
 rm "$HOME/$ROS_INSTALL_ROOT/config"
