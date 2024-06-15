@@ -192,7 +192,7 @@ fi
 # Generate Directory
 echo -e "\033[36m> Creating directory $HOME/$ROS_INSTALL_ROOT...\033[0m"
 mkdir -p "$HOME/$ROS_INSTALL_ROOT"/src
-chown -R "$USER": "$HOME/$ROS_INSTALL_ROOT"
+chown -R "$USER": "$HOME/$ROS_INSTALL_ROOT" > /dev/null 2>&1
 
 # Move to working directory
 pushd "$HOME/$ROS_INSTALL_ROOT" || { 
@@ -293,8 +293,11 @@ printf '\033[34m%.0s=\033[0m' {1..78} && echo
 # ------------------------------------------------------------------------------
 # Get ROS2 Jazzy Source Code (Jazzy-Release Version of $JAZZY_RELEASE_TAG)
 echo -e "\033[36m> Getting ROS2 Jazzy Source Code (Jazzy-Release tag of $JAZZY_RELEASE_TAG)...\033[0m"
-echo -e "As long as the spinner at of the terminal is running, it is downloading the source code."
+echo -e "As long as the spinner at of the terminal is running, it is downloading the source code. It does take long."
+echo -e "If you see 'E' in the progress, it means the download failed (slow connection does this), it will try again."
 echo -e "If it takes too long, please check your network connection and try again. To cancel, Ctrl+C."
+echo -e "\033[33mSTART----------------------------------    DOWNLOADING...  ---------------------------------------------END\033[0m"
+
 
 # Define maximum number of retries
 max_retries=3
