@@ -9,7 +9,7 @@
 ## Introduction
 This is a source code behind oneline installation code to install ROS2 Jazzy on Apple Silicon Macbooks.
 
-Tested and desgined on macOS Sonomar 14.5 with Apple M3 chip (36 GB)
+Tested and desgined on macOS Sonomar 14.5 with Apple M3 chip (36 GB), it took about 15 mintues.
 
 The reasons we are installing ROS2 Jazzy on Apple Silicon Macbooks natively are:
 - Faster performance
