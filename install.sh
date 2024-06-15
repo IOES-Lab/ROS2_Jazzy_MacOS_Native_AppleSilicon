@@ -378,7 +378,8 @@ brew unlink qt && brew link qt@5
 
 # Revert python_orocos_kdl_vendor back to 0.4.1
 echo -e "\033[36m> Reverting python_orocos_kdl_vendor back to 0.4.1...\033[0m"
-( cd ./src/ros2/orocos_kdl_vendor/python_orocos_kdl_vendor || exit; git checkout 0.4.1 )
+rm -rf ./src/ros2/orocos_kdl_vendor/python_orocos_kdl_vendor
+git clone --depth 1 --branch 0.4.1 https://github.com/ros2/orocos_kdl_vendor.git ./src/ros2/orocos_kdl_vendor/python_orocos_kdl_vendor
 
 # Remove eclipse-cyclonedds (compile error)
 echo -e "\033[36m> Removing eclipse-cyclonedds (compile errors)\033[0m"
@@ -393,7 +394,7 @@ echo -e "\033[34m### [5/6] Building ROS2 Jazzy (This may take about 15 minutes)\
 printf '\033[34m%.0s=\033[0m' {1..56} && echo
 # ------------------------------------------------------------------------------
 # if ! colcon build --symlink-install --cmake-args -DBUILD_TESTING=OFF -Wno-dev --packages-skip-by-dep python_qt_binding;
-if ! colcon build  --symlink-install \
+if ! python3.11 -m colcon build  --symlink-install \
  --packages-skip-by-dep python_qt_binding \
  --cmake-args \
  --no-warn-unused-cli \
