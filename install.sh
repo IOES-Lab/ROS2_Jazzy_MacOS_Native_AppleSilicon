@@ -383,10 +383,10 @@ brew unlink qt && brew link qt@5
 
 # Revert python_orocos_kdl_vendor back to 0.4.1
 echo -e "\033[36m> Reverting python_orocos_kdl_vendor back to 0.4.1...\033[0m"
-if [ -d "src/ros2/orocos_kdl_vendor/python_orocos_kdl_vendor" ]; then
-    rm -rf src/ros2/orocos_kdl_vendor/python_orocos_kdl_vendor
-    git clone --depth 1 --branch 0.4.1 https://github.com/ros2/orocos_kdl_vendor.git \
-                                       src/ros2/orocos_kdl_vendor/python_orocos_kdl_vendor
+if [ -d "src/ros2/orocos_kdl_vendor" ]; then
+    rm -rf src/ros2/orocos_kdl_vendor
+    git clone https://github.com/ros2/orocos_kdl_vendor.git src/ros2/orocos_kdl_vendor
+    ( cd ./src/ros2/orocos_kdl_vendor/python_orocos_kdl_vendor || exit; git checkout 0.4.1 )
 fi
 
 # Remove eclipse-cyclonedds (compile error)
