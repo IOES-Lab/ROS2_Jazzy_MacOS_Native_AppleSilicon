@@ -1,6 +1,7 @@
-# Native install of ROS2 Jazzy on Apple Silicon Macbooks
+# Install ROS2 Jazzy natively on Apple Silicon Macbooks
 
-## One-liner installation code
+## One-liner installation code (🍎 (Apple Silicon) + 🤖 = 🚀❤️🤩🎉🥳)
+- Copy and paste it on terminal
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/install.sh)"
