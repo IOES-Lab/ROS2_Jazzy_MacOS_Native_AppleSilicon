@@ -181,8 +181,10 @@ if [ -d "$HOME/$ROS_INSTALL_ROOT" ]; then
         echo -e "\033[33mPerforming clean reinstall...\033[0m"
         # shellcheck disable=SC2115
         rm -rf "$HOME/$ROS_INSTALL_ROOT"
-        # shellcheck disable=SC2115
-        rm -rf "$HOME/$VIRTUAL_ENV_ROOT"
+        if [ -d "$HOME/$VIRTUAL_ENV_ROOT" ]; then
+            # shellcheck disable=SC2115
+            rm -rf "$HOME/$VIRTUAL_ENV_ROOT"
+        fi
     else
         echo -e "\033[31mInstallation aborted.\033[0m"
         exit 1
@@ -425,20 +427,28 @@ echo -e "\033[34m### [6/6] Post Installation Configuration\033[0m"
 printf '\033[34m%.0s=\033[0m' {1..78} && echo
 # ------------------------------------------------------------------------------
 # save JAZZY_RELEASE_TAG, VIRTUAL_ENV_ROOT, VIRTUAL_ENV_ROOT in a file
-rm "$HOME/$ROS_INSTALL_ROOT/config"
+if [ -f config ]; then
+    rm config
+fi
 echo "JAZZY_RELEASE_TAG=$JAZZY_RELEASE_TAG" > "$HOME/$ROS_INSTALL_ROOT/config"
 echo "VIRTUAL_ENV_ROOT=$VIRTUAL_ENV_ROOT" > "$HOME/$ROS_INSTALL_ROOT/config"
 echo "ROS_INSTALL_ROOT=$ROS_INSTALL_ROOT" > "$HOME/$ROS_INSTALL_ROOT/config"
 
 # Download sentenv.sh
-curl -s -O https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/setenv.sh
+if [ -f setenv.sh ]; then
+    rm setenv.sh
+fi
+curl -s -O https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/setenv.sh
 
 # Replace string inside sentenv.sh
 sed -i '' "s|ROS_INSTALL_ROOT|$ROS_INSTALL_ROOT|g" setenv.sh
 sed -i '' "s|VIRTUAL_ENV_ROOT|$VIRTUAL_ENV_ROOT|g" setenv.sh
 
 # Rename sentenv.sh to activate_ros
-mv setenv.sh activate_ros
+if [ -f activate_ros ]; then
+    rm activate_ros
+    mv setenv.sh activate_ros
+fi
 
 # Print post messages
 echo -e "\033[32m\nDone.🍎 (Apple Silicon) + 🤖 = 🚀❤️🤩🎉🥳  \033[0m"
