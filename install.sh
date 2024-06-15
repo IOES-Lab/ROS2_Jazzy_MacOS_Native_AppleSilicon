@@ -2,10 +2,16 @@
 ################################################################################
 ########### ROS2 Jazzy Installation Script for MacOS (Apple Silicon) ###########
 ################################################################################
-# Author: Choi Woen-Sug (Github: woensugchoi)
+# Author: Choi Woen-Sug (GithubID: woensug-choi)
 # First Created: 2024.6.15
 ################################################################################
-# To Run this script, you need to have the following installed:
+# References: (None of below worked for me, so I made this script)
+# - https://github.com/pfavr2/install_ros2_rolling_on_mac_m1
+# - https://chenbrian.ca/posts/ros2_m1/
+# - https://github.com/TakanoTaiga/ros2_m1_native
+# - https://docs.ros.org/en/jazzy/Installation/Alternatives/macOS-Development-Setup.html
+#
+# To Run this script, you need to have the following installed (the script will check):
 # - XCode (https://apps.apple.com/app/xcode/id497799835)
 # - Command Line Tools (https://developer.apple.com/download/more/)
 #   xcode-select --install
@@ -24,19 +30,22 @@
 # Installation Configuration 
 # ------------------------------------------------------------------------------
 ROS_INSTALL_ROOT="ros2_jazzy"
+JAZZY_RELEASE_TAG="release-jazzy-20240523"
 
 # Print welcome message
-echo -e "\032[92m"
+echo -e "\033[32m\n"
 echo "---------------------------------------------------------"
 echo "| 👋 Welcome to the MacOS installation of ROS2 Jazzy 🚧 |"
 echo "| 🍎 (Apple Silicon) + 🤖 = 🚀❤️       by Choi Woen-Sug  |"
 echo "---------------------------------------------------------"
-echo -e Target Installation Directory: "\033[94m$HOME/$ROS_INSTALL_ROOT\033[0m"
+echo -e Target Installation Directory : "\033[94m$HOME/$ROS_INSTALL_ROOT\033[0m"
+echo -e Target Jazzy Release Version  : "\033[94m$JAZZY_RELEASE_TAG\033[0m"
 echo -e "\033[0m"
-
+echo -e "Source code at: "
+echo -e "https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/install.sh"
 # ------------------------------------------------------------------------------
 # Check System
-echo -e "\033[34m### [1/5] Checking System Requirements\033[0m"
+echo -e "\033[34m\n\n### [1/6] Checking System Requirements\033[0m"
 printf '\033[34m%.0s=\033[0m' {1..56} && echo
 # ------------------------------------------------------------------------------
 # Check XCode installation
@@ -93,17 +102,22 @@ else
     fi
 fi
 
+# Check Brew shellenv configuration
+# shellcheck disable=SC2016
+if ! grep -q 'eval "$(/opt/homebrew/bin/brew shellenv)"' ~/.zprofile; then
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
 # Check if Installation dir already exists and warn user
 echo -e "\033[34m> Check Installation Directory\033[0m"
 if [ -d "$HOME/$ROS_INSTALL_ROOT" ]; then
     echo -e "\033[33mWARNING: The directory $ROS_INSTALL_ROOT already exists at user home($HOME)."
-    echo -e "\033[33m         This script will overwrite(remove everything inside) the existing directory.\033[0m"
-    read -p "Do you want to continue? [y/n/r] (y to overwrite, n to cancel, r to change install directory name): " -n 1 -r
+    echo -e "\033[33m         This script will merge and overwrite the existing directory.\033[0m"
+    read -p "Do you want to continue? [y/n/r/c] (y to merge, n to cancel, r to change install directory name, c for force reinstall): " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
-        echo -e "\033[33mOverwriting existing directory...\033[0m"
-        # shellcheck disable=SC2115
-        rm -rf "$HOME/$ROS_INSTALL_ROOT"
+        echo -e "\033[33mMerging and overwriting existing directory...\033[0m"
     elif [[ $REPLY =~ ^[Rr]$ ]]; then
         # shellcheck disable=SC2162
         read -p "Enter a new directory name (which will be generated at home): " ROS_INSTALL_ROOT
@@ -111,6 +125,10 @@ if [ -d "$HOME/$ROS_INSTALL_ROOT" ]; then
             echo -e "\033[31mError: $HOME/$ROS_INSTALL_ROOT already exists. Please choose a different directory.\033[0m"
             exit 1
         fi
+    elif [[ $REPLY =~ ^[Cc]$ ]]; then
+        echo -e "\033[33mPerforming clean reinstall...\033[0m"
+        # shellcheck disable=SC2115
+        rm -rf "$HOME/$ROS_INSTALL_ROOT"
     else
         echo -e "\033[31mInstallation aborted.\033[0m"
         exit 1
@@ -131,14 +149,14 @@ pushd "$HOME/$ROS_INSTALL_ROOT" || {
 
 # ------------------------------------------------------------------------------
 # Install Dendencies
-echo -e "\033[34m### [2/5] Installing Dependencies with Brew (Arm64) and PIP (Python3.11)\033[0m"
+echo -e "\033[34m\n\n### [2/6] Installing Dependencies with Brew and PIP\033[0m"
 printf '\033[34m%.0s=\033[0m' {1..56} && echo
 # ------------------------------------------------------------------------------
 # Installing ros2 dependencies with brew
 echo -e "\033[36m> Installing ROS2 dependencies with Brew...\033[0m"
 brew install asio assimp bison bullet cmake console_bridge cppcheck \
   cunit eigen freetype graphviz opencv openssl orocos-kdl pcre poco \
-  pyqt5 python@3.11 qt@5 sip spdlog tinyxml tinyxml2
+  pyqt@5 python@3.11 qt@5 sip spdlog tinyxml tinyxml2
 
 # Remove unnecessary packages
 echo -e "\033[36m> Removing unnecessary packages...(ones that causes error, python@3.12, qt6)\033[0m"
@@ -209,4 +227,98 @@ python3 -m pip install \
   --config-settings="--global-option=-L/opt/homebrew/opt/graphviz/lib/" \
     pygraphviz
 
+# Confirm message
+echo -e "\033[36m> Packages installation with PIP completed.\033[0m"
+
+# ------------------------------------------------------------------------------
+# Downloading ROS2 Jazzy Source Code
+echo -e "\033[34m\n\n### [3/6] Downloading ROS2 Jazzy Source Code\033[0m"
+printf '\033[34m%.0s=\033[0m' {1..56} && echo
+# ------------------------------------------------------------------------------
+# Get ROS2 Jazzy Source Code (Jazzy-Release Version of $JAZZY_RELEASE_TAG)
+echo -e "\033[36m> Getting ROS2 Jazzy Source Code (Jazzy-Release tag of $JAZZY_RELEASE_TAG)...\033[0m"
+vcs import --input https://raw.githubusercontent.com/ros2/ros2/$JAZZY_RELEASE_TAG/ros2.repos src
+# Run partially to generate compile output structure
+echo -e "\033[36m> Running colcon build packages-up-to cyclonedds\033[0m"
+echo -e "\033[36m  Only for generating compile output structure, not for actual building\033[0m"
+colcon build --symlink-install  --cmake-args -DBUILD_TESTING=OFF -Wno-dev --packages-skip-by-dep python_qt_binding --packages-up-to cyclonedds
+
+# ------------------------------------------------------------------------------
+# Patch files for Mac OS X Installation
+echo -e "\033[34m\n\n### [4/6] Patching files for Mac OS X (Apple Silicon) Installation\033[0m"
+printf '\033[34m%.0s=\033[0m' {1..56} && echo
+# ------------------------------------------------------------------------------
+# Apply patch for cyclonedds
+echo -e "\033[36m> Applying patch for cyclonedds...\033[0m"
+ln -s "../../iceoryx_posh/lib/libiceoryx_posh.dylib" install/iceoryx_binding_c/lib/libiceoryx_posh.dylib
+ln -s "../../iceoryx_hoofs/lib/libiceoryx_hoofs.dylib" install/iceoryx_binding_c/lib/libiceoryx_hoofs.dylib
+ln -s "../../iceoryx_hoofs/lib/libiceoryx_platform.dylib" install/iceoryx_binding_c/lib/libiceoryx_platform.dylib
+
+# Apply patch for setuptools installation
+echo -e "\033[36m> Applying patch for setuptools installation...\033[0m"
+curl -sSL \
+  https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/python_setuptools_install.patch \
+  | patch -N
+curl -sSL \
+  https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/python_setuptools_easy_install.patch \
+  | patch -N
+
+# Patch for orocos-kdl
+echo -e "\033[36m> Applying patch for orocos-kdl (to use brew installed package)...\033[0m"
+curl -sSL \
+  https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/geometry2_tf2_eigen_kdl.patch \
+  | patch -N
+curl -sSL \
+  https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/ros_visualization_interactive_markers.patch \
+  | patch -N
+curl -sSL \
+  https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/kdl_parser.patch \
+  | patch -N
+
+# Patch for rviz_ogre_vendor
+echo -e "\033[36m> Applying patch for rviz_ogre_vendor...\033[0m"
+curl -sSL \
+  https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/rviz_default_plugins.patch \
+  | patch -N
+curl -sSL \
+  https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/rviz_ogre_vendor.patch \
+  | patch -N
+curl -sSL \
+  https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/0001-pragma.patch \
+  | patch -N
+
+# Patch for rosbag2_transport
+echo -e "\033[36m> Applying patch for rosbag2_transport...\033[0m"
+curl -sSL \
+  https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/rosbag2_transport.patch \
+  | patch -N
+
+# Fix brew linking of qt5
+echo -e "\033[36m> Fixing brew linking of qt5...\033[0m"
+brew unlink qt && brew link qt@5
+
+# Revert python_orocos_kdl_vendor back to 0.4.1
+echo -e "\033[36m> Reverting python_orocos_kdl_vendor back to 0.4.1...\033[0m"
+( cd ./src/ros2/orocos_kdl_vendor/python_orocos_kdl_vendor || exit; git checkout 0.4.1 )
+
+# ------------------------------------------------------------------------------
+# Building ROS2 Jazzy
+echo -e "\033[34m\n\n### [5/6] Building ROS2 Jazzy (This may take about 15 minutes)\033[0m"
+printf '\033[34m%.0s=\033[0m' {1..56} && echo
+# ------------------------------------------------------------------------------
+colcon build \
+ --symlink-install \
+ --packages-skip-by-dep python_qt_binding \
+ --cmake-args \
+   --no-warn-unused-cli \
+   -DBUILD_TESTING=OFF \
+   -DINSTALL_EXAMPLES=ON \
+   -DCMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
+   -DCMAKE_OSX_ARCHITECTURES="arm64" \
+   -DPython3_EXECUTABLE="$(pwd)/../ros2_venv/bin/python3"
+
+# ------------------------------------------------------------------------------
+# Post Installation Configuration
+echo -e "\033[34m\n\n### [6/6] Post Installation Configuration\033[0m"
+printf '\033[34m%.0s=\033[0m' {1..56} && echo
 

@@ -1,0 +1,30 @@
+--- src/ros2/rviz/rviz_ogre_vendor/CMakeLists.txt
++++ src/ros2/rviz/rviz_ogre_vendor/CMakeLists.txt
+@@ -74,7 +74,16 @@
+ 
+ if(APPLE)
+   list(APPEND OGRE_CMAKE_ARGS -DOGRE_ENABLE_PRECOMPILED_HEADERS:BOOL=OFF)
+-  list(APPEND OGRE_CMAKE_ARGS -DCMAKE_OSX_ARCHITECTURES=arm64;x86_64)
++  list(APPEND OGRE_CMAKE_ARGS -DCMAKE_OSX_ARCHITECTURES=arm64)
++  list(APPEND OGRE_CMAKE_ARGS -DFREETYPE_INCLUDE_DIR_freetype2=/opt/homebrew/include/freetype2)
++  list(APPEND OGRE_CMAKE_ARGS -DFREETYPE_INCLUDE_DIR_ft2build=/opt/homebrew/include/freetype2)
++  list(APPEND OGRE_CMAKE_ARGS -DFREETYPE_LIBRARY_RELEASE=/opt/homebrew/lib/libfreetype.dylib)
++  list(APPEND OGRE_CMAKE_ARGS -DFreeImage_INCLUDE_DIR=/opt/homebrew/include)
++  list(APPEND OGRE_CMAKE_ARGS -DOPENEXR_INCLUDE_DIR=/opt/homebrew/include)
++  list(APPEND OGRE_CMAKE_ARGS -DOPENEXR_Iex_LIBRARY=/opt/homebrew/lib/libIex.dylib)
++  list(APPEND OGRE_CMAKE_ARGS -DOPENEXR_IlmThread_LIBRARY=/opt/homebrew/lib/libIlmThread.dylib)
++  list(APPEND OGRE_CMAKE_ARGS -DOgreOverlay_LIB_DEPENDS=general;OgreMain;general;/opt/homebrew/lib/libfreetype.dylib;general;ZLIB::ZLIB)
++  list(APPEND OGRE_CMAKE_ARGS -DFIND_PACKAGE_MESSAGE_DETAILS_Freetype=[/opt/homebrew/lib/libfreetype.dylib][/opt/homebrew/include/freetype2][v2.13.2()])
+ endif()
+ 
+ ament_vendor(ogre_vendor
+@@ -101,7 +110,9 @@
+     -DOGRE_BUILD_RENDERSYSTEM_GL:BOOL=TRUE
+     -DOGRE_BUILD_RENDERSYSTEM_D3D11:BOOL=OFF
+     -DOGRE_BUILD_RENDERSYSTEM_D3D9:BOOL=OFF
++    -DOGRE_ENABLE_PRECOMPILED_HEADERS:BOOL=OFF
+     -DCMAKE_POLICY_DEFAULT_CMP0074=NEW
++    "-DCMAKE_OSX_ARCHITECTURES=arm64"
+     "-DCMAKE_CXX_FLAGS=${OGRE_CXX_FLAGS}"
+     ${OGRE_CMAKE_ARGS}
+   PATCHES patches
