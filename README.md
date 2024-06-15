@@ -20,6 +20,7 @@ The reasons we are installing ROS2 Jazzy on Apple Silicon Macbooks natively are:
 
 ## References: (None of below worked for me, so I made this script)
 - https://github.com/pfavr2/install_ros2_rolling_on_mac_m1
+  - Much of the code design structure is referenced from this
 - https://chenbrian.ca/posts/ros2_m1/
 - https://github.com/TakanoTaiga/ros2_m1_native
 - https://docs.ros.org/en/jazzy/Installation/Alternatives/macOS-Development-Setup.html
