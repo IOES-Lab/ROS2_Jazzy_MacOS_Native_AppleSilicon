@@ -1,5 +1,5 @@
---- ./install_venv/lib/python3.11/site-packages/setuptools/command/install.py
-+++ ./install_venv/lib/python3.11/site-packages/setuptools/command/install.py
+--- ~/.ros2_venv/lib/python3.11/site-packages/setuptools/command/install.py
++++ ~/.ros2_venv/lib/python3.11/site-packages/setuptools/command/install.py
 @@ -31,11 +31,11 @@
  
      def initialize_options(self):

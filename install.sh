@@ -25,12 +25,50 @@
 # Also, need to make this script executable
 # chmod +x install.sh
 ################################################################################
+JAZZY_RELEASE_TAG_DEFAULT="release-jazzy-20240523" # you may change with option -t
+ROS_INSTALL_ROOT_DEFAULT="ros2_jazzy" # you may change with option -d
+VIRTUAL_ENV_ROOT_DEFAULT=".ros2_venv" # you may change with option -t
+# ------------------------------------------------------------------------------
+# Installation Configuration and Options
+# ------------------------------------------------------------------------------
 
-# ------------------------------------------------------------------------------
-# Installation Configuration 
-# ------------------------------------------------------------------------------
-ROS_INSTALL_ROOT="ros2_jazzy"
-JAZZY_RELEASE_TAG="release-jazzy-20240523"
+# Usage function
+usage() {
+    echo "Usage: [-d ROS_INSTALL_ROOT] [-t JAZZY_RELEASE_TAG]"
+    echo "  -t    Set the Jazzy release tag (default: $JAZZY_RELEASE_TAG_DEFAULT)"
+    echo "        (e.g., release-jazzy-20240523, you may find tag at https://github.com/ros2/ros2/tags"
+    echo "  -d    Set the ROS installation root directory (default: $ROS_INSTALL_ROOT_DEFAULT)"
+    echo "  -v    Set the Python Virtual Environment directory (default: $VIRTUAL_ENV_ROOT_DEFAULT)"
+    exit 1
+}
+
+# Parse command-line arguments
+while getopts "d:t:h:v" opt; do
+    case ${opt} in
+        d)
+            ROS_INSTALL_ROOT=$OPTARG
+            ;;
+        v)
+            VIRTUAL_ENV_ROOT=$OPTARG
+            ;;
+        t)
+            JAZZY_RELEASE_TAG=$OPTARG
+            ;;
+        h)
+            usage
+            ;;
+        \?)
+            echo "Invalid option: -$OPTARG" 1>&2
+            usage
+            ;;
+    esac
+done
+shift $((OPTIND -1))
+
+# Set default values if variables are not set
+JAZZY_RELEASE_TAG=${JAZZY_RELEASE_TAG:-$JAZZY_RELEASE_TAG_DEFAULT}
+ROS_INSTALL_ROOT=${ROS_INSTALL_ROOT:-$ROS_INSTALL_ROOT_DEFAULT}
+VIRTUAL_ENV_ROOT=${VIRTUAL_ENV_ROOT:-$VIRTUAL_ENV_ROOT_DEFAULT}
 
 # ------------------------------------------------------------------------------
 # Initiation
@@ -46,18 +84,22 @@ echo "---------------------------------------------------------"
 echo "| 👋 Welcome to the MacOS installation of ROS2 Jazzy 🚧 |"
 echo "| 🍎 (Apple Silicon) + 🤖 = 🚀❤️       by Choi Woen-Sug  |"
 echo "---------------------------------------------------------"
-echo -e Target Installation Directory : "\033[94m$HOME/$ROS_INSTALL_ROOT\033[0m"
 echo -e Target Jazzy Release Version  : "\033[94m$JAZZY_RELEASE_TAG\033[0m"
+echo -e Target Installation Directory: "\033[94m$HOME/$ROS_INSTALL_ROOT\033[0m"
+echo -e Virtual Environment Directory: "\033[94m$HOME/$VIRTUAL_ENV_ROOT\033[0m"
 echo -e "\033[0m"
 echo -e "Source code at: "
-echo -e "https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/install.sh"
-
+echo -e "https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/install.sh\n\n"
+echo -e "\033[33mWARNING: The FAN WILL BURST out and make macbook to take off. Be warned!\033[0m"
+echo -e "\033[33m         To terminate at any process, press Ctrl+C.\033[0m"
 # ------------------------------------------------------------------------------
 # Check System
-echo -e "\033[34m\n\n### [1/6] Checking System Requirements\033[0m"
+printf '\n\n\033[34m'; printf '=%.0s' {1..56}; printf '\033[0m\n'
+echo -e "\033[34m### [1/6] Checking System Requirements\033[0m"
 printf '\033[34m%.0s=\033[0m' {1..56} && echo
 # ------------------------------------------------------------------------------
-# Check XCode installation
+echo -e "Checking System Requirements..."
+# Check XCode installation"
 if [ ! -e "/Applications/Xcode.app/Contents/Developer" ]; then
     echo -e "\033[31mError: Xcode is not installed. Please install Xcode through the App Store."
     echo -e "\033[31m       You can download it from: https://apps.apple.com/app/xcode/id497799835\033[0m"
@@ -121,9 +163,10 @@ fi
 # Check if Installation dir already exists and warn user
 echo -e "\033[34m> Check Installation Directory\033[0m"
 if [ -d "$HOME/$ROS_INSTALL_ROOT" ]; then
-    echo -e "\033[33mWARNING: The directory $ROS_INSTALL_ROOT already exists at user home($HOME)."
+    echo -e "\033[33mWARNING: The directory $ROS_INSTALL_ROOT already exists at home ($HOME)."
     echo -e "\033[33m         This script will merge and overwrite the existing directory.\033[0m"
-    read -p "Do you want to continue? [y/n/r/c] (y to merge, n to cancel, r to change install directory name, c for force reinstall): " -n 1 -r
+    echo -e "\033[33mDo you want to continue? [y/n/r/c]\033[0m"
+    read -p "(y) Merge (n) Cancel (r) Change directory, (c) Force reinstall: " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         echo -e "\033[33mMerging and overwriting existing directory...\033[0m"
@@ -158,7 +201,8 @@ pushd "$HOME/$ROS_INSTALL_ROOT" || {
 
 # ------------------------------------------------------------------------------
 # Install Dendencies
-echo -e "\033[34m\n\n### [2/6] Installing Dependencies with Brew and PIP\033[0m"
+printf '\n\n\033[34m'; printf '=%.0s' {1..56}; printf '\033[0m\n'
+echo -e "\033[34m### [2/6] Installing Dependencies with Brew and PIP\033[0m"
 printf '\033[34m%.0s=\033[0m' {1..56} && echo
 # ------------------------------------------------------------------------------
 # Installing ros2 dependencies with brew
@@ -168,7 +212,7 @@ brew install asio assimp bison bullet cmake console_bridge cppcheck \
   pyqt@5 python@3.11 qt@5 sip spdlog tinyxml tinyxml2
 
 # Remove unnecessary packages
-echo -e "\033[36m\n> Removing unnecessary packages...(ones that causes error, python@3.12, qt6)\033[0m"
+echo -e "\033[36m\n> Removing unnecessary packages...ones that causes error, python@3.12, qt6\033[0m"
 if brew list --formula | grep -q "python@3.12"; then
     echo -e "\033[31mWARNING: Python@3.12 installation is found. Currently this does not work with ros2 jazzy. Do you want to remove it? (y/n)\033[0m"
     read -r response
@@ -204,7 +248,7 @@ export PATH=$PATH:${PATH_TO_QT5}/bin
 export COLCON_EXTENSION_BLOCKLIST=colcon_core.event_handler.desktop_notification
 
 # Confirm message
-echo -e "\033[36m\n> Packages installation with Brew completed.\033[0m"
+echo -e "\033[36m\n\n> Packages installation with Brew completed.\033[0m"
 
 # Check Python3.11 installation
 if ! python3.11 --version > /dev/null 2>&1; then
@@ -212,12 +256,12 @@ if ! python3.11 --version > /dev/null 2>&1; then
     exit 1
 fi
 # Generate Python3.11 virtual environment
-echo -e "\033[36m> Generating Python3.11 virtual environment at $HOME/$ROS_INSTALL_ROOT/install_venv\033[0m"
-python3.11 -m venv install_venv
+echo -e "\033[36m> Generating Python3.11 virtual environment at $HOME/$VIRTUAL_ENV_ROOT\033[0m"
+python3.11 -m venv "$HOME/$VIRTUAL_ENV_ROOT"
 
 # Activate Python3.11 virtual environment
-# shellcheck disable=SC1091
-source install_venv/bin/activate
+# shellcheck disable=SC1091,SC1090
+source "$HOME/$VIRTUAL_ENV_ROOT"/bin/activate
 
 # Install Python3.11 dependencies with pip
 echo -e "\033[36m> Installing Python3.11 dependencies with PIP in virtual environment...\033[0m"
@@ -241,33 +285,37 @@ echo -e "\033[36m> Packages installation with PIP completed.\033[0m"
 
 # ------------------------------------------------------------------------------
 # Downloading ROS2 Jazzy Source Code
-echo -e "\033[34m\n\n### [3/6] Downloading ROS2 Jazzy Source Code\033[0m"
+printf '\n\n\033[34m'; printf '=%.0s' {1..56}; printf '\033[0m\n'
+echo -e "\033[34m### [3/6] Downloading ROS2 Jazzy Source Code\033[0m"
 printf '\033[34m%.0s=\033[0m' {1..56} && echo
 # ------------------------------------------------------------------------------
 # Get ROS2 Jazzy Source Code (Jazzy-Release Version of $JAZZY_RELEASE_TAG)
 echo -e "\033[36m> Getting ROS2 Jazzy Source Code (Jazzy-Release tag of $JAZZY_RELEASE_TAG)...\033[0m"
+echo -e "As long as the spinner at of the terminal is running, it is downloading the source code."
+echo -e "If it takes too long, please check your network connection and try again. To cancel, Ctrl+C."
+
 # Define maximum number of retries
 max_retries=3
 # Start loop
 for ((i=1;i<=max_retries;i++)); do
     # Try to import the repositories
-    vcs import --input https://raw.githubusercontent.com/ros2/ros2/$JAZZY_RELEASE_TAG/ros2.repos src
-    # Check if the command was successful
-    # shellcheck disable=SC2181
-    if [ $? -eq 0 ]; then
-        echo -e "\033[36m> Import successful\033[0m"
+    if vcs import --shallow --retry 0 \
+        --input https://raw.githubusercontent.com/ros2/ros2/$JAZZY_RELEASE_TAG/ros2.repos src;
+        then
+        echo -e "\033[36m\n>ROS2 Jazzy Source Code Import Successful\033[0m"
         break
     else
-        echo -e "\033[31mImport failed, retrying ($i/$max_retries)\033[0m"
+        echo -e "\033[31m\nROS2 Jazzy Source Code Import failed, retrying ($i/$max_retries)\033[0m"
     fi
     # If we've reached the max number of retries, exit the script
     if [ $i -eq $max_retries ]; then
-        echo -e "\033[31mImport failed after $max_retries attempts, terminating script.\033[0m"
+        echo -e "\033[31m\nROS2 Jazzy Source Code Import failed after $max_retries attempts, terminating script.\033[0m"
         exit 1
     fi
     # Wait before retrying
     sleep 5
 done
+
 # Run partially to generate compile output structure
 echo -e "\033[36m> Running colcon build packages-up-to cyclonedds\033[0m"
 echo -e "\033[36m  Only for generating compile output structure, not for actual building\033[0m"
@@ -275,7 +323,8 @@ colcon build --symlink-install  --cmake-args -DBUILD_TESTING=OFF -Wno-dev --pack
 
 # ------------------------------------------------------------------------------
 # Patch files for Mac OS X Installation
-echo -e "\033[34m\n\n### [4/6] Patching files for Mac OS X (Apple Silicon) Installation\033[0m"
+printf '\n\n\033[34m'; printf '=%.0s' {1..56}; printf '\033[0m\n'
+echo -e "\033[34m### [4/6] Patching files for Mac OS X (Apple Silicon) Installation\033[0m"
 printf '\033[34m%.0s=\033[0m' {1..56} && echo
 # ------------------------------------------------------------------------------
 # Apply patch for cyclonedds
@@ -285,13 +334,13 @@ ln -s "../../iceoryx_hoofs/lib/libiceoryx_hoofs.dylib" install/iceoryx_binding_c
 ln -s "../../iceoryx_hoofs/lib/libiceoryx_platform.dylib" install/iceoryx_binding_c/lib/libiceoryx_platform.dylib
 
 # Apply patch for setuptools installation
-echo -e "\033[36m> Applying patch for setuptools installation...\033[0m"
-curl -sSL \
-  https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/python_setuptools_install.patch \
-  | patch -p1 -Ns
-curl -sSL \
-  https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/python_setuptools_easy_install.patch \
-  | patch -p1 -Ns
+# echo -e "\033[36m> Applying patch for setuptools installation...\033[0m"
+# curl -sSL \
+#   https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/python_setuptools_install.patch \
+#   | patch -p1 -Ns
+# curl -sSL \
+#   https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/python_setuptools_easy_install.patch \
+#   | patch -p1 -Ns
 
 # Patch for orocos-kdl
 echo -e "\033[36m> Applying patch for orocos-kdl (to use brew installed package)...\033[0m"
@@ -331,36 +380,65 @@ brew unlink qt && brew link qt@5
 echo -e "\033[36m> Reverting python_orocos_kdl_vendor back to 0.4.1...\033[0m"
 ( cd ./src/ros2/orocos_kdl_vendor/python_orocos_kdl_vendor || exit; git checkout 0.4.1 )
 
+# Remove eclipse-cyclonedds (compile error)
+echo -e "\033[36m> Removing eclipse-cyclonedds (compile errors)\033[0m"
+if [ -d "src/eclipse-cyclonedds" ]; then
+    rm -rf src/eclipse-cyclonedds
+fi
+
 # ------------------------------------------------------------------------------
 # Building ROS2 Jazzy
-echo -e "\033[34m\n\n### [5/6] Building ROS2 Jazzy (This may take about 15 minutes)\033[0m"
+printf '\n\n\033[34m'; printf '=%.0s' {1..56}; printf '\033[0m\n'
+echo -e "\033[34m### [5/6] Building ROS2 Jazzy (This may take about 15 minutes)\033[0m"
 printf '\033[34m%.0s=\033[0m' {1..56} && echo
 # ------------------------------------------------------------------------------
-colcon build \
- --symlink-install \
+# if ! colcon build --symlink-install --cmake-args -DBUILD_TESTING=OFF -Wno-dev --packages-skip-by-dep python_qt_binding;
+if ! colcon build  --symlink-install \
  --packages-skip-by-dep python_qt_binding \
  --cmake-args \
-   --no-warn-unused-cli \
-   -DBUILD_TESTING=OFF \
-   -DINSTALL_EXAMPLES=ON \
-   -DCMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
-   -DCMAKE_OSX_ARCHITECTURES="arm64" \
-   -DPython3_EXECUTABLE="$(pwd)/../ros2_venv/bin/python3"
+ --no-warn-unused-cli \
+ -DBUILD_TESTING=OFF \
+ -DINSTALL_EXAMPLES=ON \
+ -DCMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
+ -DCMAKE_OSX_ARCHITECTURES="arm64" \
+ -DPython3_EXECUTABLE="$HOME/$VIRTUAL_ENV_ROOT/bin/python3";
+then
+    echo -e "\033[31mError: Build failed, aborting script.\033[0m"
+    exit 1
+fi
 
 # ------------------------------------------------------------------------------
 # Post Installation Configuration
-echo -e "\033[34m\n\n### [6/6] Post Installation Configuration\033[0m"
+printf '\n\n\033[34m'; printf '=%.0s' {1..56}; printf '\033[0m\n'
+echo -e "\033[34m### [6/6] Post Installation Configuration\033[0m"
 printf '\033[34m%.0s=\033[0m' {1..56} && echo
 # ------------------------------------------------------------------------------
-# Download setenv save
-curl -o "$HOME/$ROS_INSTALL_ROOT/activate_ros" https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/setenv.sh
+# save JAZZY_RELEASE_TAG, VIRTUAL_ENV_ROOT, VIRTUAL_ENV_ROOT in a file
+rm "$HOME/$ROS_INSTALL_ROOT/config"
+echo "JAZZY_RELEASE_TAG=$JAZZY_RELEASE_TAG" > "$HOME/$ROS_INSTALL_ROOT/config"
+echo "VIRTUAL_ENV_ROOT=$VIRTUAL_ENV_ROOT" > "$HOME/$ROS_INSTALL_ROOT/config"
+echo "ROS_INSTALL_ROOT=$ROS_INSTALL_ROOT" > "$HOME/$ROS_INSTALL_ROOT/config"
+
+# Download sentenv.sh
+curl -s -O https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/setenv.sh
+
+# Replace string inside sentenv.sh
+sed -i '' "s|ROS_INSTALL_ROOT|$ROS_INSTALL_ROOT|g" setenv.sh
+sed -i '' "s|VIRTUAL_ENV_ROOT|$VIRTUAL_ENV_ROOT|g" setenv.sh
+
+# Rename sentenv.sh to activate_ros
+mv setenv.sh activate_ros
 
 # Print post messages
-echo -e "\033[32m\nDone.\033[0m"
+echo -e "\033[32m\nDone.🍎 (Apple Silicon) + 🤖 = 🚀❤️ \033[0m"
 echo
 echo "To activate the new ROS2 distribution run the following command:"
-echo ". $HOME/$ROS_INSTALL_ROOT/activate_ros"
+echo -e "\033[32m. $HOME/$ROS_INSTALL_ROOT/activate_ros\033[0m"
+echo
+echo "To make alias for fast start, run the following command to add to ~/.zprofile:"
+echo -e "\033[34mecho 'alias jazzy=\". $HOME/$ROS_INSTALL_ROOT/activate_ros\"' >> ~/.zprofile\033[0m"
+echo "Then, you can start ROS2 Jazzy by typing 'jazzy' in the terminal (new terminal)."
 echo
 echo "To deactivate this workspace, run:"
-echo "deactivate_ros"
+echo -e "\033[33mdeactivate\033[0m"
 popd || exit

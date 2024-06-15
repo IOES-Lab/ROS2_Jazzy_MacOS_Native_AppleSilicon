@@ -1,11 +1,10 @@
 # Native install of ROS2 Jazzy on Apple Silicon Macbooks
 
 ## One-liner installation code
+
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/install.sh)"
 ```
-
-https://raw.githubusercontent.com/IOES/ros2-jazzy-macos-native-applesilicon/HEAD/install.sh
 
 ## Introduction
 This is a source code behind oneline installation code to install ROS2 Jazzy on Apple Silicon Macbooks.
@@ -18,7 +17,6 @@ The reasons we are installing ROS2 Jazzy on Apple Silicon Macbooks natively are:
 - Better compatibility
   - USB and other hardware drivers are not fully supported with Docker Desktop for Mac with HyperKit (for now)
   - To avoid any potential issues that may arise from using Rosetta 2
-
 
 ## References: (None of below worked for me, so I made this script)
 - https://github.com/pfavr2/install_ros2_rolling_on_mac_m1

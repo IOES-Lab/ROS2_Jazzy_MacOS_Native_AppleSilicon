@@ -25,6 +25,18 @@ function deactivate_ros() {
   unset -f deactivate_ros
 }
 
-DIR="$(dirname "$0")"
-. "$DIR/install_venv/bin/activate"
-. "$DIR/ros2_jazzy/install/setup.zsh"
+# Source Virtual Environment
+    # shellcheck disable=SC1090
+source "$HOME/$VIRTUAL_ENV_ROOT/bin/activate"
+
+# Source ROS
+if [[ $SHELL == *"bash"* ]]; then
+    # shellcheck disable=SC1090
+    source "$HOME/$ROS_INSTALL_ROOT/install/setup.bash"
+elif [[ $SHELL == *"zsh"* ]]; then
+    # shellcheck disable=SC1090
+    source "$HOME/$ROS_INSTALL_ROOT/install/setup.zsh"
+else
+    echo "Unsupported shell. Please use bash or zsh."
+    exit 1
+fi
