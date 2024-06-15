@@ -1,5 +1,5 @@
---- install_venv/lib/python3.11/site-packages/setuptools/command/easy_install.py
-+++ install_venv/lib/python3.11/site-packages/setuptools/command/easy_install.py
+--- ./install_venv/lib/python3.11/site-packages/setuptools/command/easy_install.py
++++ ./install_venv/lib/python3.11/site-packages/setuptools/command/easy_install.py
 @@ -153,11 +153,11 @@
      create_index = PackageIndex
  

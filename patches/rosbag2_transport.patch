@@ -1,5 +1,5 @@
---- src/ros2/rosbag2/rosbag2_transport/src/rosbag2_transport/play_options.cpp
-+++ src/ros2/rosbag2/rosbag2_transport/src/rosbag2_transport/play_options.cpp
+--- ./src/ros2/rosbag2/rosbag2_transport/src/rosbag2_transport/play_options.cpp
++++ ./src/ros2/rosbag2/rosbag2_transport/src/rosbag2_transport/play_options.cpp
 @@ -65,7 +65,10 @@
  bool convert<rosbag2_transport::PlayOptions>::decode(
    const Node & node, rosbag2_transport::PlayOptions & play_options)

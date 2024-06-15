@@ -168,7 +168,7 @@ brew install asio assimp bison bullet cmake console_bridge cppcheck \
   pyqt@5 python@3.11 qt@5 sip spdlog tinyxml tinyxml2
 
 # Remove unnecessary packages
-echo -e "\033[36m> Removing unnecessary packages...(ones that causes error, python@3.12, qt6)\033[0m"
+echo -e "\033[36m\n> Removing unnecessary packages...(ones that causes error, python@3.12, qt6)\033[0m"
 if brew list --formula | grep -q "python@3.12"; then
     echo -e "\033[31mWARNING: Python@3.12 installation is found. Currently this does not work with ros2 jazzy. Do you want to remove it? (y/n)\033[0m"
     read -r response
@@ -204,7 +204,7 @@ export PATH=$PATH:${PATH_TO_QT5}/bin
 export COLCON_EXTENSION_BLOCKLIST=colcon_core.event_handler.desktop_notification
 
 # Confirm message
-echo -e "\033[36m> Packages installation with Brew completed.\033[0m"
+echo -e "\033[36m\n> Packages installation with Brew completed.\033[0m"
 
 # Check Python3.11 installation
 if ! python3.11 --version > /dev/null 2>&1; then
@@ -253,6 +253,7 @@ for ((i=1;i<=max_retries;i++)); do
     # Try to import the repositories
     vcs import --input https://raw.githubusercontent.com/ros2/ros2/$JAZZY_RELEASE_TAG/ros2.repos src
     # Check if the command was successful
+    # shellcheck disable=SC2181
     if [ $? -eq 0 ]; then
         echo -e "\033[36m> Import successful\033[0m"
         break
@@ -287,40 +288,40 @@ ln -s "../../iceoryx_hoofs/lib/libiceoryx_platform.dylib" install/iceoryx_bindin
 echo -e "\033[36m> Applying patch for setuptools installation...\033[0m"
 curl -sSL \
   https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/python_setuptools_install.patch \
-  | patch -N
+  | patch -p1 -Ns
 curl -sSL \
   https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/python_setuptools_easy_install.patch \
-  | patch -N
+  | patch -p1 -Ns
 
 # Patch for orocos-kdl
 echo -e "\033[36m> Applying patch for orocos-kdl (to use brew installed package)...\033[0m"
 curl -sSL \
   https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/geometry2_tf2_eigen_kdl.patch \
-  | patch -N
+  | patch -p1 -Ns
 curl -sSL \
   https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/ros_visualization_interactive_markers.patch \
-  | patch -N
+  | patch -p1 -Ns
 curl -sSL \
   https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/kdl_parser.patch \
-  | patch -N
+  | patch -p1 -Ns
 
 # Patch for rviz_ogre_vendor
 echo -e "\033[36m> Applying patch for rviz_ogre_vendor...\033[0m"
 curl -sSL \
   https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/rviz_default_plugins.patch \
-  | patch -N
+  | patch -p1 -Ns
 curl -sSL \
   https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/rviz_ogre_vendor.patch \
-  | patch -N
+  | patch -p1 -Ns
 curl -sSL \
   https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/0001-pragma.patch \
-  | patch -N
+  | patch -p1 -Ns
 
 # Patch for rosbag2_transport
 echo -e "\033[36m> Applying patch for rosbag2_transport...\033[0m"
 curl -sSL \
   https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/rosbag2_transport.patch \
-  | patch -N
+  | patch -p1 -Ns
 
 # Fix brew linking of qt5
 echo -e "\033[36m> Fixing brew linking of qt5...\033[0m"

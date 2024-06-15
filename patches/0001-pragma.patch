@@ -1,5 +1,5 @@
---- src/ros2/rviz/rviz_ogre_vendor/patches/0001-pragma.patch
-+++ src/ros2/rviz/rviz_ogre_vendor/patches/0001-pragma.patch
+--- ./src/ros2/rviz/rviz_ogre_vendor/patches/0001-pragma.patch
++++ ./src/ros2/rviz/rviz_ogre_vendor/patches/0001-pragma.patch
 @@ -1847,3 +1847,20 @@
  +#endif
   #endif
