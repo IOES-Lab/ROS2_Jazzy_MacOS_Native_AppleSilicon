@@ -408,9 +408,11 @@ if ! python3.11 -m colcon build  --symlink-install \
  --no-warn-unused-cli \
  -DBUILD_TESTING=OFF \
  -DINSTALL_EXAMPLES=ON \
+ -DCMAKE_BUILD_TYPE=Release \
  -DCMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
  -DCMAKE_OSX_ARCHITECTURES="arm64" \
- -DPython3_EXECUTABLE="$HOME/$VIRTUAL_ENV_ROOT/bin/python3";
+ -DPython3_EXECUTABLE="$HOME/$VIRTUAL_ENV_ROOT/bin/python3" \
+ -Wno-dev;
 then
     echo -e "\033[31mError: Build failed, aborting script.\033[0m"
     exit 1
