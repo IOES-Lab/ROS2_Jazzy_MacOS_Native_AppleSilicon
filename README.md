@@ -2,7 +2,7 @@
 
 ## One-liner installation code
 ```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/IOES/ros2-jazzy-macos-native-applesilicon/HEAD/install.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/install.sh)"
 ```
 
 https://raw.githubusercontent.com/IOES/ros2-jazzy-macos-native-applesilicon/HEAD/install.sh
@@ -20,4 +20,8 @@ The reasons we are installing ROS2 Jazzy on Apple Silicon Macbooks natively are:
   - To avoid any potential issues that may arise from using Rosetta 2
 
 
-
+## References: (None of below worked for me, so I made this script)
+- https://github.com/pfavr2/install_ros2_rolling_on_mac_m1
+- https://chenbrian.ca/posts/ros2_m1/
+- https://github.com/TakanoTaiga/ros2_m1_native
+- https://docs.ros.org/en/jazzy/Installation/Alternatives/macOS-Development-Setup.html

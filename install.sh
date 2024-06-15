@@ -32,6 +32,14 @@
 ROS_INSTALL_ROOT="ros2_jazzy"
 JAZZY_RELEASE_TAG="release-jazzy-20240523"
 
+# ------------------------------------------------------------------------------
+# Initiation
+# ------------------------------------------------------------------------------
+# Clean init
+if typeset -f deactivate_ros > /dev/null; then
+  deactivate_ros
+fi
+
 # Print welcome message
 echo -e "\033[32m\n"
 echo "---------------------------------------------------------"
@@ -43,6 +51,7 @@ echo -e Target Jazzy Release Version  : "\033[94m$JAZZY_RELEASE_TAG\033[0m"
 echo -e "\033[0m"
 echo -e "Source code at: "
 echo -e "https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/install.sh"
+
 # ------------------------------------------------------------------------------
 # Check System
 echo -e "\033[34m\n\n### [1/6] Checking System Requirements\033[0m"
@@ -237,7 +246,27 @@ printf '\033[34m%.0s=\033[0m' {1..56} && echo
 # ------------------------------------------------------------------------------
 # Get ROS2 Jazzy Source Code (Jazzy-Release Version of $JAZZY_RELEASE_TAG)
 echo -e "\033[36m> Getting ROS2 Jazzy Source Code (Jazzy-Release tag of $JAZZY_RELEASE_TAG)...\033[0m"
-vcs import --input https://raw.githubusercontent.com/ros2/ros2/$JAZZY_RELEASE_TAG/ros2.repos src
+# Define maximum number of retries
+max_retries=3
+# Start loop
+for ((i=1;i<=max_retries;i++)); do
+    # Try to import the repositories
+    vcs import --input https://raw.githubusercontent.com/ros2/ros2/$JAZZY_RELEASE_TAG/ros2.repos src
+    # Check if the command was successful
+    if [ $? -eq 0 ]; then
+        echo -e "\033[36m> Import successful\033[0m"
+        break
+    else
+        echo -e "\033[31mImport failed, retrying ($i/$max_retries)\033[0m"
+    fi
+    # If we've reached the max number of retries, exit the script
+    if [ $i -eq $max_retries ]; then
+        echo -e "\033[31mImport failed after $max_retries attempts, terminating script.\033[0m"
+        exit 1
+    fi
+    # Wait before retrying
+    sleep 5
+done
 # Run partially to generate compile output structure
 echo -e "\033[36m> Running colcon build packages-up-to cyclonedds\033[0m"
 echo -e "\033[36m  Only for generating compile output structure, not for actual building\033[0m"
@@ -321,4 +350,16 @@ colcon build \
 # Post Installation Configuration
 echo -e "\033[34m\n\n### [6/6] Post Installation Configuration\033[0m"
 printf '\033[34m%.0s=\033[0m' {1..56} && echo
+# ------------------------------------------------------------------------------
+# Download setenv save
+curl -o "$HOME/$ROS_INSTALL_ROOT/activate_ros" https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/setenv.sh
 
+# Print post messages
+echo -e "\033[32m\nDone.\033[0m"
+echo
+echo "To activate the new ROS2 distribution run the following command:"
+echo ". $HOME/$ROS_INSTALL_ROOT/activate_ros"
+echo
+echo "To deactivate this workspace, run:"
+echo "deactivate_ros"
+popd || exit
