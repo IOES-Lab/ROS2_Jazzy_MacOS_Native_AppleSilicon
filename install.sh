@@ -447,11 +447,16 @@ sed -i '' "s|VIRTUAL_ENV_ROOT|$VIRTUAL_ENV_ROOT|g" setenv.sh
 # Rename sentenv.sh to activate_ros
 if [ -f activate_ros ]; then
     rm activate_ros
-    mv setenv.sh activate_ros
 fi
+mv setenv.sh activate_ros
+
+# Activate it
+# shellcheck disable=SC1090
+. "$HOME/$ROS_INSTALL_ROOT"/activate_ros
 
 # Print post messages
 echo -e "\033[32m\nDone.🍎 (Apple Silicon) + 🤖 = 🚀❤️🤩🎉🥳  \033[0m"
+echo -e "\033[32m\nTry 'ros2' or 'rviz' in the terminal to start ROS2 Jazzy. \033[0m"
 echo
 echo "To activate the new ROS2 distribution run the following command:"
 echo -e "\033[32m. $HOME/$ROS_INSTALL_ROOT/activate_ros\033[0m"
