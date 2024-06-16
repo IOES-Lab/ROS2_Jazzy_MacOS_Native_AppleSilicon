@@ -326,7 +326,9 @@ done
 # Run partially to generate compile output structure
 echo -e "\033[36m> Running colcon build packages-up-to cyclonedds\033[0m"
 echo -e "\033[36m  Only for generating compile output structure, not for actual building\033[0m"
-colcon build --symlink-install  --cmake-args -DBUILD_TESTING=OFF -Wno-dev --packages-skip-by-dep python_qt_binding --packages-up-to cyclonedds
+colcon build --symlink-install  --cmake-args -DBUILD_TESTING=OFF -Wno-dev \
+             --packages-skip-by-dep python_qt_binding --packages-up-to cyclonedds \
+             --event-handlers console_cohesion+
 
 # ------------------------------------------------------------------------------
 # Patch files for Mac OS X Installation
@@ -405,16 +407,16 @@ printf '\033[34m%.0s=\033[0m' {1..78} && echo
 # ------------------------------------------------------------------------------
 # if ! colcon build --symlink-install --cmake-args -DBUILD_TESTING=OFF -Wno-dev --packages-skip-by-dep python_qt_binding;
 if ! python3.11 -m colcon build  --symlink-install \
- --packages-skip-by-dep python_qt_binding \
- --cmake-args \
- --no-warn-unused-cli \
- -DBUILD_TESTING=OFF \
- -DINSTALL_EXAMPLES=ON \
- -DCMAKE_BUILD_TYPE=Release \
- -DCMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
- -DCMAKE_OSX_ARCHITECTURES="arm64" \
- -DPython3_EXECUTABLE="$HOME/$VIRTUAL_ENV_ROOT/bin/python3" \
- -Wno-dev --event-handlers console_cohesion+ desktop_notification-;
+    --packages-skip-by-dep python_qt_binding \
+    --cmake-args \
+    --no-warn-unused-cli \
+    -DBUILD_TESTING=OFF \
+    -DINSTALL_EXAMPLES=ON \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
+    -DCMAKE_OSX_ARCHITECTURES="arm64" \
+    -DPython3_EXECUTABLE="$HOME/$VIRTUAL_ENV_ROOT/bin/python3" \
+    -Wno-dev --event-handlers console_cohesion+;
 then
     echo -e "\033[31mError: Build failed, aborting script.\033[0m"
     exit 1
