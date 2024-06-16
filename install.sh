@@ -414,7 +414,7 @@ if ! python3.11 -m colcon build  --symlink-install \
  -DCMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
  -DCMAKE_OSX_ARCHITECTURES="arm64" \
  -DPython3_EXECUTABLE="$HOME/$VIRTUAL_ENV_ROOT/bin/python3" \
- -Wno-dev;
+ -Wno-dev --event-handlers console_cohesion+ desktop_notification-;
 then
     echo -e "\033[31mError: Build failed, aborting script.\033[0m"
     exit 1
@@ -450,20 +450,18 @@ if [ -f activate_ros ]; then
 fi
 mv setenv.sh activate_ros
 
-# Activate it
-# shellcheck disable=SC1090
-. "$HOME/$ROS_INSTALL_ROOT"/activate_ros
-
 # Print post messages
-echo -e "\033[32m\nDone.🍎 (Apple Silicon) + 🤖 = 🚀❤️🤩🎉🥳  \033[0m"
-echo -e "\033[32m\nTry 'ros2' or 'rviz' in the terminal to start ROS2 Jazzy. \033[0m"
+printf '\033[32m%.0s=\033[0m' {1..78} && echo
+echo -e "\033[32mDone. Hurray! 🍎 (Apple Silicon) + 🤖 = 🚀❤️🤩🎉🥳 \033[0m"
 echo
 echo "To activate the new ROS2 distribution run the following command:"
-echo -e "\033[32m. $HOME/$ROS_INSTALL_ROOT/activate_ros\033[0m"
-echo
+echo -e "\033[32msource $HOME/$ROS_INSTALL_ROOT/activate_ros\033[0m"
+echo -e "\nThen, try '\033[32mros2 \033[0m' or '\033[32mrviz \033[0m' in the terminal to start ROS2 Jazzy."
+printf '\033[32m%.0s=\033[0m' {1..78} && echo
 echo "To make alias for fast start, run the following command to add to ~/.zprofile:"
-echo -e "\033[34mecho 'alias jazzy=\". $HOME/$ROS_INSTALL_ROOT/activate_ros\"' >> ~/.zprofile\033[0m"
-echo "Then, you can start ROS2 Jazzy by typing 'jazzy' in the terminal (new terminal)."
+echo -e "\033[34mecho 'alias jazzy=\"source $HOME/$ROS_INSTALL_ROOT/activate_ros\"' >> ~/.zprofile && source ~/.zprofile\033[0m"
+echo
+echo -e "Then, you can start ROS2 Jazzy by typing '\033[34mjazzy\033[0m' in the terminal (new terminal)."
 echo
 echo "To deactivate this workspace, run:"
 echo -e "\033[33mdeactivate\033[0m"
