@@ -1,20 +1,19 @@
-name: Build
+name: Build on macOS
+on: push
 
-on:
-    push:
-        branches: [ "main" ]
-    pull_request:
-        branches: [ "main" ]
-    workflow_dispatch:
+# Run locally with
+# brew install act
+# act -P macos-latest=-self-hosted
 
 jobs:
-    build:
-        # runs-on: macos-latest
-        runs-on: dockurr/macos
-        env:
-            VERSION: "ventura"
-        steps:
-            - uses: actions/checkout@v3
-            
-            - name: Run install script
-              run: yes | /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/install.sh)"
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Install GitHub CLI
+        run: |
+          brew update
+          brew install gh curl
+      - name: Run install script
+        run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/install.sh)" -- -a
