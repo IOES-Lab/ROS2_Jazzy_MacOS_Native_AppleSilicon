@@ -328,26 +328,34 @@ brew install asio assimp bison bullet cmake console_bridge cppcheck \
 echo -e "\033[36m\n> Removing unnecessary packages...ones that causes error, python@3.12, qt6\033[0m"
 if brew list --formula | grep -q "python@3.12"; then
     echo -e "\033[31m⚠️ WARNING: Python@3.12 installation is found. Currently this does not work with ros2 jazzy."
-    echo -e "💡 Do you want to remove it? (y/n)\033[0m"
-    read -r response
-    if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-        echo -e "\033[36m> Removing python@3.12 (with ignore-dependencies)...\033[0m"
-        brew uninstall --ignore-dependencies python@3.12
+    if [[ -z "$GITHUB_ACTIONS" ]]; then
+        echo -e "💡 Do you want to remove it? (y/n)\033[0m"
+        read -r response
+        if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+            echo -e "\033[36m> Removing python@3.12 (with ignore-dependencies)...\033[0m"
+            brew uninstall --ignore-dependencies python@3.12
+        else
+            echo -e "\033[31m> Aborting. Please manually correct your Python configuration.\033[0m"
+            exit 1
+        fi
     else
-        echo -e "\033[31m> Aborting. Please manually correct your Python configuration.\033[0m"
-        exit 1
+        brew uninstall --ignore-dependencies python@3.12
     fi
 fi
 if brew list --formula | grep -q "qt6"; then
     echo -e "\033[31m⚠️ WARNING: qt6 installation is found. Currently this does not work with ros2 jazzy."
-    echo -e "💡 Do you want to remove it? (y/n)\033[0m"
-    read -r response
-    if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-        echo -e "\033[36m> Removing qt6 (with ignore-dependencies)...\033[0m"
-        brew uninstall --ignore-dependencies qt6
+    if [[ -z "$GITHUB_ACTIONS" ]]; then
+        echo -e "💡 Do you want to remove it? (y/n)\033[0m"
+        read -r response
+        if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+            echo -e "\033[36m> Removing qt6 (with ignore-dependencies)...\033[0m"
+            brew uninstall --ignore-dependencies qt6
+        else
+            echo -e "\033[31m> Aborting. Please manually correct your Python configuration.\033[0m"
+            exit 1
+        fi
     else
-        echo -e "\033[31m> Aborting. Please manually correct your Python configuration.\033[0m"
-        exit 1
+        brew uninstall --ignore-dependencies qt6
     fi
 fi
 
