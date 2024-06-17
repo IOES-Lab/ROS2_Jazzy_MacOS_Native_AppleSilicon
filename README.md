@@ -1,4 +1,4 @@
-# Install ROS2 Jazzy natively on Apple Silicon Macbooks
+# Install ROS-Gazebo(Jazzy-Harmonic) Framework natively on Apple Silicon Macbooks
 
 ## One-liner installation code (🍎 (Apple Silicon) + 🤖 = 🚀❤️🤩🎉🥳)
 - Copy and paste it on terminal
@@ -8,9 +8,9 @@
 ```
 
 ## Introduction
-This is a source code behind oneline installation code to install ROS2 Jazzy on Apple Silicon Macbooks.
+This is a source code behind oneline installation code to install ROS2 Jazzy and Gazebo Harmonic on Apple Silicon Macbooks.
 
-Tested and desgined on macOS Sonomar 14.5 with Apple M3 chip (36 GB), it took about 15 mintues.
+Tested and desgined on macOS Sonomar 14.5 with Apple M3 chip (36 GB), it took about 15 mintues each for ROS2 Jazzy and Gazebo Harmonic
 
 The reasons we are installing ROS2 Jazzy on Apple Silicon Macbooks natively are:
 - Faster performance

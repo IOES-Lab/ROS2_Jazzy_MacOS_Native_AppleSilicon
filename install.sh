@@ -121,6 +121,7 @@ LATEST_COMMIT_HASH=$(curl -s "https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Nativ
 # Initiation
 # ------------------------------------------------------------------------------
 # Print welcome message
+echo "Running Installation script for ROS-Gazebo framework. ROS2 Jazzy first."
 echo -e "\033[32m"
 echo "▣-------------------------------------------------------------------------▣"
 echo "|  ______  ______  ______         __  ______  ______  ______  __  __      |"
