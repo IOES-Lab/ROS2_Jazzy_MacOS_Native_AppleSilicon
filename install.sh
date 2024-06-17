@@ -319,6 +319,12 @@ echo -e "If you see 'E' in the progress, it means the download failed (slow conn
 echo -e "If it takes too long, please check your network connection and try again. To cancel, Ctrl+C."
 echo -e "\033[33mSTART----------------------------------    DOWNLOADING...  ---------------------------------------------END\033[0m"
 
+# Reset git directories (git clean -d -f .) if they exist inside src directory
+if [ -d "src" ]; then
+    echo -e "\033[36m> Resetting git directories inside src...\033[0m"
+    find src -name ".git" -type d -execdir git reset --hard origin \;
+fi
+
 # Define maximum number of retries
 max_retries=3
 # Start loop

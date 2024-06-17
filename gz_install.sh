@@ -193,6 +193,11 @@ echo -e "If you see 'E' in the progress, it means the download failed (slow conn
 echo -e "If it takes too long, please check your network connection and try again. To cancel, Ctrl+C."
 echo -e "\033[33mSTART----------------------------------    DOWNLOADING...  ---------------------------------------------END\033[0m"
 
+# Reset git directories (git clean -d -f .) if they exist inside src directory
+if [ -d "src" ]; then
+    echo -e "\033[36m> Resetting git directories inside src...\033[0m"
+    find src -name ".git" -type d -execdir git reset --hard origin \;
+fi
 
 # Define maximum number of retries
 max_retries=3
@@ -229,8 +234,8 @@ printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # ------------------------------------------------------------------------------
 if ! python3.11 -m colcon build \
     --cmake-args -DBUILD_TESTING=OFF -DCMAKE_MACOSX_RPATH=FALSE \
-    -DCMAKE_INSTALL_NAME_DIR="$HOME/$GZ_INSTALL_ROOT/install/lib" \
-    --merge-install -Wno-dev --event-handlers console_cohesion+;
+    -DCMAKE_INSTALL_NAME_DIR="$HOME/$GZ_INSTALL_ROOT/install/lib -Wno-dev" \
+    --event-handlers console_cohesion+ --merge-install;
 then
     echo -e "\033[31mError: Build failed, aborting script.\033[0m"
     exit 1
