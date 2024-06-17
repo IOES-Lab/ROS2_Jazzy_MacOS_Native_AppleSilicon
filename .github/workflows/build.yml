@@ -11,9 +11,17 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
+
       - name: Install GitHub CLI
         run: |
           brew update
           brew install gh curl
+          
       - name: Run install script
         run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/install.sh)" -- -a
+
+      - name: Run Test (ROS2 Jazzy)
+        run: source ~/ros2_jazzy/activate_ros && cd ~/ros2_jazzy && colcon test-result --all --verbose
+      
+      - name: Run Test (Gazebo Harmonic)
+        run: source ~/ros2_jazzy/activate_ros && cd ~/gz_harmonic && colcon test-result --all --verbose
