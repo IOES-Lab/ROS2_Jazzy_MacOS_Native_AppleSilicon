@@ -140,7 +140,16 @@ pushd "$HOME/$GZ_INSTALL_ROOT" || {
 
 # Activate virtual environment of ROS2 Jazzy
 # shellcheck disable=SC1090
-source "$HOME/$VIRTUAL_ENV_ROOT/bin/activate"
+if [ -f "$HOME/$ROS_INSTALL_ROOT/config" ]; then
+    source "$HOME/$VIRTUAL_ENV_ROOT/bin/activate"
+else
+    echo -e "\033[31mError: Virtual Environment at $HOME/$VIRTUAL_ENV_ROOT doesn't exist."
+    echo -e "Please check ROS2 Jazzy installation\033[0m"
+    exit 1
+fi
+
+# Confirm message
+echo -e "\033[36m> Python Virtual Environment loaded\033[0m"
 
 # ------------------------------------------------------------------------------
 # Install Dendencies
@@ -170,13 +179,6 @@ brew install xquartz --cask
 
 # Confirm message
 echo -e "\033[36m\n\n> Packages installation with Brew completed.\033[0m"
-
-# Activate Python3.11 virtual environment
-# shellcheck disable=SC1091,SC1090
-source "$HOME/$VIRTUAL_ENV_ROOT"/bin/activate
-
-# Confirm message
-echo -e "\033[36m> Python Virtual Environment loaded\033[0m"
 
 # ------------------------------------------------------------------------------
 # Downloading Gazebo Harmonic Source Code
@@ -240,10 +242,9 @@ echo -e "\033[34m### [6/6] Post Installation Configuration\033[0m"
 printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # ------------------------------------------------------------------------------
 # save GZ_INSTALL_ROOT in a file
-if [ -f config ]; then
-    rm config
+if [ -f "$HOME/$ROS_INSTALL_ROOT/config" ]; then
+    echo "GZ_INSTALL_ROOT=$GZ_INSTALL_ROOT" >> "$HOME/$ROS_INSTALL_ROOT/config"
 fi
-echo "GZ_INSTALL_ROOT=$GZ_INSTALL_ROOT" > "$HOME/$ROS_INSTALL_ROOT/config"
 
 # Download sentenv.sh
 if [ -f setenv.sh ]; then
