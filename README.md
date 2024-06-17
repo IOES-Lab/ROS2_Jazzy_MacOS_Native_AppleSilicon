@@ -19,6 +19,11 @@ The reasons we are installing ROS2 Jazzy on Apple Silicon Macbooks natively are:
   - USB and other hardware drivers are not fully supported with Docker Desktop for Mac with HyperKit (for now)
   - To avoid any potential issues that may arise from using Rosetta 2
 
+## Notes
+- `eclipse-cyclonedds` is excluded from during the installation process
+  - It is not supported on Apple Silicon Macbooks (compile errors)
+  - Ref : https://ros.org/reps/rep-2000.html
+
 ## References: (None of below worked for me, so I made this script)
 - https://github.com/pfavr2/install_ros2_rolling_on_mac_m1
   - Much of the code design structure is referenced from this

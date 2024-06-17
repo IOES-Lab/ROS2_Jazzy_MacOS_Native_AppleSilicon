@@ -34,7 +34,7 @@ VIRTUAL_ENV_ROOT_DEFAULT=".ros2_venv" # you may change with option -v
 
 # Usage function
 usage() {
-    echo "Usage: [-d ROS_INSTALL_ROOT] [-t JAZZY_RELEASE_TAG]"
+    echo "Usage: [-d ROS_INSTALL_ROOT] [-t JAZZY_RELEASE_TAG] [-v VIRTUAL_ENV_ROOT] [-h]"
     echo "  -t    Set the Jazzy release tag (default: $JAZZY_RELEASE_TAG_DEFAULT)"
     echo "        (e.g., release-jazzy-20240523, you may find tag at https://github.com/ros2/ros2/tags"
     echo "  -d    Set the ROS installation root directory (default: $ROS_INSTALL_ROOT_DEFAULT)"
@@ -357,8 +357,17 @@ printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # ------------------------------------------------------------------------------
 # Apply patch for cyclonedds
 echo -e "\033[36m> Applying patch for cyclonedds...\033[0m"
+if [ -f install/iceoryx_binding_c/lib/libiceoryx_posh.dylib ]; then
+    rm install/iceoryx_binding_c/lib/libiceoryx_posh.dylib
+fi
 ln -s "../../iceoryx_posh/lib/libiceoryx_posh.dylib" install/iceoryx_binding_c/lib/libiceoryx_posh.dylib
+if [ -f install/iceoryx_binding_c/lib/libiceoryx_hoofs.dylib ]; then
+    rm install/iceoryx_binding_c/lib/libiceoryx_hoofs.dylib
+fi
 ln -s "../../iceoryx_hoofs/lib/libiceoryx_hoofs.dylib" install/iceoryx_binding_c/lib/libiceoryx_hoofs.dylib
+if [ -f install/iceoryx_binding_c/lib/libiceoryx_platform.dylib ]; then
+    rm install/iceoryx_binding_c/lib/libiceoryx_platform.dylib
+fi
 ln -s "../../iceoryx_hoofs/lib/libiceoryx_platform.dylib" install/iceoryx_binding_c/lib/libiceoryx_platform.dylib
 
 # Apply patch for setuptools installation
@@ -488,7 +497,7 @@ echo "To deactivate this workspace, run:"
 echo -e "\033[33mdeactivate\033[0m"
 
 # Ask if user wants to install Gazebo Harmonic too (gz_install.sh)
-echo -e "\n\033[33mDo you want to install Gazebo Harmonic too? (y/n)\033[0m"
+echo -e "\n\n\033[33mDo you want to install Gazebo Harmonic (LTS version that matches with ROS2 Jazzy) too? (y/n)\033[0m"
 read -r response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     echo -e "\033[36m> Installing Gazebo Harmonic...\033[0m"

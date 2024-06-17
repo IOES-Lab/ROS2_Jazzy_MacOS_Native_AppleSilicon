@@ -21,7 +21,7 @@ VIRTUAL_ENV_ROOT_DEFAULT=".ros2_venv" # you may change with option -v
 
 # Usage function
 usage() {
-    echo "Usage: [-r ROS_INSTALL_ROOT_DEFAULT] [-d GZ_INSTALL_ROOT_DEFAULT] [-v VIRTUAL_ENV_ROOT_DEFAULT]"
+    echo "Usage: [-r ROS_INSTALL_ROOT_DEFAULT] [-d GZ_INSTALL_ROOT_DEFAULT] [-v VIRTUAL_ENV_ROOT_DEFAULT] [-h]"
     echo "  -r    Set the ROS installation root directory (default: $ROS_INSTALL_ROOT_DEFAULT)"
     echo "  -d    Set the Python Virtual Environment directory (default: $GZ_INSTALL_ROOT_DEFAULT)"
     echo "  -v    Set the Python Virtual Environment directory (default: $VIRTUAL_ENV_ROOT_DEFAULT)"
@@ -69,16 +69,16 @@ LATEST_COMMIT_HASH=$(curl -s "https://api.github.com/repos/IOES-Lab/ROS2_Jazzy_M
 # Print welcome message
 echo -e "\033[32m"
 echo "▣-------------------------------------------------------------------------▣"
-echo "|  ______  ______  ______  ______  ______  ______    "
-echo "| /\  ___\/\  __ \/\___  \/\  ___\/\  == \/\  __ \   ";
-echo "| \ \ \__ \ \  __ \/_/  /_\ \  __\\ \  __<\ \ \/\ \  ";
-echo "|  \ \_____\ \_\ \_\/\_____\ \_____\ \_____\ \_____\ ";
-echo "|   \/_____/\/_/\/_/\/_____/\/_____/\/_____/\/_____/ ";
-echo "|   __  __  ______  ______  __    __  ______  __   __  __  ______    ";
-echo "|  /\ \_\ \/\  __ \/\  == \/\ \"-./  \/\  __ \/\ \"-.\ \/\ \/\  ___\   ";
-echo "|  \ \  __ \ \  __ \ \  __<\ \ \-./\ \ \ \/\ \ \ \-.\ \ \ \ \ \____  ";
-echo "|   \ \_\ \_\ \_\ \_\ \_\ \_\ \_\ \ \_\ \_____\ \_\\\"\_ \ \_\ \_____\ ";
-echo "|    \/_/\/_/\/_/\/_/\/_/ /_/\/_/  \/_/\/_____/\/_/ \/_/\/_/\/_____/ ";
+echo "|  ______  ______  ______  ______  ______  ______                         |"
+echo "| /\  ___\/\  __ \/\___  \/\  ___\/\  == \/\  __ \                        |"
+echo "| \ \ \__ \ \  __ \/_/  /_\ \  __\\ \  __< \ \ \/\ \                       |"
+echo "|  \ \_____\ \_\ \_\/\_____\ \_____\ \_____\ \_____\                      |"
+echo "|   \/_____/\/_/\/_/\/_____/\/_____/\/_____/\/_____/                      |"
+echo "|   __  __  ______  ______  __    __  ______  __   __  __  ______         |"
+echo "|  /\ \_\ \/\  __ \/\  == \/\ \"-./  \/\  __ \/\ \"-.\ \/\ \/\  ___\        |"
+echo "|  \ \  __ \ \  __ \ \  __<\ \ \-./\ \ \ \/\ \ \ \-.\ \ \ \ \ \____       |"
+echo "|   \ \_\ \_\ \_\ \_\ \_\ \_\ \_\ \ \_\ \_____\ \_\\\"\_ \ \_\ \_____\      |"
+echo "|    \/_/\/_/\/_/\/_/\/_/ /_/\/_/  \/_/\/_____/\/_/ \/_/\/_/\/_____/      |"
 echo "|                                                                         |"
 echo "| 👋 Welcome to the Instllation of Gazebo Harmonic on MacOS            🚧 |"
 echo "| 🍎 (Apple Silicon)+🤖 = 🚀❤️🤩🎉🥳                                       |"
@@ -220,8 +220,8 @@ printf '\n\n\033[34m'; printf '=%.0s' {1..75}; printf '\033[0m\n'
 echo -e "\033[34m### [5/6] Building Gazebo Harmonic (This may take about 10 minutes)\033[0m"
 printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # ------------------------------------------------------------------------------
-# if ! colcon build --symlink-install --cmake-args -DBUILD_TESTING=OFF -Wno-dev --packages-skip-by-dep python_qt_binding;
-if ! python3.11 -m colcon build --cmake-args -DBUILD_TESTING=OFF -DCMAKE_MACOSX_RPATH=FALSE \
+if ! python3.11 -m colcon build \
+    --cmake-args -DBUILD_TESTING=OFF -DCMAKE_MACOSX_RPATH=FALSE \
     -DCMAKE_INSTALL_NAME_DIR="$HOME/$GZ_INSTALL_ROOT/install/lib" \
     --merge-install -Wno-dev --event-handlers console_cohesion+;
 then
@@ -268,11 +268,15 @@ echo
 echo "To activate the new ROS2 Jazzy - Gazebo Harmonic framework, run the following command:"
 echo -e "\033[32msource $HOME/$ROS_INSTALL_ROOT/activate_ros\033[0m"
 echo -e "\nThen, try '\033[32mros2\033[0m' or '\033[32mrviz2\033[0m' in the terminal to start ROS2 Jazzy."
+echo -e "To test gazebo, run following command separately in two termianls (one for server(-s) and one for gui(-g))"
+echo -e "(Important!, both terminals should have \033[32msource $HOME/$ROS_INSTALL_ROOT/activate_ros\033[0m activated)"
+echo -e '\033[32m gz sim shapes.sdf -s \033[0m'
+echo -e '\033[32m gz sim -g \033[0m'
 printf '\033[32m%.0s=\033[0m' {1..75} && echo
 echo "To make alias for fast start, run the following command to add to ~/.zprofile:"
 echo -e "\033[34mecho 'alias jazzy=\"source $HOME/$ROS_INSTALL_ROOT/activate_ros\"' >> ~/.zprofile && source ~/.zprofile\033[0m"
 echo
-echo -e "Then, you can start ROS2 Jazzy by typing '\033[34mjazzy\033[0m' in the terminal (new terminal)."
+echo -e "Then, you can start ROS2 Jazzy - Gazebo Harmonic framework by typing '\033[34mjazzy\033[0m' in the terminal (new terminal)."
 echo
 echo "To deactivate this workspace, run:"
 echo -e "\033[33mdeactivate\033[0m"
