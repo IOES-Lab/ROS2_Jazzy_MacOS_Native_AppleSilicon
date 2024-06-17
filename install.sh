@@ -27,7 +27,7 @@
 ################################################################################
 JAZZY_RELEASE_TAG_DEFAULT="release-jazzy-20240523" # you may change with option -t
 ROS_INSTALL_ROOT_DEFAULT="ros2_jazzy" # you may change with option -d
-VIRTUAL_ENV_ROOT_DEFAULT="ros2_venv" # you may change with option -t
+VIRTUAL_ENV_ROOT_DEFAULT=".ros2_venv" # you may change with option -v
 # ------------------------------------------------------------------------------
 # Installation Configuration and Options
 # ------------------------------------------------------------------------------
@@ -80,11 +80,6 @@ LATEST_COMMIT_HASH=$(curl -s "https://api.github.com/repos/IOES-Lab/ROS2_Jazzy_M
 # ------------------------------------------------------------------------------
 # Initiation
 # ------------------------------------------------------------------------------
-# Clean init
-if typeset -f deactivate_ros > /dev/null; then
-  deactivate_ros
-fi
-
 # Print welcome message
 echo -e "\033[32m"
 echo "▣-------------------------------------------------------------------------▣"
@@ -491,4 +486,17 @@ echo -e "Then, you can start ROS2 Jazzy by typing '\033[34mjazzy\033[0m' in the 
 echo
 echo "To deactivate this workspace, run:"
 echo -e "\033[33mdeactivate\033[0m"
+
+# Ask if user wants to install Gazebo Harmonic too (gz_install.sh)
+echo -e "\n\033[33mDo you want to install Gazebo Harmonic too? (y/n)\033[0m"
+read -r response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+    echo -e "\033[36m> Installing Gazebo Harmonic...\033[0m"
+    curl -s -O https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/gz_install.sh
+    chmod +x gz_install.sh
+    # shellcheck disable=SC1090
+    source "$HOME/$ROS_INSTALL_ROOT/activate_ros"
+    ./gz_install.sh -r "$ROS_INSTALL_ROOT" -v "$VIRTUAL_ENV_ROOT"
+fi
+
 popd || exit

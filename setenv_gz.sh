@@ -8,9 +8,13 @@ source "$HOME/VIRTUAL_ENV_ROOT/bin/activate"
 if [[ $SHELL == *"bash"* ]]; then
     # shellcheck disable=SC1091
     source "$HOME/ROS_INSTALL_ROOT/install/setup.bash"
+    # shellcheck disable=SC1091
+    source "$HOME/ROS_INSTALL_ROOT/GZ_INSTALL_ROOT/install/setup.bash"
 elif [[ $SHELL == *"zsh"* ]]; then
     # shellcheck disable=SC1091
     source "$HOME/ROS_INSTALL_ROOT/install/setup.zsh"
+    # shellcheck disable=SC1091
+    source "$HOME/ROS_INSTALL_ROOT/GZ_INSTALL_ROOT/install/setup.zsh"
 else
     echo "Unsupported shell. Please use bash or zsh."
     exit 1
