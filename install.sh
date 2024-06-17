@@ -71,11 +71,11 @@ ROS_INSTALL_ROOT=${ROS_INSTALL_ROOT:-$ROS_INSTALL_ROOT_DEFAULT}
 VIRTUAL_ENV_ROOT=${VIRTUAL_ENV_ROOT:-$VIRTUAL_ENV_ROOT_DEFAULT}
 
 # Get Current Version hash
-LATEST_COMMIT_HASH=$(curl -s "https://api.github.com/repos/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/commits/main" | \
-    grep '"sha":' | \
-    head -n 1 | \
-    awk -F '"' '{print $4}' | \
-    cut -c1-7)
+LATEST_COMMIT_HASH=$(curl -s "https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/commits/main" | \
+        grep -o 'commit/[0-9a-f]*' | \
+        head -n 1 | \
+        cut -d'/' -f2 | \
+        cut -c1-7)
 
 # ------------------------------------------------------------------------------
 # Initiation
