@@ -474,7 +474,7 @@ echo -e "\033[32mDone. Hurray! 🍎 (Apple Silicon) + 🤖 = 🚀❤️🤩🎉�
 echo
 echo "To activate the new ROS2 distribution run the following command:"
 echo -e "\033[32msource $HOME/$ROS_INSTALL_ROOT/activate_ros\033[0m"
-echo -e "\nThen, try '\033[32mros2 \033[0m' or '\033[32mrviz \033[0m' in the terminal to start ROS2 Jazzy."
+echo -e "\nThen, try '\033[32mros2\033[0m' or '\033[32mrviz2\033[0m' in the terminal to start ROS2 Jazzy."
 printf '\033[32m%.0s=\033[0m' {1..75} && echo
 echo "To make alias for fast start, run the following command to add to ~/.zprofile:"
 echo -e "\033[34mecho 'alias jazzy=\"source $HOME/$ROS_INSTALL_ROOT/activate_ros\"' >> ~/.zprofile && source ~/.zprofile\033[0m"
