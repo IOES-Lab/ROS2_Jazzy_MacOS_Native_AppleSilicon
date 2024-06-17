@@ -319,19 +319,19 @@ echo -e "If you see 'E' in the progress, it means the download failed (slow conn
 echo -e "If it takes too long, please check your network connection and try again. To cancel, Ctrl+C."
 echo -e "\033[33mSTART----------------------------------    DOWNLOADING...  ---------------------------------------------END\033[0m"
 
-
 # Define maximum number of retries
 max_retries=3
 # Start loop
 for ((i=1;i<=max_retries;i++)); do
     # Try to import the repositories
-    if vcs import --shallow --retry 0 \
+    if vcs import --force --shallow --retry 0 \
         --input https://raw.githubusercontent.com/ros2/ros2/$JAZZY_RELEASE_TAG/ros2.repos src;
         then
         echo -e "\033[36m\n>ROS2 Jazzy Source Code Import Successful\033[0m"
         break
     else
         echo -e "\033[31m\nROS2 Jazzy Source Code Import failed, retrying ($i/$max_retries)\033[0m"
+        echo -e "\033[33mSTART----------------------------------    DOWNLOADING...  ---------------------------------------------END\033[0m"
     fi
     # If we've reached the max number of retries, exit the script
     if [ $i -eq $max_retries ]; then
