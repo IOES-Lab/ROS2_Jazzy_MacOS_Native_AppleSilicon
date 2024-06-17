@@ -79,24 +79,40 @@ if typeset -f deactivate_ros > /dev/null; then
 fi
 
 # Print welcome message
-echo -e "\033[32m\n"
-echo "----------------------------------------------------------------------------"
-echo "| 👋 Welcome to the MacOS (Apple Silicon) Native Install of ROS2 Jazzy  🚧 |"
-echo "| 🍎 (Apple Silicon) + 🤖 = 🚀❤️🤩🎉🥳                    by Choi Woen-Sug  |"
-echo "----------------------------------------------------------------------------"
-echo -e Target Jazzy Release Version  : "\033[94m$JAZZY_RELEASE_TAG\033[0m"
-echo -e Target Installation Directory: "\033[94m$HOME/$ROS_INSTALL_ROOT\033[0m"
-echo -e Virtual Environment Directory: "\033[94m$HOME/$VIRTUAL_ENV_ROOT\033[0m"
+echo -e "\033[32m"
+echo "▣-------------------------------------------------------------------------▣"
+echo "|  ______  ______  ______         __  ______  ______  ______  __  __      |"
+echo "| /\  == \/\  __ \/\  ___\       /\ \/\  __ \/\___  \/\___  \/\ \_\ \     |"
+echo "| \ \  __<\ \ \/\ \ \___  \     _\_\ \ \  __ \/_/  /_\/_/  /_\ \____ \    |"
+echo "|  \ \_\ \_\ \_____\/\_____\   /\_____\ \_\ \_\/\_____\/\_____\/\_____\   |"
+echo "|   \/_/ /_/\/_____/\/_____/   \/_____/\/_/\/_/\/_____/\/_____/\/_____/   |"
+echo "|  ______  ______ ______ __      ______       __    __  ______  ______    |"
+echo "| /\  __ \/\  == /\  == /\ \    /\  ___\     /\ \-./\ \/\  __ \/\  ___\   |"
+echo "| \ \  __ \ \  _-\ \  _-\ \ \___\ \  __\     \ \ \-./\ \ \  __ \ \ \____  |"
+echo "|  \ \_\ \_\ \_\  \ \_\  \ \_____\ \_____\    \ \_\ \ \_\ \_\ \_\ \_____\ |"
+echo "|   \/_/\/_/\/_/   \/_/   \/_____/\/_____/     \/_/  \/_/\/_/\/_/\/_____/ |"
+echo "|                                                                         |"
+echo "| 👋 Welcome to the Instllation of ROS2 Jazzy on MacOS(Apple Silicon)  🚧 |"
+echo "| 🍎 (Apple Silicon)+🤖 = 🚀❤️🤩🎉🥳                                       |"
+echo "|                                                                         |"
+echo "|  First created at 2024.6.15       by Choi Woen-Sug(Github:woensug-choi) |"
+echo "▣-------------------------------------------------------------------------▣"
+echo -e "| Target Jazzy Release Version  :" "\033[94m$JAZZY_RELEASE_TAG\033[0m"
+echo -e "\033[32m|\033[0m Target Installation Directory:" "\033[94m$HOME/$ROS_INSTALL_ROOT\033[0m"
+echo -e "\033[32m|\033[0m Virtual Environment Directory:" "\033[94m$HOME/$VIRTUAL_ENV_ROOT\033[0m"
+echo -e "\033[32m▣-------------------------------------------------------------------------▣\033[0m"
+echo -e To change targets use options "-t (tag), -d (install dir), -v (virtual dir)"
+echo -e For descriptions, use -h at the end of oneliner "(e.g. \033[33m...install.sh)\"\033[0m" "\033[94m-- -h\033[0m"
 echo -e "\033[0m"
 echo -e "Source code at: "
-echo -e "https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/install.sh\n\n"
+echo -e "https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/install.sh\n"
 echo -e "\033[33mWARNING: The FAN WILL BURST out and make macbook to take off. Be warned!\033[0m"
 echo -e "\033[33m         To terminate at any process, press Ctrl+C.\033[0m"
 # ------------------------------------------------------------------------------
 # Check System
-printf '\n\n\033[34m'; printf '=%.0s' {1..78}; printf '\033[0m\n'
+printf '\n\033[34m'; printf '=%.0s' {1..75}; printf '\033[0m\n'
 echo -e "\033[34m### [1/6] Checking System Requirements\033[0m"
-printf '\033[34m%.0s=\033[0m' {1..78} && echo
+printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # ------------------------------------------------------------------------------
 echo -e "Checking System Requirements..."
 # Check XCode installation"
@@ -205,9 +221,9 @@ pushd "$HOME/$ROS_INSTALL_ROOT" || {
 
 # ------------------------------------------------------------------------------
 # Install Dendencies
-printf '\n\n\033[34m'; printf '=%.0s' {1..78}; printf '\033[0m\n'
+printf '\n\n\033[34m'; printf '=%.0s' {1..75}; printf '\033[0m\n'
 echo -e "\033[34m### [2/6] Installing Dependencies with Brew and PIP\033[0m"
-printf '\033[34m%.0s=\033[0m' {1..78} && echo
+printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # ------------------------------------------------------------------------------
 # Installing ros2 dependencies with brew
 echo -e "\033[36m> Installing ROS2 dependencies with Brew...\033[0m"
@@ -289,9 +305,9 @@ echo -e "\033[36m> Packages installation with PIP completed.\033[0m"
 
 # ------------------------------------------------------------------------------
 # Downloading ROS2 Jazzy Source Code
-printf '\n\n\033[34m'; printf '=%.0s' {1..78}; printf '\033[0m\n'
+printf '\n\n\033[34m'; printf '=%.0s' {1..75}; printf '\033[0m\n'
 echo -e "\033[34m### [3/6] Downloading ROS2 Jazzy Source Code\033[0m"
-printf '\033[34m%.0s=\033[0m' {1..78} && echo
+printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # ------------------------------------------------------------------------------
 # Get ROS2 Jazzy Source Code (Jazzy-Release Version of $JAZZY_RELEASE_TAG)
 echo -e "\033[36m> Getting ROS2 Jazzy Source Code (Jazzy-Release tag of $JAZZY_RELEASE_TAG)...\033[0m"
@@ -332,9 +348,9 @@ colcon build --symlink-install  --cmake-args -DBUILD_TESTING=OFF -Wno-dev \
 
 # ------------------------------------------------------------------------------
 # Patch files for Mac OS X Installation
-printf '\n\n\033[34m'; printf '=%.0s' {1..78}; printf '\033[0m\n'
+printf '\n\n\033[34m'; printf '=%.0s' {1..75}; printf '\033[0m\n'
 echo -e "\033[34m### [4/6] Patching files for Mac OS X (Apple Silicon) Installation\033[0m"
-printf '\033[34m%.0s=\033[0m' {1..78} && echo
+printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # ------------------------------------------------------------------------------
 # Apply patch for cyclonedds
 echo -e "\033[36m> Applying patch for cyclonedds...\033[0m"
@@ -401,9 +417,9 @@ fi
 
 # ------------------------------------------------------------------------------
 # Building ROS2 Jazzy
-printf '\n\n\033[34m'; printf '=%.0s' {1..78}; printf '\033[0m\n'
+printf '\n\n\033[34m'; printf '=%.0s' {1..75}; printf '\033[0m\n'
 echo -e "\033[34m### [5/6] Building ROS2 Jazzy (This may take about 15 minutes)\033[0m"
-printf '\033[34m%.0s=\033[0m' {1..78} && echo
+printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # ------------------------------------------------------------------------------
 # if ! colcon build --symlink-install --cmake-args -DBUILD_TESTING=OFF -Wno-dev --packages-skip-by-dep python_qt_binding;
 if ! python3.11 -m colcon build  --symlink-install \
@@ -424,9 +440,9 @@ fi
 
 # ------------------------------------------------------------------------------
 # Post Installation Configuration
-printf '\n\n\033[34m'; printf '=%.0s' {1..78}; printf '\033[0m\n'
+printf '\n\n\033[34m'; printf '=%.0s' {1..75}; printf '\033[0m\n'
 echo -e "\033[34m### [6/6] Post Installation Configuration\033[0m"
-printf '\033[34m%.0s=\033[0m' {1..78} && echo
+printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # ------------------------------------------------------------------------------
 # save JAZZY_RELEASE_TAG, VIRTUAL_ENV_ROOT, VIRTUAL_ENV_ROOT in a file
 if [ -f config ]; then
@@ -453,13 +469,13 @@ fi
 mv setenv.sh activate_ros
 
 # Print post messages
-printf '\033[32m%.0s=\033[0m' {1..78} && echo
+printf '\033[32m%.0s=\033[0m' {1..75} && echo
 echo -e "\033[32mDone. Hurray! 🍎 (Apple Silicon) + 🤖 = 🚀❤️🤩🎉🥳 \033[0m"
 echo
 echo "To activate the new ROS2 distribution run the following command:"
 echo -e "\033[32msource $HOME/$ROS_INSTALL_ROOT/activate_ros\033[0m"
 echo -e "\nThen, try '\033[32mros2 \033[0m' or '\033[32mrviz \033[0m' in the terminal to start ROS2 Jazzy."
-printf '\033[32m%.0s=\033[0m' {1..78} && echo
+printf '\033[32m%.0s=\033[0m' {1..75} && echo
 echo "To make alias for fast start, run the following command to add to ~/.zprofile:"
 echo -e "\033[34mecho 'alias jazzy=\"source $HOME/$ROS_INSTALL_ROOT/activate_ros\"' >> ~/.zprofile && source ~/.zprofile\033[0m"
 echo
