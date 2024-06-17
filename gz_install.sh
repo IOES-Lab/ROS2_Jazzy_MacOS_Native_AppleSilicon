@@ -193,7 +193,7 @@ if [ -d "src" ]; then
 fi
 
 # Get Gazebo Harmonic  Source Code
-echo -e "\033[36m> Getting Gazebo Harmonic Code...\033[0m"
+echo -e "\033[36m\n> Getting Gazebo Harmonic Code...\033[0m"
 echo -e "As long as the spinner at of the terminal is running, it is downloading the source code. It does take long."
 echo -e "If you see 'E' in the progress, it means the download failed (slow connection does this), it will try again."
 echo -e "If it takes too long, please check your network connection and try again. To cancel, Ctrl+C."
@@ -207,7 +207,7 @@ for ((i=1;i<=max_retries;i++)); do
     if vcs import --force --shallow --retry 0 \
         --input https://raw.githubusercontent.com/gazebo-tooling/gazebodistro/master/collection-harmonic.yaml src;
         then
-        echo -e "\033[36m\n>Gazebo Harmonic Code Import Successful\033[0m"
+        echo -e "\033[36m\n> Gazebo Harmonic Code Import Successful\033[0m"
         break
     else
         echo -e "\033[31m\nGazebo Harmonic Source Code Import failed, retrying ($i/$max_retries)\033[0m"
