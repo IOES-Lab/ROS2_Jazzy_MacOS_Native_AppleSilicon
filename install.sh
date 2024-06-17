@@ -44,7 +44,7 @@ usage() {
 }
 
 # Parse command-line arguments
-while getopts "d:t:h:v:u" opt; do
+while getopts "d:t:h:v:au" opt; do
     case ${opt} in
         d)
             ROS_INSTALL_ROOT=$OPTARG
@@ -57,6 +57,9 @@ while getopts "d:t:h:v:u" opt; do
             ;;
         h)
             usage
+            ;;
+        a)
+            GITHUB_ACTIONS=true
             ;;
         u)
             # Check flag variable to uninstall later
@@ -154,8 +157,44 @@ echo -e "https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/instal
 echo -e "\033[33m⚠️ WARNING: The FAN WILL BURST out and make macbook to take off. Be warned!\033[0m"
 echo -e "\033[33m         To terminate at any process, press Ctrl+C.\033[0m"
 
-# Type yes to continue
-read -p $'\033[96m\n💡 Do you want to continue? [y/n]: \033[0m' -n 1 -r response
+# Check if the script is running in a GitHub Actions workflow
+if [[ -z "$GITHUB_ACTIONS" ]]; then
+    # Type yes to continue if not auto type
+    echo -e '\033[96m\n💡 Do you want to continue? [y/n]: \033[0m'
+    # Start a background process for the countdown and automatic response
+    (
+        # Show a countdown for 10 seconds
+        for i in {10..1}
+        do
+            # shellcheck disable=SC2059
+            printf "\r   Continuing in $i seconds..."
+            sleep 1
+        done
+
+        # Clear the line
+        printf "\r"
+
+        # Send 'y'
+        echo 'y' 
+    ) &
+
+    # Save the PID of the background process and disown it
+    bg_pid=$!
+    disown $bg_pid
+
+    # Read the user's response in the foreground
+    read -n 1 -r response
+
+    # If the user responded, kill the background process
+    if [[ -n "$response" ]]; then
+        kill "$bg_pid" >/dev/null 2>&1
+    fi
+else
+    # If running in a GitHub Actions workflow, automatically set the response to 'y'
+    response='y'
+fi
+
+# Check the response
 if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     echo -e "\033[31m\nInstallation aborted.\033[0m"
     exit 1
@@ -560,8 +599,49 @@ echo "To deactivate this workspace, run:"
 echo -e "\033[33mdeactivate\033[0m"
 
 # Ask if user wants to install Gazebo Harmonic too (gz_install.sh)
-echo -e "\n\n\033[32mGazebo Harmonic is simulator that is LTS pair with ROS2 Jazzy (y/n)\033[0m"
-read -p $'\033[96m\n💡 Do you want to install Gazebo Harmonic too? [y/n]: \033[0m' -n 1 -r response
+echo -e "\n\n\033[32mGazebo Harmonic is simulator that is LTS pair with ROS2 Jazzy\033[0m"
+# Type yes to continue or auto continue
+if [[ -z "$GITHUB_ACTIONS" ]]; then
+    echo -e '\033[96m\n💡 Do you want to install Gazebo Harmonic too? [y/n]: \033[0m'
+    # Start a background process for the countdown and automatic response
+    (
+        # Show a countdown for 10 seconds
+        for i in {10..1}
+        do
+            # shellcheck disable=SC2059
+            printf "\r   Continuing in $i seconds..."
+            sleep 1
+        done
+
+        # Clear the line
+        printf "\r"
+
+        # Send 'y'
+        echo 'y' 
+    ) &
+
+    # Save the PID of the background process and disown it
+    bg_pid=$!
+    disown $bg_pid
+
+    # Read the user's response in the foreground
+    read -n 1 -r response
+
+    # If the user responded, kill the background process
+    if [[ -n "$response" ]]; then
+        kill "$bg_pid" >/dev/null 2>&1
+    fi
+else
+    # If running in a GitHub Actions workflow, automatically set the response to 'y'
+    response='y'
+fi
+
+# Check the response
+if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+    echo -e "\033[31m\nInstallation aborted.\033[0m"
+    exit 1
+fi
+
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     echo -e "\033[36m> Installing Gazebo Harmonic...\033[0m"
     # shellcheck disable=SC2086
