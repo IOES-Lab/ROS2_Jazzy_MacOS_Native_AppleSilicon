@@ -13,7 +13,7 @@
 # chmod +x gz_install.sh
 ################################################################################
 ROS_INSTALL_ROOT_DEFAULT="ros2_jazzy" # you may change with option -r
-GZ_INSTALL_ROOT_DEFAULT="gz-harmonic" # you may change with option -d
+GZ_INSTALL_ROOT_DEFAULT="gz_harmonic" # you may change with option -d
 VIRTUAL_ENV_ROOT_DEFAULT=".ros2_venv" # you may change with option -v
 # ------------------------------------------------------------------------------
 # Installation Configuration and Options
@@ -32,10 +32,10 @@ usage() {
 while getopts "d:r:h:v:" opt; do
     case ${opt} in
         d)
-            ROS_INSTALL_ROOT=$OPTARG
+            GZ_INSTALL_ROOT=$OPTARG
             ;;
         r)
-            GZ_INSTALL_ROOT=$OPTARG
+            ROS_INSTALL_ROOT=$OPTARG
             ;;
         v)
             VIRTUAL_ENV_ROOT=$OPTARG

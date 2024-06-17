@@ -503,7 +503,7 @@ read -r response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     echo -e "\033[36m> Installing Gazebo Harmonic...\033[0m"
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/gz_install.sh)" \
-        -- -r "ros2_jazzy" -v ".ros2_jazzy"
+        -- -r "$ROS_INSTALL_ROOT" -v "$VIRTUAL_ENV_ROOT"
 fi
 
 popd || exit
