@@ -104,7 +104,8 @@ if [ -n "$UNINSTALL_FLAG" ]; then
             fi
         fi
     else
-        echo -e "\033[31mError: Configuration file not found at $HOME/$ROS_INSTALL_ROOT/config\033[0m"
+        echo -e "\033[31m❌ Error: Configuration file not found at $HOME/$ROS_INSTALL_ROOT/config\033[0m"
+        echo -e "it seems that the installation is not found. Please check the installation directory.\n"
         exit 1
     fi
     exit 0
@@ -145,7 +146,8 @@ echo -e "\033[32m|\033[0m Target Installation Directory  :" "\033[94m$HOME/$ROS_
 echo -e "\033[32m|\033[0m Virtual Environment Directory  :" "\033[94m$HOME/$VIRTUAL_ENV_ROOT\033[0m"
 echo -e "\033[32m▣-------------------------------------------------------------------------▣\033[0m"
 echo -e To change targets use options "-t (tag), -d (install dir), -v (virtual dir)"
-echo -e For descriptions, use -h at the end of oneliner "(e.g. \033[33m...install.sh)\"\033[0m" "\033[94m-- -h\033[0m"
+echo -e For descriptions, and more options, use -h at the end of oneliner
+echo -e "e.g. \033[33m/bin/bash -c '\$(curl -fsSL https://raw. ...install.sh)\"\033[0m" "\033[94m-- -h\033[0m"
 echo -e "\033[0m"
 echo -e "Source code at: "
 echo -e "https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/install.sh\n"
@@ -153,17 +155,16 @@ echo -e "\033[33m⚠️ WARNING: The FAN WILL BURST out and make macbook to take
 echo -e "\033[33m         To terminate at any process, press Ctrl+C.\033[0m"
 
 # Type yes to continue
-echo -e "\033[96m\n💡 Do you want to continue? [y/n]\033[0m"
-read -r response
+read -p $'\033[96m\n💡 Do you want to continue? [y/n]: \033[0m' -n 1 -r response
 if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-    echo -e "\033[31mInstallation aborted.\033[0m"
+    echo -e "\033[31m\nInstallation aborted.\033[0m"
     exit 1
 fi
 
 
 # ------------------------------------------------------------------------------
 # Check System
-printf '\n\033[34m'; printf '=%.0s' {1..75}; printf '\033[0m\n'
+printf '\n\n\033[34m'; printf '=%.0s' {1..75}; printf '\033[0m\n'
 echo -e "\033[34m### [1/6] Checking System Requirements\033[0m"
 printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # ------------------------------------------------------------------------------
@@ -323,11 +324,11 @@ export PATH=$PATH:${PATH_TO_QT5}/bin
 export COLCON_EXTENSION_BLOCKLIST=colcon_core.event_handler.desktop_notification
 
 # Confirm message
-echo -e "\033[36m\n\n> Packages installation with Brew completed.\033[0m"
+echo -e "\033[36m\n> Packages installation with Brew completed.\033[0m"
 
 # Check Python3.11 installation
 if ! python3.11 --version > /dev/null 2>&1; then
-    echo -e "\033[31mError: Python3.11 installation failed. Please check the installation.\033[0m"
+    echo -e "\033[31m❌ Error: Python3.11 installation failed. Please check the installation.\033[0m"
     exit 1
 fi
 # Generate Python3.11 virtual environment
@@ -367,7 +368,7 @@ printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # Reset git directories (git clean -d -f .) if they exist inside src directory
 if [ -d "src" ]; then
     echo -e "\033[36m> Resetting git directories inside src...\033[0m"
-    find src -name ".git" -type d -execdir git reset --hard origin \;
+    find src -name ".git" -type d -execdir bash -c 'if [ -d ".git" ]; then git clean -d -f .; fi' \;
 fi
 
 # Get ROS2 Jazzy Source Code (Jazzy-Release Version of $JAZZY_RELEASE_TAG)
@@ -403,9 +404,12 @@ done
 # Run partially to generate compile output structure
 echo -e "\033[36m> Running colcon build packages-up-to cyclonedds\033[0m"
 echo -e "\033[36m  Only for generating compile output structure, not for actual building\033[0m"
-colcon build --symlink-install  --cmake-args -DBUILD_TESTING=OFF -Wno-dev \
+python3 -m colcon build --symlink-install --cmake-args -DBUILD_TESTING=OFF -Wno-dev \
+             -Wno-sign-conversion -Wno-infinite-recursion \
              --packages-skip-by-dep python_qt_binding --packages-up-to cyclonedds \
              --event-handlers console_cohesion+
+# Confirm message
+echo -e "\033[36m> ROS2 Jazzy Source Code Download and Preparation Completed.\033[0m"
 
 # ------------------------------------------------------------------------------
 # Patch files for Mac OS X Installation
@@ -503,8 +507,8 @@ if ! python3.11 -m colcon build  --symlink-install \
     -DCMAKE_OSX_ARCHITECTURES="arm64" \
     -DPython3_EXECUTABLE="$HOME/$VIRTUAL_ENV_ROOT/bin/python3" \
     -Wno-dev --event-handlers console_cohesion+;
-then
-    echo -e "\033[31mError: Build failed, aborting script.\033[0m"
+    then
+    echo -e "\033[31m❌ Error: Build failed, aborting script.\033[0m"
     exit 1
 fi
 
@@ -557,8 +561,7 @@ echo -e "\033[33mdeactivate\033[0m"
 
 # Ask if user wants to install Gazebo Harmonic too (gz_install.sh)
 echo -e "\n\n\033[32mGazebo Harmonic is simulator that is LTS pair with ROS2 Jazzy (y/n)\033[0m"
-echo -e "💡 Do you want to install Gazebo Harmonic too? (y/n)"
-read -r response
+read -p $'\033[96m\n💡 Do you want to install Gazebo Harmonic too? [y/n]: \033[0m' -n 1 -r response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     echo -e "\033[36m> Installing Gazebo Harmonic...\033[0m"
     # shellcheck disable=SC2086

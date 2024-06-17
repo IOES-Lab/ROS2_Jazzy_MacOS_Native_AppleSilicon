@@ -197,7 +197,7 @@ printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # Reset git directories (git clean -d -f .) if they exist inside src directory
 if [ -d "src" ]; then
     echo -e "\033[36m> Resetting git directories inside src...\033[0m"
-    find src -name ".git" -type d -execdir git reset --hard origin \;
+    find src -name ".git" -type d -execdir bash -c 'if [ -d ".git" ]; then git clean -d -f .; fi' \;
 fi
 
 # Get Gazebo Harmonic  Source Code
@@ -237,7 +237,7 @@ brew unlink qt && brew link qt@5
 # ------------------------------------------------------------------------------
 # Building Gazebo Harmonic
 printf '\n\n\033[34m'; printf '=%.0s' {1..75}; printf '\033[0m\n'
-echo -e "\033[34m### [5/6] Building Gazebo Harmonic (This may take about 10 minutes)\033[0m"
+echo -e "\033[34m### [5/6] Building Gazebo Harmonic (This may take about 15 minutes)\033[0m"
 printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # ------------------------------------------------------------------------------
 if ! python3.11 -m colcon build \
@@ -255,7 +255,7 @@ printf '\n\n\033[34m'; printf '=%.0s' {1..75}; printf '\033[0m\n'
 echo -e "\033[34m### [6/6] Post Installation Configuration\033[0m"
 printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # ------------------------------------------------------------------------------
-# Fix home directory permission
+# Fix home directory permission (hope this is safe)
 chmod o-w "$HOME"
 
 # Remove empty gui.config (set to default if already exists)
@@ -303,10 +303,10 @@ printf '\033[32m%.0s=\033[0m' {1..75} && echo
 echo "To make alias for fast start, run the following command to add to ~/.zprofile:"
 echo -e "\033[34mecho 'alias ros=\"source $HOME/$ROS_INSTALL_ROOT/activate_ros\"' >> ~/.zprofile && source ~/.zprofile\033[0m"
 echo
-echo -e "Then, you can start ROS2 Jazzy - Gazebo Harmonic framework by typing '\033[ros\033[0m' in the terminal (new terminal)."
+echo -e "Then, you can start ROS2 Jazzy - Gazebo Harmonic framework by typing '\033[34mros\033[0m' in the terminal (new terminal)."
 echo -e "You may change the alias name to your preference in above alias command."
 echo
 echo "To deactivate this workspace, run:"
-echo -e "\033[33mdeactivate\033[0m"
+echo -e "\033[33mdeactivate\n\n\033[0m"
 
-popd || exit
+# popd || exit
