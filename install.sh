@@ -461,8 +461,8 @@ if [ -f config ]; then
     rm config
 fi
 echo "JAZZY_RELEASE_TAG=$JAZZY_RELEASE_TAG" > "$HOME/$ROS_INSTALL_ROOT/config"
-echo "VIRTUAL_ENV_ROOT=$VIRTUAL_ENV_ROOT" > "$HOME/$ROS_INSTALL_ROOT/config"
-echo "ROS_INSTALL_ROOT=$ROS_INSTALL_ROOT" > "$HOME/$ROS_INSTALL_ROOT/config"
+echo "VIRTUAL_ENV_ROOT=$VIRTUAL_ENV_ROOT" >> "$HOME/$ROS_INSTALL_ROOT/config"
+echo "ROS_INSTALL_ROOT=$ROS_INSTALL_ROOT" >> "$HOME/$ROS_INSTALL_ROOT/config"
 
 # Download sentenv.sh
 if [ -f setenv.sh ]; then
@@ -498,12 +498,13 @@ echo -e "\033[33mdeactivate\033[0m"
 
 # Ask if user wants to install Gazebo Harmonic too (gz_install.sh)
 echo -e "\n\n\033[32mGazebo Harmonic is simulator that is LTS pair with ROS2 Jazzy (y/n)\033[0m"
-echo -e "\n\n\033[33mDo you want to install Gazebo Harmonic too? (y/n)\033[0m"
+echo -e "Do you want to install Gazebo Harmonic too? (y/n)"
 read -r response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     echo -e "\033[36m> Installing Gazebo Harmonic...\033[0m"
+    # shellcheck disable=SC2086
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/gz_install.sh)" \
-        -- -r "$ROS_INSTALL_ROOT" -v "$VIRTUAL_ENV_ROOT"
+        -- -r $ROS_INSTALL_ROOT -v $VIRTUAL_ENV_ROOT
 fi
 
 popd || exit
