@@ -495,9 +495,10 @@ echo -e "\033[32msource $HOME/$ROS_INSTALL_ROOT/activate_ros\033[0m"
 echo -e "\nThen, try '\033[32mros2\033[0m' or '\033[32mrviz2\033[0m' in the terminal to start ROS2 Jazzy."
 printf '\033[32m%.0s=\033[0m' {1..75} && echo
 echo "To make alias for fast start, run the following command to add to ~/.zprofile:"
-echo -e "\033[34mecho 'alias jazzy=\"source $HOME/$ROS_INSTALL_ROOT/activate_ros\"' >> ~/.zprofile && source ~/.zprofile\033[0m"
+echo -e "\033[34mecho 'alias ros=\"source $HOME/$ROS_INSTALL_ROOT/activate_ros\"' >> ~/.zprofile && source ~/.zprofile\033[0m"
 echo
-echo -e "Then, you can start ROS2 Jazzy by typing '\033[34mjazzy\033[0m' in the terminal (new terminal)."
+echo -e "Then, you can start ROS2 Jazzy by typing '\033[34mros\033[0m' in the terminal (new terminal)."
+echo -e "You may change the alias name to your preference in above alias command."
 echo
 echo "To deactivate this workspace, run:"
 echo -e "\033[33mdeactivate\033[0m"
