@@ -312,18 +312,18 @@ printf '\n\n\033[34m'; printf '=%.0s' {1..75}; printf '\033[0m\n'
 echo -e "\033[34m### [3/6] Downloading ROS2 Jazzy Source Code\033[0m"
 printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # ------------------------------------------------------------------------------
+# Reset git directories (git clean -d -f .) if they exist inside src directory
+if [ -d "src" ]; then
+    echo -e "\033[36m> Resetting git directories inside src...\033[0m"
+    find src -name ".git" -type d -execdir git reset --hard origin \;
+fi
+
 # Get ROS2 Jazzy Source Code (Jazzy-Release Version of $JAZZY_RELEASE_TAG)
 echo -e "\033[36m> Getting ROS2 Jazzy Source Code (Jazzy-Release tag of $JAZZY_RELEASE_TAG)...\033[0m"
 echo -e "As long as the spinner at of the terminal is running, it is downloading the source code. It does take long."
 echo -e "If you see 'E' in the progress, it means the download failed (slow connection does this), it will try again."
 echo -e "If it takes too long, please check your network connection and try again. To cancel, Ctrl+C."
 echo -e "\033[33mSTART----------------------------------    DOWNLOADING...  ---------------------------------------------END\033[0m"
-
-# Reset git directories (git clean -d -f .) if they exist inside src directory
-if [ -d "src" ]; then
-    echo -e "\033[36m> Resetting git directories inside src...\033[0m"
-    find src -name ".git" -type d -execdir git reset --hard origin \;
-fi
 
 # Define maximum number of retries
 max_retries=3

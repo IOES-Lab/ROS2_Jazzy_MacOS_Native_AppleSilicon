@@ -186,18 +186,18 @@ printf '\n\n\033[34m'; printf '=%.0s' {1..75}; printf '\033[0m\n'
 echo -e "\033[34m### [3/6] Downloading Gazebo Harmonic Source Code\033[0m"
 printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # ------------------------------------------------------------------------------
-# Get Gazebo Harmonic  Source Code
-echo -e "\033[36m> Getting Gazebo Harmonic Code...\033[0m"
-echo -e "As long as the spinner at of the terminal is running, it is downloading the source code. It does take long."
-echo -e "If you see 'E' in the progress, it means the download failed (slow connection does this), it will try again."
-echo -e "If it takes too long, please check your network connection and try again. To cancel, Ctrl+C."
-echo -e "\033[33mSTART----------------------------------    DOWNLOADING...  ---------------------------------------------END\033[0m"
-
 # Reset git directories (git clean -d -f .) if they exist inside src directory
 if [ -d "src" ]; then
     echo -e "\033[36m> Resetting git directories inside src...\033[0m"
     find src -name ".git" -type d -execdir git reset --hard origin \;
 fi
+
+# Get Gazebo Harmonic  Source Code
+echo -e "\033[36m> Getting Gazebo Harmonic Code...\033[0m"
+echo -e "As long as the spinner at of the terminal is running, it is downloading the source code. It does take long."
+echo -e "If you see 'E' in the progress, it means the download failed (slow connection does this), it will try again."
+echo -e "If it takes too long, please check your network connection and try again. To cancel, Ctrl+C."
+echo -e "\033[33mSTART--------END\033[0m"
 
 # Define maximum number of retries
 max_retries=3
@@ -211,7 +211,7 @@ for ((i=1;i<=max_retries;i++)); do
         break
     else
         echo -e "\033[31m\nGazebo Harmonic Source Code Import failed, retrying ($i/$max_retries)\033[0m"
-        echo -e "\033[33mSTART----------------------------------    DOWNLOADING...  ---------------------------------------------END\033[0m"
+        echo -e "\033[33mSTART--------END\033[0m"
     fi
     # If we've reached the max number of retries, exit the script
     if [ $i -eq $max_retries ]; then
