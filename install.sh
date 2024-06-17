@@ -497,15 +497,13 @@ echo "To deactivate this workspace, run:"
 echo -e "\033[33mdeactivate\033[0m"
 
 # Ask if user wants to install Gazebo Harmonic too (gz_install.sh)
-echo -e "\n\n\033[33mDo you want to install Gazebo Harmonic (LTS version that matches with ROS2 Jazzy) too? (y/n)\033[0m"
+echo -e "\n\n\033[32mGazebo Harmonic is simulator that is LTS pair with ROS2 Jazzy (y/n)\033[0m"
+echo -e "\n\n\033[33mDo you want to install Gazebo Harmonic too? (y/n)\033[0m"
 read -r response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     echo -e "\033[36m> Installing Gazebo Harmonic...\033[0m"
-    curl -s -O https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/gz_install.sh
-    chmod +x gz_install.sh
-    # shellcheck disable=SC1090
-    source "$HOME/$ROS_INSTALL_ROOT/activate_ros"
-    ./gz_install.sh -r "$ROS_INSTALL_ROOT" -v "$VIRTUAL_ENV_ROOT"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/gz_install.sh)" \
+        -- -r "ros2_jazzy" -v ".ros2_jazzy"
 fi
 
 popd || exit

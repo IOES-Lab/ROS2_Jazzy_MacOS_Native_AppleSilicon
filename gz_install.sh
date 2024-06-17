@@ -138,6 +138,10 @@ pushd "$HOME/$GZ_INSTALL_ROOT" || {
     exit 1
 }
 
+# Activate virtual environment of ROS2 Jazzy
+# shellcheck disable=SC1090
+source "$HOME/$VIRTUAL_ENV_ROOT/bin/activate"
+
 # ------------------------------------------------------------------------------
 # Install Dendencies
 printf '\n\n\033[34m'; printf '=%.0s' {1..75}; printf '\033[0m\n'
@@ -268,8 +272,8 @@ echo
 echo "To activate the new ROS2 Jazzy - Gazebo Harmonic framework, run the following command:"
 echo -e "\033[32msource $HOME/$ROS_INSTALL_ROOT/activate_ros\033[0m"
 echo -e "\nThen, try '\033[32mros2\033[0m' or '\033[32mrviz2\033[0m' in the terminal to start ROS2 Jazzy."
-echo -e "To test gazebo, run following command separately in two termianls (one for server(-s) and one for gui(-g))"
-echo -e "(Important!, both terminals should have \033[32msource $HOME/$ROS_INSTALL_ROOT/activate_ros\033[0m activated)"
+echo -e "\nTo test gazebo, \033[31mrun following commands separately in two termianls (one for server(-s) and one for gui(-g))"
+echo -e "(IMPORTANT, both terminals should have \033[0msource $HOME/$ROS_INSTALL_ROOT/activate_ros\033[31m activated)\033[0m"
 echo -e '\033[32m gz sim shapes.sdf -s \033[0m'
 echo -e '\033[32m gz sim -g \033[0m'
 printf '\033[32m%.0s=\033[0m' {1..75} && echo
@@ -280,17 +284,5 @@ echo -e "Then, you can start ROS2 Jazzy - Gazebo Harmonic framework by typing '\
 echo
 echo "To deactivate this workspace, run:"
 echo -e "\033[33mdeactivate\033[0m"
-
-# Ask if user wants to install Gazebo Harmonic too (gz_install.sh)
-echo -e "\n\033[33mDo you want to install Gazebo Harmonic too? (y/n)\033[0m"
-read -r response
-if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-    echo -e "\033[36m> Installing Gazebo Harmonic...\033[0m"
-    curl -s -O https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/gz_install.sh
-    chmod +x gz_install.sh
-    # shellcheck disable=SC1090
-    source "$HOME/$ROS_INSTALL_ROOT/activate_ros"
-    ./gz_install.sh
-fi
 
 popd || exit
