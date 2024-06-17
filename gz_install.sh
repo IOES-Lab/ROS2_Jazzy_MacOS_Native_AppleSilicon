@@ -91,7 +91,7 @@ echo -e "\033[32m|\033[0m Virtual Environment Directory  :" "\033[94m$HOME/$VIRT
 echo -e "\033[32m▣-------------------------------------------------------------------------▣\033[0m"
 echo -e "Source code at: "
 echo -e "https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/gz_install.sh\n"
-echo -e "\033[33mWARNING: The FAN WILL BURST out and make macbook to take off. Be warned!\033[0m"
+echo -e "\033[33m⚠️ WARNING: The FAN WILL BURST out and make macbook to take off. Be warned!\033[0m"
 echo -e "\033[33m         To terminate at any process, press Ctrl+C.\033[0m"
 # ------------------------------------------------------------------------------
 # Check System
@@ -102,7 +102,7 @@ printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # Check if Installation dir already exists and warn user
 echo -e "\033[34m> Check Installation Directory\033[0m"
 if [ -d "$HOME/$GZ_INSTALL_ROOT" ]; then
-    echo -e "\033[33mWARNING: The directory $GZ_INSTALL_ROOT already exists at home ($HOME)."
+    echo -e "\033[33m⚠️ WARNING: The directory $GZ_INSTALL_ROOT already exists at home ($HOME)."
     echo -e "\033[33m         This script will merge and overwrite the existing directory.\033[0m"
     echo -e "\033[33mDo you want to continue? [y/n/r/c]\033[0m"
     read -p "(y) Merge (n) Cancel (r) Change directory, (c) Force reinstall: " -n 1 -r
@@ -113,7 +113,7 @@ if [ -d "$HOME/$GZ_INSTALL_ROOT" ]; then
         # shellcheck disable=SC2162
         read -p "Enter a new directory name (which will be generated at home): " GZ_INSTALL_ROOT
         if [ -d "$HOME/$GZ_INSTALL_ROOT" ]; then
-            echo -e "\033[31mError: $HOME/$GZ_INSTALL_ROOT already exists. Please choose a different directory.\033[0m"
+            echo -e "\033[31m❌ Error: $HOME/$GZ_INSTALL_ROOT already exists. Please choose a different directory.\033[0m"
             exit 1
         fi
     elif [[ $REPLY =~ ^[Cc]$ ]]; then
@@ -133,7 +133,7 @@ chown -R "$USER": "$HOME/$GZ_INSTALL_ROOT" > /dev/null 2>&1
 
 # Move to working directory
 pushd "$HOME/$GZ_INSTALL_ROOT" || { 
-    echo -e "\033[31mError: Failed to change to directory $HOME/$GZ_INSTALL_ROOT. \
+    echo -e "\033[31m❌ Error: Failed to change to directory $HOME/$GZ_INSTALL_ROOT. \
     Please check if the directory exists and you have the necessary permissions.\033[0m"
     exit 1
 }
@@ -143,7 +143,7 @@ pushd "$HOME/$GZ_INSTALL_ROOT" || {
 if [ -f "$HOME/$VIRTUAL_ENV_ROOT/bin/activate" ]; then
     source "$HOME/$VIRTUAL_ENV_ROOT/bin/activate"
 else
-    echo -e "\033[31mError: Virtual Environment at $HOME/$VIRTUAL_ENV_ROOT doesn't exist."
+    echo -e "\033[31m❌ Error: Virtual Environment at $HOME/$VIRTUAL_ENV_ROOT doesn't exist."
     echo -e "Please check ROS2 Jazzy installation\033[0m"
     exit 1
 fi
@@ -245,7 +245,7 @@ if ! python3.11 -m colcon build \
     -DPython3_EXECUTABLE="$HOME/$VIRTUAL_ENV_ROOT/bin/python3" -Wno-dev \
     --event-handlers console_cohesion+ --merge-install;
 then
-    echo -e "\033[31mError: Build failed, aborting script.\033[0m"
+    echo -e "\033[31m❌ Error: Build failed, aborting script.\033[0m"
     exit 1
 fi
 
@@ -290,7 +290,7 @@ mv setenv_gz.sh "$HOME/$ROS_INSTALL_ROOT/activate_ros"
 
 # Print post messages
 printf '\033[32m%.0s=\033[0m' {1..75} && echo
-echo -e "\033[32mDone. Hurray! 🍎 (Apple Silicon) + 🤖 = 🚀❤️🤩🎉🥳 \033[0m"
+echo -e "\033[32m🎉 Done. Hurray! 🍎 (Apple Silicon) + 🤖 = 🚀❤️🤩🎉🥳 \033[0m"
 echo
 echo "To activate the new ROS2 Jazzy - Gazebo Harmonic framework, run the following command:"
 echo -e "\033[32msource $HOME/$VIRTUAL_ENV_ROOT/activate_ros\033[0m"

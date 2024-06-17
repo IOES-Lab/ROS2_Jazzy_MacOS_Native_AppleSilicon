@@ -121,8 +121,7 @@ LATEST_COMMIT_HASH=$(curl -s "https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Nativ
 # Initiation
 # ------------------------------------------------------------------------------
 # Print welcome message
-echo "Running Installation script for ROS-Gazebo framework. ROS2 Jazzy first."
-echo -e "\033[32m"
+echo -e "\nRunning Installation script for ROS-Gazebo framework. ROS2 Jazzy first.\033[32m"
 echo "▣-------------------------------------------------------------------------▣"
 echo "|  ______  ______  ______         __  ______  ______  ______  __  __      |"
 echo "| /\  == \/\  __ \/\  ___\       /\ \/\  __ \/\___  \/\___  \/\ \_\ \     |"
@@ -150,8 +149,18 @@ echo -e For descriptions, use -h at the end of oneliner "(e.g. \033[33m...instal
 echo -e "\033[0m"
 echo -e "Source code at: "
 echo -e "https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/install.sh\n"
-echo -e "\033[33mWARNING: The FAN WILL BURST out and make macbook to take off. Be warned!\033[0m"
+echo -e "\033[33m⚠️ WARNING: The FAN WILL BURST out and make macbook to take off. Be warned!\033[0m"
 echo -e "\033[33m         To terminate at any process, press Ctrl+C.\033[0m"
+
+# Type yes to continue
+echo -e "\033[96m\n💡 Do you want to continue? [y/n]\033[0m"
+read -r response
+if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+    echo -e "\033[31mInstallation aborted.\033[0m"
+    exit 1
+fi
+
+
 # ------------------------------------------------------------------------------
 # Check System
 printf '\n\033[34m'; printf '=%.0s' {1..75}; printf '\033[0m\n'
@@ -161,7 +170,7 @@ printf '\033[34m%.0s=\033[0m' {1..75} && echo
 echo -e "Checking System Requirements..."
 # Check XCode installation"
 if [ ! -e "/Applications/Xcode.app/Contents/Developer" ]; then
-    echo -e "\033[31mError: Xcode is not installed. Please install Xcode through the App Store."
+    echo -e "\033[31m❌ Error: Xcode is not installed. Please install Xcode through the App Store."
     echo -e "\033[31m       You can download it from: https://apps.apple.com/app/xcode/id497799835\033[0m"
     exit 1
 else
@@ -176,11 +185,11 @@ if [ "$(xcode-select -p)" != "/Applications/Xcode.app/Contents/Developer" ]; the
     ACCEPTED_LICENSE_VERSION=$(defaults read /Library/Preferences/com.apple.dt.Xcode 2> /dev/null | grep IDEXcodeVersionForAgreedToGMLicense | cut -d '"' -f 2)
     # Check if the Xcode license has been accepted
     if [ "$XCODE_VERSION" != "$ACCEPTED_LICENSE_VERSION" ]; then
-        echo -e "\033[33mWARNING: Xcode license needs to be accepted. Please follow the prompts to accept the license.\033[0m"
+        echo -e "\033[33m⚠️ WARNING: Xcode license needs to be accepted. Please follow the prompts to accept the license.\033[0m"
         sudo xcodebuild -license
         # shellcheck disable=SC2181
         if [ $? -ne 0 ]; then
-            echo -e "\033[31mError: Failed to accept Xcode license. Please try again.\033[0m"
+            echo -e "\033[31m❌ Error: Failed to accept Xcode license. Please try again.\033[0m"
             exit 1
         fi
     fi
@@ -198,7 +207,7 @@ else
         echo -e "\033[36m> Brew installation confirmed (/opt/homebrew, Rosseta 2: false)\033[0m"
     else
         echo -e "\033[33m> Incorrect Brew configuration detected at /usr/local. This seems to be a Rosetta 2 emulation.\033[0m"
-        echo -e "\033[33m> Do you want to remove it and reinstall the native arm64 Brew? (y/n)\033[0m"
+        echo -e "\033[33m> 💡 Do you want to remove it and reinstall the native arm64 Brew? (y/n)\033[0m"
         read -r response
         if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
             echo -e "\033[36mRemoving the Rosetta 2 emulated Brew at /usr/local...\033[0m"
@@ -223,9 +232,9 @@ fi
 # Check if Installation dir already exists and warn user
 echo -e "\033[34m> Check Installation Directory\033[0m"
 if [ -d "$HOME/$ROS_INSTALL_ROOT" ]; then
-    echo -e "\033[33mWARNING: The directory $ROS_INSTALL_ROOT already exists at home ($HOME)."
+    echo -e "\033[33m⚠️ WARNING: The directory $ROS_INSTALL_ROOT already exists at home ($HOME)."
     echo -e "\033[33m         This script will merge and overwrite the existing directory.\033[0m"
-    echo -e "\033[33mDo you want to continue? [y/n/r/c]\033[0m"
+    echo -e "\033[96mDo you want to continue? [y/n/r/c]\033[0m"
     read -p "(y) Merge (n) Cancel (r) Change directory, (c) Force reinstall: " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
@@ -234,7 +243,7 @@ if [ -d "$HOME/$ROS_INSTALL_ROOT" ]; then
         # shellcheck disable=SC2162
         read -p "Enter a new directory name (which will be generated at home): " ROS_INSTALL_ROOT
         if [ -d "$HOME/$ROS_INSTALL_ROOT" ]; then
-            echo -e "\033[31mError: $HOME/$ROS_INSTALL_ROOT already exists. Please choose a different directory.\033[0m"
+            echo -e "\033[31m❌ Error: $HOME/$ROS_INSTALL_ROOT already exists. Please choose a different directory.\033[0m"
             exit 1
         fi
     elif [[ $REPLY =~ ^[Cc]$ ]]; then
@@ -258,7 +267,7 @@ chown -R "$USER": "$HOME/$ROS_INSTALL_ROOT" > /dev/null 2>&1
 
 # Move to working directory
 pushd "$HOME/$ROS_INSTALL_ROOT" || { 
-    echo -e "\033[31mError: Failed to change to directory $HOME/$ROS_INSTALL_ROOT. \
+    echo -e "\033[31m❌ Error: Failed to change to directory $HOME/$ROS_INSTALL_ROOT. \
     Please check if the directory exists and you have the necessary permissions.\033[0m"
     exit 1
 }
@@ -278,7 +287,8 @@ brew install asio assimp bison bullet cmake console_bridge cppcheck \
 # Remove unnecessary packages
 echo -e "\033[36m\n> Removing unnecessary packages...ones that causes error, python@3.12, qt6\033[0m"
 if brew list --formula | grep -q "python@3.12"; then
-    echo -e "\033[31mWARNING: Python@3.12 installation is found. Currently this does not work with ros2 jazzy. Do you want to remove it? (y/n)\033[0m"
+    echo -e "\033[31m⚠️ WARNING: Python@3.12 installation is found. Currently this does not work with ros2 jazzy."
+    echo -e "💡 Do you want to remove it? (y/n)\033[0m"
     read -r response
     if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
         echo -e "\033[36m> Removing python@3.12 (with ignore-dependencies)...\033[0m"
@@ -289,7 +299,8 @@ if brew list --formula | grep -q "python@3.12"; then
     fi
 fi
 if brew list --formula | grep -q "qt6"; then
-    echo -e "\033[31mWARNING: qt6 installation is found. Currently this does not work with ros2 jazzy. Do you want to remove it? (y/n)\033[0m"
+    echo -e "\033[31m⚠️ WARNING: qt6 installation is found. Currently this does not work with ros2 jazzy."
+    echo -e "💡 Do you want to remove it? (y/n)\033[0m"
     read -r response
     if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
         echo -e "\033[36m> Removing qt6 (with ignore-dependencies)...\033[0m"
@@ -529,7 +540,7 @@ mv setenv.sh activate_ros
 
 # Print post messages
 printf '\033[32m%.0s=\033[0m' {1..75} && echo
-echo -e "\033[32mDone. Hurray! 🍎 (Apple Silicon) + 🤖 = 🚀❤️🤩🎉🥳 \033[0m"
+echo -e "\033[32m🎉 Done. Hurray! 🍎 (Apple Silicon) + 🤖 = 🚀❤️🤩🎉🥳 \033[0m"
 echo
 echo "To activate the new ROS2 distribution run the following command:"
 echo -e "\033[32msource $HOME/$ROS_INSTALL_ROOT/activate_ros\033[0m"
@@ -546,7 +557,7 @@ echo -e "\033[33mdeactivate\033[0m"
 
 # Ask if user wants to install Gazebo Harmonic too (gz_install.sh)
 echo -e "\n\n\033[32mGazebo Harmonic is simulator that is LTS pair with ROS2 Jazzy (y/n)\033[0m"
-echo -e "Do you want to install Gazebo Harmonic too? (y/n)"
+echo -e "💡 Do you want to install Gazebo Harmonic too? (y/n)"
 read -r response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     echo -e "\033[36m> Installing Gazebo Harmonic...\033[0m"
