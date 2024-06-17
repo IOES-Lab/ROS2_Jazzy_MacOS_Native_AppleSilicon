@@ -255,6 +255,14 @@ printf '\n\n\033[34m'; printf '=%.0s' {1..75}; printf '\033[0m\n'
 echo -e "\033[34m### [6/6] Post Installation Configuration\033[0m"
 printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # ------------------------------------------------------------------------------
+# Fix home directory permission
+chmod o-w "$HOME"
+
+# Remove empty gui.config (set to default if already exists)
+if [ -f "$HOME/.gz/sim/8/gui.config" ]; then
+    rm "$HOME/.gz/sim/8/gui.config"
+fi
+
 # save GZ_INSTALL_ROOT in a file
 if [ -f "$HOME/$ROS_INSTALL_ROOT/config" ]; then
     echo "GZ_INSTALL_ROOT=$GZ_INSTALL_ROOT" >> "$HOME/$ROS_INSTALL_ROOT/config"
