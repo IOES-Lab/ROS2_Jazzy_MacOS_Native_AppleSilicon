@@ -70,6 +70,13 @@ JAZZY_RELEASE_TAG=${JAZZY_RELEASE_TAG:-$JAZZY_RELEASE_TAG_DEFAULT}
 ROS_INSTALL_ROOT=${ROS_INSTALL_ROOT:-$ROS_INSTALL_ROOT_DEFAULT}
 VIRTUAL_ENV_ROOT=${VIRTUAL_ENV_ROOT:-$VIRTUAL_ENV_ROOT_DEFAULT}
 
+# Get Current Version hash
+LATEST_COMMIT_HASH=$(curl -s "https://api.github.com/repos/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/commits/main" | \
+    grep '"sha":' | \
+    head -n 1 | \
+    awk -F '"' '{print $4}' | \
+    cut -c1-7)
+
 # ------------------------------------------------------------------------------
 # Initiation
 # ------------------------------------------------------------------------------
@@ -97,9 +104,10 @@ echo "| 🍎 (Apple Silicon)+🤖 = 🚀❤️🤩🎉🥳                      
 echo "|                                                                         |"
 echo "|  First created at 2024.6.15       by Choi Woen-Sug(Github:woensug-choi) |"
 echo "▣-------------------------------------------------------------------------▣"
-echo -e "| Target Jazzy Release Version  :" "\033[94m$JAZZY_RELEASE_TAG\033[0m"
-echo -e "\033[32m|\033[0m Target Installation Directory:" "\033[94m$HOME/$ROS_INSTALL_ROOT\033[0m"
-echo -e "\033[32m|\033[0m Virtual Environment Directory:" "\033[94m$HOME/$VIRTUAL_ENV_ROOT\033[0m"
+echo -e "| Current Installer Version Hash : \033[94m$LATEST_COMMIT_HASH\033[0m   \033[32m"
+echo -e "| Target Jazzy Release Version   :" "\033[94m$JAZZY_RELEASE_TAG\033[0m"
+echo -e "\033[32m|\033[0m Target Installation Directory  :" "\033[94m$HOME/$ROS_INSTALL_ROOT\033[0m"
+echo -e "\033[32m|\033[0m Virtual Environment Directory  :" "\033[94m$HOME/$VIRTUAL_ENV_ROOT\033[0m"
 echo -e "\033[32m▣-------------------------------------------------------------------------▣\033[0m"
 echo -e To change targets use options "-t (tag), -d (install dir), -v (virtual dir)"
 echo -e For descriptions, use -h at the end of oneliner "(e.g. \033[33m...install.sh)\"\033[0m" "\033[94m-- -h\033[0m"
