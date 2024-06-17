@@ -267,10 +267,10 @@ sed -i '' "s|VIRTUAL_ENV_ROOT|$VIRTUAL_ENV_ROOT|g" setenv_gz.sh
 sed -i '' "s|GZ_INSTALL_ROOT|$GZ_INSTALL_ROOT|g" setenv_gz.sh
 
 # Rename sentenv.sh to activate_ros
-if [ -f activate_ros ]; then
-    rm activate_ros
+if [ -f "$HOME/$ROS_INSTALL_ROOT/activate_ros" ]; then
+    rm "$HOME/$ROS_INSTALL_ROOT/activate_ros"
 fi
-mv setenv_gz.sh activate_ros
+mv setenv_gz.sh "$HOME/$ROS_INSTALL_ROOT/activate_ros"
 
 # Print post messages
 printf '\033[32m%.0s=\033[0m' {1..75} && echo
