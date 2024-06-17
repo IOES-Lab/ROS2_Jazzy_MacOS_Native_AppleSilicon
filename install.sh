@@ -34,16 +34,17 @@ VIRTUAL_ENV_ROOT_DEFAULT=".ros2_venv" # you may change with option -v
 
 # Usage function
 usage() {
-    echo "Usage: [-d ROS_INSTALL_ROOT] [-t JAZZY_RELEASE_TAG] [-v VIRTUAL_ENV_ROOT] [-h]"
+    echo "Usage: [-d ROS_INSTALL_ROOT] [-t JAZZY_RELEASE_TAG] [-v VIRTUAL_ENV_ROOT] [-h] [-u to uninstall]"
     echo "  -t    Set the Jazzy release tag (default: $JAZZY_RELEASE_TAG_DEFAULT)"
     echo "        (e.g., release-jazzy-20240523, you may find tag at https://github.com/ros2/ros2/tags"
     echo "  -d    Set the ROS installation root directory (default: $ROS_INSTALL_ROOT_DEFAULT)"
     echo "  -v    Set the Python Virtual Environment directory (default: $VIRTUAL_ENV_ROOT_DEFAULT)"
+    echo "  -u    To uninstall"
     exit 1
 }
 
 # Parse command-line arguments
-while getopts "d:t:h:v:" opt; do
+while getopts "d:t:h:v:u" opt; do
     case ${opt} in
         d)
             ROS_INSTALL_ROOT=$OPTARG
@@ -57,6 +58,10 @@ while getopts "d:t:h:v:" opt; do
         h)
             usage
             ;;
+        u)
+            # Check flag variable to uninstall later
+            UNINSTALL_FLAG=1
+            ;;
         \?)
             echo "Invalid option: -$OPTARG" 1>&2
             usage
@@ -69,6 +74,41 @@ shift $((OPTIND -1))
 JAZZY_RELEASE_TAG=${JAZZY_RELEASE_TAG:-$JAZZY_RELEASE_TAG_DEFAULT}
 ROS_INSTALL_ROOT=${ROS_INSTALL_ROOT:-$ROS_INSTALL_ROOT_DEFAULT}
 VIRTUAL_ENV_ROOT=${VIRTUAL_ENV_ROOT:-$VIRTUAL_ENV_ROOT_DEFAULT}
+
+# If uninstall
+if [ -n "$UNINSTALL_FLAG" ]; then
+    echo -e "\033[31mUninstall installation request found!\033[0m"
+    if [ -f "$HOME/$ROS_INSTALL_ROOT/config" ]; then
+        # shellcheck disable=SC1090
+        source "$HOME/$ROS_INSTALL_ROOT/config"
+        echo "⚠️  The following directories will be removed:"
+        [ -n "$ROS_INSTALL_ROOT" ] && [ -d "$HOME/$ROS_INSTALL_ROOT" ] && echo "  - $HOME/$ROS_INSTALL_ROOT"
+        [ -n "$VIRTUAL_ENV_ROOT" ] && [ -d "$HOME/$VIRTUAL_ENV_ROOT" ] && echo "  - $HOME/$VIRTUAL_ENV_ROOT"
+        [ -n "$GZ_INSTALL_ROOT" ] && [ -d "$HOME/$GZ_INSTALL_ROOT" ] && echo "  - $HOME/$GZ_INSTALL_ROOT"
+        read -p $'\033[31m🚨 Are you sure you want to continue? (y/n) \033[0m' -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]]
+        then
+            read -p $'\033[31m🚨 Are you absolutely sure? There is NO going back. (y/n) \033[0m' -n 1 -r
+            echo
+            if [[ $REPLY =~ ^[Yy]$ ]]
+            then
+                # shellcheck disable=SC2115
+                [ -n "$ROS_INSTALL_ROOT" ] && [ -d "$HOME/$ROS_INSTALL_ROOT" ] && rm -rf "$HOME/$ROS_INSTALL_ROOT"
+                # shellcheck disable=SC2115
+                [ -n "$VIRTUAL_ENV_ROOT" ] && [ -d "$HOME/$VIRTUAL_ENV_ROOT" ] && rm -rf "$HOME/$VIRTUAL_ENV_ROOT"
+                # shellcheck disable=SC2115
+                [ -n "$GZ_INSTALL_ROOT" ] && [ -d "$HOME/$GZ_INSTALL_ROOT" ] && rm -rf "$HOME/$GZ_INSTALL_ROOT"
+                # Confirm message
+                echo -e "\033[32m\nUninstallation completed successfully.\n\033[0m"
+            fi
+        fi
+    else
+        echo -e "\033[31mError: Configuration file not found at $HOME/$ROS_INSTALL_ROOT/config\033[0m"
+        exit 1
+    fi
+    exit 0
+fi
 
 # Get Current Version hash
 LATEST_COMMIT_HASH=$(curl -s "https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/commits/main" | \
