@@ -81,9 +81,9 @@ VIRTUAL_ENV_ROOT=${VIRTUAL_ENV_ROOT:-$VIRTUAL_ENV_ROOT_DEFAULT}
 # If uninstall
 if [ -n "$UNINSTALL_FLAG" ]; then
     echo -e "\033[31mUninstall installation request found!\033[0m"
-    if [ -f "$HOME/$ROS_INSTALL_ROOT/config" ]; then
-        # shellcheck disable=SC1090
-        source "$HOME/$ROS_INSTALL_ROOT/config"
+    if [ -f "$HOME/.ros2_jazzy_install_config" ]; then
+        # shellcheck disable=SC1091
+        source "$HOME/.ros2_jazzy_install_config"
         echo "⚠️  The following directories will be removed:"
         [ -n "$ROS_INSTALL_ROOT" ] && [ -d "$HOME/$ROS_INSTALL_ROOT" ] && echo "  - $HOME/$ROS_INSTALL_ROOT"
         [ -n "$VIRTUAL_ENV_ROOT" ] && [ -d "$HOME/$VIRTUAL_ENV_ROOT" ] && echo "  - $HOME/$VIRTUAL_ENV_ROOT"
@@ -107,7 +107,7 @@ if [ -n "$UNINSTALL_FLAG" ]; then
             fi
         fi
     else
-        echo -e "\033[31m❌ Error: Configuration file not found at $HOME/$ROS_INSTALL_ROOT/config\033[0m"
+        echo -e "\033[31m❌ Error: Configuration file not found at $HOME/.ros2_jazzy_install_config\033[0m"
         echo -e "it seems that the installation is not found. Please check the installation directory.\n"
         exit 1
     fi
@@ -566,12 +566,12 @@ echo -e "\033[34m### [6/6] Post Installation Configuration\033[0m"
 printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # ------------------------------------------------------------------------------
 # save JAZZY_RELEASE_TAG, VIRTUAL_ENV_ROOT, VIRTUAL_ENV_ROOT in a file
-if [ -f config ]; then
-    rm config
+if [ -f "$HOME/.ros2_jazzy_install_config" ]; then
+    rm "$HOME/.ros2_jazzy_install_config"
 fi
-echo "JAZZY_RELEASE_TAG=$JAZZY_RELEASE_TAG" > "$HOME/$ROS_INSTALL_ROOT/config"
-echo "VIRTUAL_ENV_ROOT=$VIRTUAL_ENV_ROOT" >> "$HOME/$ROS_INSTALL_ROOT/config"
-echo "ROS_INSTALL_ROOT=$ROS_INSTALL_ROOT" >> "$HOME/$ROS_INSTALL_ROOT/config"
+echo "JAZZY_RELEASE_TAG=$JAZZY_RELEASE_TAG" > "$HOME/.ros2_jazzy_install_config"
+echo "VIRTUAL_ENV_ROOT=$VIRTUAL_ENV_ROOT" >> "$HOME/.ros2_jazzy_install_config"
+echo "ROS_INSTALL_ROOT=$ROS_INSTALL_ROOT" >> "$HOME/.ros2_jazzy_install_config"
 
 # Download sentenv.sh
 if [ -f setenv.sh ]; then

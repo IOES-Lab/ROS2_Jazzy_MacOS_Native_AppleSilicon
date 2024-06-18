@@ -264,8 +264,8 @@ if [ -f "$HOME/.gz/sim/8/gui.config" ]; then
 fi
 
 # save GZ_INSTALL_ROOT in a file
-if [ -f "$HOME/$ROS_INSTALL_ROOT/config" ]; then
-    echo "GZ_INSTALL_ROOT=$GZ_INSTALL_ROOT" >> "$HOME/$ROS_INSTALL_ROOT/config"
+if [ -f "$HOME/.ros2_jazzy_install_config" ]; then
+    echo "GZ_INSTALL_ROOT=$GZ_INSTALL_ROOT" >> "$HOME/.ros2_jazzy_install_config"
 fi
 
 # Download sentenv.sh
