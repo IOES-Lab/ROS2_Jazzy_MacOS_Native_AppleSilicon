@@ -1,6 +1,6 @@
 #!/bin/bash
 ################################################################################
-########### ROS2 Jazzy Installation Script for MacOS (Apple Silicon) ###########
+######### ROS2 Jazzy Gazebo Harmonic Install for MacOS (Apple Silicon) #########
 ################################################################################
 # Author: Choi Woen-Sug (GithubID: woensug-choi)
 # First Created: 2024.6.15

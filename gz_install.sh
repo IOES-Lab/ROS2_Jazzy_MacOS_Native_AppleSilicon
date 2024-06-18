@@ -23,7 +23,7 @@ VIRTUAL_ENV_ROOT_DEFAULT=".ros2_venv" # you may change with option -v
 usage() {
     echo "Usage: [-r ROS_INSTALL_ROOT_DEFAULT] [-d GZ_INSTALL_ROOT_DEFAULT] [-v VIRTUAL_ENV_ROOT_DEFAULT] [-h]"
     echo "  -r    Set the ROS installation root directory (default: $ROS_INSTALL_ROOT_DEFAULT)"
-    echo "  -d    Set the Python Virtual Environment directory (default: $GZ_INSTALL_ROOT_DEFAULT)"
+    echo "  -d    Set the Gazebo installation root directory (default: $GZ_INSTALL_ROOT_DEFAULT)"
     echo "  -v    Set the Python Virtual Environment directory (default: $VIRTUAL_ENV_ROOT_DEFAULT)"
     exit 1
 }
