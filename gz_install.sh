@@ -91,7 +91,7 @@ echo -e "\033[32m|\033[0m Virtual Environment Directory  :" "\033[94m$HOME/$VIRT
 echo -e "\033[32m▣-------------------------------------------------------------------------▣\033[0m"
 echo -e "Source code at: "
 echo -e "https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/gz_install.sh\n"
-echo -e "\033[33m⚠️ WARNING: The FAN WILL BURST out and make macbook to take off. Be warned!\033[0m"
+echo -e "\033[33m⚠️  WARNING: The FAN WILL BURST out and make macbook to take off. Be warned!\033[0m"
 echo -e "\033[33m         To terminate at any process, press Ctrl+C.\033[0m"
 # ------------------------------------------------------------------------------
 # Check System
@@ -102,10 +102,10 @@ printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # Check if Installation dir already exists and warn user
 echo -e "\033[34m> Check Installation Directory\033[0m"
 if [ -d "$HOME/$GZ_INSTALL_ROOT" ]; then
-    echo -e "\033[33m⚠️ WARNING: The directory $GZ_INSTALL_ROOT already exists at home ($HOME)."
+    echo -e "\033[33m⚠️  WARNING: The directory $GZ_INSTALL_ROOT already exists at home ($HOME)."
     echo -e "\033[33m         This script will merge and overwrite the existing directory.\033[0m"
     echo -e "\033[33mDo you want to continue? [y/n/r/c]\033[0m"
-    read -p "(y) Merge (n) Cancel (r) Change directory, (c) Force reinstall: " -n 1 -r
+    read -p "(y) Merge (n) Cancel (r) Change directory, (c) Clean re-install: " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         echo -e "\033[33mMerging and overwriting existing directory...\033[0m"

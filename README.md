@@ -3,8 +3,16 @@
 ## One-liner installation code (🍎 (Apple Silicon) + 🤖 = 🚀❤️🤩🎉🥳)
 - Copy and paste it on terminal
 
+### For full installation (ROS2 Jazzy and Gazebo Harmonic, in order)
+
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/install.sh)"
+```
+
+### Gazebo installation only
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/gz_install.sh)"
 ```
 
 ## Introduction
@@ -63,6 +71,9 @@ The reasons for installing ROS2 Jazzy natively on Apple Silicon Macbooks are:
 - `eclipse-cyclonedds` is excluded from the installation process
   - It is not supported on Apple Silicon Macbooks (compile errors)
   - Ref : https://ros.org/reps/rep-2000.html
+
+## For MAVROS
+- Visit https://github.com/IOES-Lab/ROS2_MAVROS_AppleSilicon
 
 ## References: (None of below worked for me, so I made this script)
 - https://github.com/pfavr2/install_ros2_rolling_on_mac_m1

@@ -154,43 +154,23 @@ echo -e "e.g. \033[33m/bin/bash -c '\$(curl -fsSL https://raw. ...install.sh)\"\
 echo -e "\033[0m"
 echo -e "Source code at: "
 echo -e "https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/install.sh\n"
-echo -e "\033[33m⚠️ WARNING: The FAN WILL BURST out and make macbook to take off. Be warned!\033[0m"
+echo -e "\033[33m⚠️  WARNING: The FAN WILL BURST out and make macbook to take off. Be warned!\033[0m"
 echo -e "\033[33m         To terminate at any process, press Ctrl+C.\033[0m"
+
+# Trap SIGINT (Ctrl+C) and exit cleanly
+trap 'echo -e "\033[31m\nInstallation aborted.\033[0m"; exit' SIGINT
 
 # Check if the script is running in a GitHub Actions workflow
 if [[ -z "$GITHUB_ACTIONS" ]]; then
-    # Type yes to continue if not auto type
-    echo -e '\033[96m\n💡 Do you want to continue? [y/n]: \033[0m'
-    # Start a background process for the countdown and automatic response
-    (
-        # Show a countdown for 10 seconds
-        for i in {10..1}
-        do
-            # shellcheck disable=SC2059
-            printf "\r   Continuing in $i seconds..."
-            sleep 1
-        done
+    # Prompt the user and wait for a response with a timeout of 10 seconds
+    echo -e '\033[96m\n💡 The installation will continue automatically in 10 seconds unless you respond. \033[0m'
+    read -p $'\033[96m   Do you want to proceed now? [y/n]: \033[0m' -n 1 -r -t 10 response
+    echo # Move to a new line after the user input
 
-        # Clear the line
-        printf "\r"
-
-        # Send 'y'
-        echo 'y' 
-    ) &
-
-    # Save the PID of the background process and disown it
-    bg_pid=$!
-    disown $bg_pid
-
-    # Read the user's response in the foreground
-    read -n 1 -r response
-
-    # If the user responded, kill the background process
-    if [[ -n "$response" ]]; then
-        kill "$bg_pid" >/dev/null 2>&1
-    fi
+    # Default to 'y' if no response is given within the timeout
+    response=${response:-y}
 else
-    # If running in a GitHub Actions workflow, automatically set the response to 'y'
+    # Automatically set the response to 'y' in a GitHub Actions workflow
     response='y'
 fi
 
@@ -199,7 +179,6 @@ if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     echo -e "\033[31m\nInstallation aborted.\033[0m"
     exit 1
 fi
-
 
 # ------------------------------------------------------------------------------
 # Check System
@@ -225,7 +204,7 @@ if [ "$(xcode-select -p)" != "/Applications/Xcode.app/Contents/Developer" ]; the
     ACCEPTED_LICENSE_VERSION=$(defaults read /Library/Preferences/com.apple.dt.Xcode 2> /dev/null | grep IDEXcodeVersionForAgreedToGMLicense | cut -d '"' -f 2)
     # Check if the Xcode license has been accepted
     if [ "$XCODE_VERSION" != "$ACCEPTED_LICENSE_VERSION" ]; then
-        echo -e "\033[33m⚠️ WARNING: Xcode license needs to be accepted. Please follow the prompts to accept the license.\033[0m"
+        echo -e "\033[33m⚠️  WARNING: Xcode license needs to be accepted. Please follow the prompts to accept the license.\033[0m"
         sudo xcodebuild -license
         # shellcheck disable=SC2181
         if [ $? -ne 0 ]; then
@@ -272,10 +251,10 @@ fi
 # Check if Installation dir already exists and warn user
 echo -e "\033[34m> Check Installation Directory\033[0m"
 if [ -d "$HOME/$ROS_INSTALL_ROOT" ]; then
-    echo -e "\033[33m⚠️ WARNING: The directory $ROS_INSTALL_ROOT already exists at home ($HOME)."
+    echo -e "\033[33m⚠️  WARNING: The directory $ROS_INSTALL_ROOT already exists at home ($HOME)."
     echo -e "\033[33m         This script will merge and overwrite the existing directory.\033[0m"
     echo -e "\033[96mDo you want to continue? [y/n/r/c]\033[0m"
-    read -p "(y) Merge (n) Cancel (r) Change directory, (c) Force reinstall: " -n 1 -r
+    read -p "(y) Merge (n) Cancel (r) Change directory, (c) Clean re-install: " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         echo -e "\033[33mMerging and overwriting existing directory...\033[0m"
@@ -323,41 +302,6 @@ echo -e "\033[36m> Installing ROS2 dependencies with Brew...\033[0m"
 brew install asio assimp bison bullet cmake console_bridge cppcheck \
   cunit eigen freetype graphviz opencv openssl orocos-kdl pcre poco \
   pyqt@5 python@3.11 qt@5 sip spdlog tinyxml tinyxml2
-
-# Remove unnecessary packages
-echo -e "\033[36m\n> Removing unnecessary packages...ones that causes error, python@3.12, qt6\033[0m"
-if brew list --formula | grep -q "python@3.12"; then
-    echo -e "\033[31m⚠️ WARNING: Python@3.12 installation is found. Currently this does not work with ros2 jazzy."
-    if [[ -z "$GITHUB_ACTIONS" ]]; then
-        echo -e "💡 Do you want to remove it? (y/n)\033[0m"
-        read -r response
-        if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-            echo -e "\033[36m> Removing python@3.12 (with ignore-dependencies)...\033[0m"
-            brew uninstall --ignore-dependencies python@3.12
-        else
-            echo -e "\033[31m> Aborting. Please manually correct your Python configuration.\033[0m"
-            exit 1
-        fi
-    else
-        brew uninstall --ignore-dependencies python@3.12
-    fi
-fi
-if brew list --formula | grep -q "qt6"; then
-    echo -e "\033[31m⚠️ WARNING: qt6 installation is found. Currently this does not work with ros2 jazzy."
-    if [[ -z "$GITHUB_ACTIONS" ]]; then
-        echo -e "💡 Do you want to remove it? (y/n)\033[0m"
-        read -r response
-        if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-            echo -e "\033[36m> Removing qt6 (with ignore-dependencies)...\033[0m"
-            brew uninstall --ignore-dependencies qt6
-        else
-            echo -e "\033[31m> Aborting. Please manually correct your Python configuration.\033[0m"
-            exit 1
-        fi
-    else
-        brew uninstall --ignore-dependencies qt6
-    fi
-fi
 
 # Set Environment Variables of Brew packages
 echo -e "\033[36m> Setting Environment Variables of Brew packages...(OPENSSL_ROOT_DIR, CMAKE_PREFIX_PATH, PATH)\033[0m"
@@ -608,39 +552,21 @@ echo -e "\033[33mdeactivate\033[0m"
 
 # Ask if user wants to install Gazebo Harmonic too (gz_install.sh)
 echo -e "\n\n\033[32mGazebo Harmonic is simulator that is LTS pair with ROS2 Jazzy\033[0m"
-# Type yes to continue or auto continue
+
+# Trap SIGINT (Ctrl+C) and exit cleanly
+trap 'echo -e "\033[31m\nInstallation aborted.\033[0m"; exit' SIGINT
+
+# Check if the script is running in a GitHub Actions workflow
 if [[ -z "$GITHUB_ACTIONS" ]]; then
-    echo -e '\033[96m\n💡 Do you want to install Gazebo Harmonic too? [y/n]: \033[0m'
-    # Start a background process for the countdown and automatic response
-    (
-        # Show a countdown for 10 seconds
-        for i in {10..1}
-        do
-            # shellcheck disable=SC2059
-            printf "\r   Continuing in $i seconds..."
-            sleep 1
-        done
+    # Prompt the user and wait for a response with a timeout of 10 seconds
+    echo -e '\033[96m\n💡 The installation will continue automatically in 10 seconds unless you respond. \033[0m'
+    read -p $'\033[96m   Do you want to proceed now? [y/n]: \033[0m' -n 1 -r -t 10 response
+    echo # Move to a new line after the user input
 
-        # Clear the line
-        printf "\r"
-
-        # Send 'y'
-        echo 'y' 
-    ) &
-
-    # Save the PID of the background process and disown it
-    bg_pid=$!
-    disown $bg_pid
-
-    # Read the user's response in the foreground
-    read -n 1 -r response
-
-    # If the user responded, kill the background process
-    if [[ -n "$response" ]]; then
-        kill "$bg_pid" >/dev/null 2>&1
-    fi
+    # Default to 'y' if no response is given within the timeout
+    response=${response:-y}
 else
-    # If running in a GitHub Actions workflow, automatically set the response to 'y'
+    # Automatically set the response to 'y' in a GitHub Actions workflow
     response='y'
 fi
 
