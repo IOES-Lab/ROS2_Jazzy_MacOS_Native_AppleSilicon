@@ -102,6 +102,7 @@ if [ -n "$UNINSTALL_FLAG" ]; then
                 [ -n "$VIRTUAL_ENV_ROOT" ] && [ -d "$HOME/$VIRTUAL_ENV_ROOT" ] && rm -rf "$HOME/$VIRTUAL_ENV_ROOT"
                 # shellcheck disable=SC2115
                 [ -n "$GZ_INSTALL_ROOT" ] && [ -d "$HOME/$GZ_INSTALL_ROOT" ] && rm -rf "$HOME/$GZ_INSTALL_ROOT"
+                rm -f "$HOME/.ros2_jazzy_install_config"
                 # Confirm message
                 echo -e "\033[32m\nUninstallation completed successfully.\n\033[0m"
             fi
