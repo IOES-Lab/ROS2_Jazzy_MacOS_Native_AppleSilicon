@@ -295,10 +295,11 @@ echo
 echo "To activate the new ROS2 Jazzy - Gazebo Harmonic framework, run the following command:"
 echo -e "\033[32msource $HOME/$VIRTUAL_ENV_ROOT/activate_ros\033[0m"
 echo -e "\nThen, try '\033[32mros2\033[0m' or '\033[32mrviz2\033[0m' in the terminal to start ROS2 Jazzy."
-echo -e "\nTo test gazebo, \033[31mrun following commands separately in two termianls (one for server(-s) and one for gui(-g))"
-echo -e "(IMPORTANT, both terminals should have \033[0msource $HOME/$VIRTUAL_ENV_ROOT/activate_ros\033[31m activated)\033[0m"
-echo -e '\033[32m gz sim shapes.sdf -s \033[0m'
-echo -e '\033[32m gz sim -g \033[0m'
+echo -e "\nTo test gazebo, \033[33mrun following commands separately in two termianls (one for server(-s) and one for gui(-g))"
+echo -e "\033[31m(IMPORTANT, both terminals should have \033[0m'source $HOME/$VIRTUAL_ENV_ROOT/activate_ros'\033[31m activated)\033[0m"
+# shellcheck disable=SC2016
+echo -e "  [1st Terminal with ($VIRTUAL_ENV_ROOT)]\033[32m gz sim shapes.sdf -s \033[0m"
+echo -e "  [2nd Terminal with ($VIRTUAL_ENV_ROOT)]\033[32m gz sim -g \033[0m"
 printf '\033[32m%.0s=\033[0m' {1..75} && echo
 echo "To make alias for fast start, run the following command to add to ~/.zprofile:"
 echo -e "\033[34mecho 'alias ros=\"source $HOME/$ROS_INSTALL_ROOT/activate_ros\"' >> ~/.zprofile && source ~/.zprofile\033[0m"
