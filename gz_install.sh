@@ -230,6 +230,25 @@ for ((i=1;i<=max_retries;i++)); do
     sleep 5
 done
 
+# Move to the specific directory to download additional packages
+pushd "$HOME/$GZ_INSTALL_ROOT/src/gz-transport" > /dev/null || {
+    echo -e "\033[31m\nFailed to change directory to $HOME/$GZ_INSTALL_ROOT/src/gz-transport\033[0m"
+    exit 1
+}
+
+# Download the additional package
+git clone -b jazzy https://github.com/gazebo-release/gz_transport_vendor.git || {
+    echo -e "\033[31m\nFailed to clone the repository\033[0m"
+    popd > /dev/null
+    exit 1
+}
+
+# Return to the original directory
+popd > /dev/null || {
+    echo -e "\033[31m\nFailed to return to the original directory\033[0m"
+    exit 1
+}
+
 # Fix brew linking of qt5
 echo -e "\033[36m> Fixing brew linking of qt5...\033[0m"
 brew unlink qt && brew link qt@5
