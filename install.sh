@@ -203,6 +203,7 @@ if [ "$(xcode-select -p)" != "/Applications/Xcode.app/Contents/Developer" ]; the
     sudo xcode-select -s "/Applications/Xcode.app/Contents/Developer"
     XCODE_VERSION=$(xcodebuild -version | grep '^Xcode\s' | sed -E 's/^Xcode[[:space:]]+([0-9\.]+)/\1/')
     ACCEPTED_LICENSE_VERSION=$(defaults read /Library/Preferences/com.apple.dt.Xcode 2> /dev/null | grep IDEXcodeVersionForAgreedToGMLicense | cut -d '"' -f 2)
+    sudo xcodebuild -license
     # Check if the Xcode license has been accepted
     if [ "$XCODE_VERSION" != "$ACCEPTED_LICENSE_VERSION" ]; then
         echo -e "\033[33m⚠️  WARNING: Xcode license needs to be accepted. Please follow the prompts to accept the license.\033[0m"
