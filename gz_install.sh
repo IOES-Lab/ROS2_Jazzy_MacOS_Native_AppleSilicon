@@ -161,7 +161,7 @@ printf '\033[34m%.0s=\033[0m' {1..75} && echo
 echo -e "\033[36m> Installing Gazebo Harmonic dependencies with Brew...\033[0m"
 brew update
 brew tap osrf/simulation
-brew install assimp boost bullet cmake cppzmq dartsim@6.10.0 doxygen \
+brew install libyaml libzip assimp boost bullet cmake cppzmq dartsim@6.10.0 doxygen \
      eigen fcl ffmpeg flann freeimage freetype gdal gflags google-benchmark \
      gts ipopt jsoncpp libccd libyaml libzzip libzip nlopt ode open-scene-graph \
      ossp-uuid ogre1.9 ogre2.3 pkg-config protobuf qt@5 qwt-qt5 rapidjson ruby \
