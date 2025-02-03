@@ -163,7 +163,8 @@ printf '\033[34m%.0s=\033[0m' {1..75} && echo
 echo -e "\033[36m> Installing Gazebo Harmonic dependencies with Brew...\033[0m"
 brew update
 brew tap osrf/simulation
-brew install libyaml libzip assimp boost bullet cmake cppzmq dartsim@6.10.0 doxygen \
+brew update
+brew install libyaml libzip assimp boost bullet cmake cppzmq dartsim doxygen \
      eigen fcl ffmpeg flann freeimage freetype gdal gflags google-benchmark \
      gts ipopt jsoncpp libccd libyaml libzzip libzip nlopt ode open-scene-graph \
      ossp-uuid ogre1.9 ogre2.3 pkg-config protobuf qt@5 qwt-qt5 rapidjson ruby \
@@ -180,9 +181,9 @@ echo -e "\033[36m> Packages installation with PIP completed.\033[0m"
 # Set Environment Variables of Brew packages
 echo -e "\033[36m> Setting Environment Variables of Brew packages...\033[0m"
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
-export CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/homebrew/opt/dartsim@6.10.0
-export DYLD_FALLBACK_LIBRARY_PATH=${DYLD_FALLBACK_LIBRARY_PATH}:/opt/homoebrew/opt/dartsim@6.10.0/lib:/opt/homebrew/opt/octomap/local
-export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:/opt/homebrew/opt/dartsim@6.10.0/lib/pkgconfig
+export CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/homebrew/opt/dartsim
+export DYLD_FALLBACK_LIBRARY_PATH=${DYLD_FALLBACK_LIBRARY_PATH}:/opt/homoebrew/opt/dartsim/lib:/opt/homebrew/opt/octomap/local
+export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:/opt/homebrew/opt/dartsim/lib/pkgconfig
 export CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/homebrew/opt/qt@5:/opt/homebrew/opt/qt@5/lib/cmake
 
 # Install XQuartz
