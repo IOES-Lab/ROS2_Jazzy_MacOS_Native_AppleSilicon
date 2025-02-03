@@ -301,9 +301,9 @@ brew install asio assimp bison bullet cmake console_bridge cppcheck \
 echo -e "\033[36m> Setting Environment Variables of Brew packages...(OPENSSL_ROOT_DIR, CMAKE_PREFIX_PATH, PATH)\033[0m"
 # shellcheck disable=SC2155
 export OPENSSL_ROOT_DIR=$(brew --prefix openssl@3)
-PATH_TO_QT5="/opt/homebrew/opt/qt@5"
+PATH_TO_QT5=$(brew --prefix qt@5)
 # shellcheck disable=SC2155
-export CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:$(brew --prefix qt@5)/lib:$(brew --prefix qt@5)/lib/cmake:/opt/homebrew/opt
+export CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:$PATH_TO_QT5/lib:$PATH_TO_QT5/lib/cmake:/opt/homebrew/opt
 export PATH=$PATH:${PATH_TO_QT5}/bin
 # Disable notification error on mac
 export COLCON_EXTENSION_BLOCKLIST=colcon_core.event_handler.desktop_notification
@@ -337,8 +337,8 @@ python3 -m pip install -U \
   pytest-mock rosdep rosdistro setuptools==59.6.0 vcstool
 python3 -m pip install \
   --config-settings="--global-option=build_ext" \
-  --config-settings="--global-option=-I/opt/homebrew/opt/graphviz/include/" \
-  --config-settings="--global-option=-L/opt/homebrew/opt/graphviz/lib/" \
+  --config-settings="--global-option=-I$(brew --prefix graphviz)/include/" \
+  --config-settings="--global-option=-L$(brew --prefix graphviz)/lib/" \
     pygraphviz
 
 # Confirm message
