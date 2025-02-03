@@ -19,3 +19,6 @@ else
     echo "Unsupported shell. Please use bash or zsh."
     exit 1
 fi
+
+# Source Brew-installed Ruby into Path
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"

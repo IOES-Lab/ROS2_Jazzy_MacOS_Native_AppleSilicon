@@ -179,10 +179,11 @@ echo -e "\033[36m> Packages installation with PIP completed.\033[0m"
 
 # Set Environment Variables of Brew packages
 echo -e "\033[36m> Setting Environment Variables of Brew packages...\033[0m"
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 export CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/homebrew/opt/dartsim@6.10.0
 export DYLD_FALLBACK_LIBRARY_PATH=${DYLD_FALLBACK_LIBRARY_PATH}:/opt/homoebrew/opt/dartsim@6.10.0/lib:/opt/homebrew/opt/octomap/local
 export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:/opt/homebrew/opt/dartsim@6.10.0/lib/pkgconfig
-export CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/homebrew/opt/qt@5
+export CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/homebrew/opt/qt@5:/opt/homebrew/opt/qt@5/lib/cmake
 
 # Install XQuartz
 brew install xquartz --cask
@@ -244,7 +245,9 @@ printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # ------------------------------------------------------------------------------
 if ! python3.11 -m colcon build \
     --cmake-args -DBUILD_TESTING=OFF -DCMAKE_MACOSX_RPATH=FALSE -DBUILD_DOCS=OFF \
-    -DPython3_EXECUTABLE="$HOME/$VIRTUAL_ENV_ROOT/bin/python3" -Wno-dev \
+    -DPython3_EXECUTABLE="$HOME/$VIRTUAL_ENV_ROOT/bin/python3" \
+    -DCMAKE_OSX_ARCHITECTURES=arm64 \
+    -Wno-dev \
     --event-handlers console_cohesion+ --merge-install;
 then
     echo -e "\033[31m❌ Error: Build failed, aborting script.\033[0m"
