@@ -394,6 +394,8 @@ python3 -m colcon build --symlink-install --cmake-args -DBUILD_TESTING=OFF -Wno-
              --packages-skip-by-dep python_qt_binding --packages-up-to cyclonedds \
              --event-handlers console_cohesion+
 # Confirm message
+echo -e "\033[36m> Don't panic. It's correct that above colcon build to fail.\033[0m"
+echo -e "\033[36m> It was for generation build structure to apply patches.\033[0m\n"
 echo -e "\033[36m> ROS2 Jazzy Source Code Download and Preparation Completed.\033[0m"
 
 # ------------------------------------------------------------------------------
