@@ -581,8 +581,10 @@ fi
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     echo -e "\033[36m> Installing Gazebo Harmonic...\033[0m"
     # shellcheck disable=SC2086
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/gz_install.sh)" \
-        -- -r $ROS_INSTALL_ROOT -v $VIRTUAL_ENV_ROOT
+    # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/gz_install.sh)" \
+    #     -- -r $ROS_INSTALL_ROOT -v $VIRTUAL_ENV_ROOT
+    brew tap osrf/simulation
+    brew install gz-harmonic
 fi
 
 popd || exit
