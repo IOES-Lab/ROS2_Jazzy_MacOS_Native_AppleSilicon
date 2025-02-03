@@ -166,9 +166,9 @@ trap 'echo -e "\033[31m\nInstallation aborted.\033[0m"; exit' SIGINT
 
 # Check if the script is running in a GitHub Actions workflow
 if [[ -z "$GITHUB_ACTIONS" ]]; then
-    # Prompt the user and wait for a response with a timeout of 10 seconds
-    echo -e '\033[96m\n💡 The installation will continue automatically in 10 seconds unless you respond. \033[0m'
-    read -p $'\033[96m   Do you want to proceed now? [y/n]: \033[0m' -n 1 -r -t 10 response
+    # Prompt the user and wait for a response with a timeout of 20 seconds
+    echo -e '\033[96m\n💡 The installation will continue automatically in 20 seconds unless you respond. \033[0m'
+    read -p $'\033[96m   Do you want to proceed now? [y/n]: \033[0m' -n 1 -r -t 20 response
     echo # Move to a new line after the user input
 
     # Default to 'y' if no response is given within the timeout
@@ -560,9 +560,9 @@ trap 'echo -e "\033[31m\nInstallation aborted.\033[0m"; exit' SIGINT
 
 # Check if the script is running in a GitHub Actions workflow
 if [[ -z "$GITHUB_ACTIONS" ]]; then
-    # Prompt the user and wait for a response with a timeout of 10 seconds
-    echo -e '\033[96m\n💡 The installation will continue automatically in 10 seconds unless you respond. \033[0m'
-    read -p $'\033[96m   Do you want to proceed now? [y/n]: \033[0m' -n 1 -r -t 10 response
+    # Prompt the user and wait for a response with a timeout of 20 seconds
+    echo -e '\033[96m\n💡 The installation will continue automatically in 20 seconds unless you respond. \033[0m'
+    read -p $'\033[96m   Do you want to proceed now? [y/n]: \033[0m' -n 1 -r -t 20 response
     echo # Move to a new line after the user input
 
     # Default to 'y' if no response is given within the timeout
