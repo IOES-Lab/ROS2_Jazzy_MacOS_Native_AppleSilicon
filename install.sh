@@ -145,7 +145,7 @@ echo "|                                                                         
 echo "| 👋 Welcome to the Instllation of ROS2 Jazzy on MacOS(Apple Silicon)  🚧 |"
 echo "| 🍎 (Apple Silicon)+🤖 = 🚀❤️🤩🎉🥳                                       |"
 echo "|                                                                         |"
-echo "|  First created at 2024.6.15       by Choi Woen-Sug(Github:woensug-choi) |"
+echo "|                                   by Choi Woen-Sug(Github:woensug-choi) |"
 echo "▣-------------------------------------------------------------------------▣"
 echo -e "| Current Installer Version Hash : \033[94m$LATEST_COMMIT_DATE ($LATEST_COMMIT_HASH)\033[0m   \033[32m"
 echo -e "| Target Jazzy Release Version   :" "\033[94m$JAZZY_RELEASE_TAG\033[0m"
@@ -159,7 +159,8 @@ echo -e "\033[0m"
 echo -e "Source code at: "
 echo -e "https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/install.sh\n"
 echo -e "\033[33m⚠️  WARNING: The FAN WILL BURST out and make macbook to take off. Be warned!\033[0m"
-echo -e "\033[33m         To terminate at any process, press Ctrl+C.\033[0m"
+echo -e "\033[33m            It will take upto 30 minutes depending on hardware and network.\033[0m"
+echo -e "\033[33m            To terminate at any process, press Ctrl+C.\033[0m"
 
 # Trap SIGINT (Ctrl+C) and exit cleanly
 trap 'echo -e "\033[31m\nInstallation aborted.\033[0m"; exit' SIGINT
@@ -194,7 +195,7 @@ echo -e "Checking System Requirements..."
 # Check XCode installation"
 if [ ! -e "/Applications/Xcode.app/Contents/Developer" ]; then
     echo -e "\033[31m❌ Error: Xcode is not installed. Please install Xcode through the App Store."
-    echo -e "\033[31m       You can download it from: https://apps.apple.com/app/xcode/id497799835\033[0m"
+    echo -e "\033[31m          You can download it from: https://apps.apple.com/app/xcode/id497799835\033[0m"
     exit 1
 else
     echo -e "\033[36m> Xcode installation confirmed\033[0m"
@@ -358,8 +359,8 @@ fi
 
 # Get ROS2 Jazzy Source Code (Jazzy-Release Version of $JAZZY_RELEASE_TAG)
 echo -e "\033[36m\n> Getting ROS2 Jazzy Source Code (Jazzy-Release tag of $JAZZY_RELEASE_TAG)...\033[0m"
-echo -e "As long as the spinner at of the terminal is running, it is downloading the source code. It does take long."
-echo -e "If you see 'E' in the progress, it means the download failed (slow connection does this), it will try again."
+echo -e "As long as the spinner at of the terminal is running, it is downloading the source code."
+echo -e "'E' in the progress means that the download has failed (slow connection?), it will try again."
 echo -e "If it takes too long, please check your network connection and try again. To cancel, Ctrl+C."
 echo -e "\033[33mSTART----------------------------------    DOWNLOADING...  ---------------------------------------------END\033[0m"
 
