@@ -1,6 +1,6 @@
 # Install ROS-Gazebo(Jazzy-Harmonic) Framework natively on Apple Silicon Macbooks
 
-  - [![Build on macOS](https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/actions/workflows/build.yml/badge.svg)](https://github.com/IOES-Lab/dave/actions/workflows/build.yml)
+  - [![Build on macOS](https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/actions/workflows/build.yml/badge.svg)](https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/actions/workflows/build.yml)
 
 ## One-liner installation code (🍎 (Apple Silicon) + 🤖 = 🚀❤️🤩🎉🥳)
 - Copy and paste it on terminal
