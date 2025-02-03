@@ -456,6 +456,12 @@ curl -sSL \
   https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/rosbag2_transport.patch \
   | patch -p1 -Ns
 
+# Patch for fastrtps
+echo -e "\033[36m> Applying patch for fastrtps of Fast-DDS ...\033[0m"
+curl -sSL \
+  https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/fastrtps.patch \
+  | patch -p1 -Ns
+
 # Fix brew linking of qt5
 echo -e "\033[36m> Fixing brew linking of qt5...\033[0m"
 brew unlink qt && brew link qt@5
