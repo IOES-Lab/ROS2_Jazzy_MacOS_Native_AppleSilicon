@@ -62,6 +62,8 @@ LATEST_COMMIT_HASH=$(curl -s "https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Nativ
         head -n 1 | \
         cut -d'/' -f2 | \
         cut -c1-7)
+LATEST_COMMIT_DATE=$(curl -s "https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/commits/main" | \
+        grep -o 'title":"[A-Za-z]\{3\} [0-9]\{1,2\}, [0-9]\{4\}' | head -n 1 | sed 's/title":"//')
 
 # ------------------------------------------------------------------------------
 # Initiation
@@ -85,7 +87,7 @@ echo "| 🍎 (Apple Silicon)+🤖 = 🚀❤️🤩🎉🥳                      
 echo "|                                                                         |"
 echo "|  First created at 2024.6.15       by Choi Woen-Sug(Github:woensug-choi) |"
 echo "▣-------------------------------------------------------------------------▣"
-echo -e "| Current Installer Version Hash : \033[94m$LATEST_COMMIT_HASH\033[0m   \033[32m"
+echo -e "| Current Installer Version Hash : \033[94m$LATEST_COMMIT_DATE($LATEST_COMMIT_HASH)\033[0m   \033[32m"
 echo -e "| Target Installation Directory  :" "\033[94m$HOME/$GZ_INSTALL_ROOT\033[0m"
 echo -e "\033[32m|\033[0m Virtual Environment Directory  :" "\033[94m$HOME/$VIRTUAL_ENV_ROOT\033[0m"
 echo -e "\033[32m▣-------------------------------------------------------------------------▣\033[0m"
