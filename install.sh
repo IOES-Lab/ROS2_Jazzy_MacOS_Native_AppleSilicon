@@ -392,7 +392,7 @@ echo -e "\033[36m  Only for generating compile output structure, not for actual 
 python3 -m colcon build --symlink-install --cmake-args -DBUILD_TESTING=OFF -Wno-dev \
              -Wno-sign-conversion -Wno-infinite-recursion \
              --packages-skip-by-dep python_qt_binding --packages-up-to cyclonedds \
-             --event-handlers console_cohesion+
+             --event-handlers console_cohesion+ || true
 # Confirm message
 echo -e "\033[36m> Don't panic. It's correct that above colcon build to fail.\033[0m"
 echo -e "\033[36m> It was for generation build structure to apply patches.\033[0m\n"
