@@ -552,8 +552,14 @@ echo
 echo "To deactivate this workspace, run:"
 echo -e "\033[33mdeactivate\033[0m"
 
-# Ask if user wants to install Gazebo Harmonic too (gz_install.sh)
-echo -e "\n\n\033[32mGazebo Harmonic is simulator that is LTS pair with ROS2 Jazzy\033[0m"
+# ------------------------------------------------------------------------------
+# Gazebo Installation 
+printf '\n\n\033[34m'; printf '=%.0s' {1..75}; printf '\033[0m\n'
+echo -e "\033[34m### [Optional] Gazebo Harmonic Installation\033[0m"
+printf '\033[34m%.0s=\033[0m' {1..75} && echo
+# ------------------------------------------------------------------------------
+# Ask if user wants to install Gazebo Harmonic too
+echo -e "\n\033[32mGazebo Harmonic is simulator that is LTS pair with ROS2 Jazzy\033[0m"
 
 # Trap SIGINT (Ctrl+C) and exit cleanly
 trap 'echo -e "\033[31m\nInstallation aborted.\033[0m"; exit' SIGINT
