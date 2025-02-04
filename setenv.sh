@@ -5,7 +5,7 @@
 source "$HOME/VIRTUAL_ENV_ROOT/bin/activate"
 
 # Add CMAKE path for Qt5
-CMAKE_PREFIX_PATH=$(brew --prefix qt@5)/lib:$(brew --prefix qt@5)/lib/cmake:/opt/homebrew/opt:${CMAKE_PREFIX_PATH}
+CMAKE_PREFIX_PATH=$(brew --prefix qt@5)/lib/cmake:/opt/homebrew/opt:${CMAKE_PREFIX_PATH}
 
 # Source ROS
 if [[ $SHELL == *"bash"* ]]; then

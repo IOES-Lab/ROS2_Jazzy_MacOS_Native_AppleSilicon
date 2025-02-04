@@ -1,4 +1,5 @@
 #!/bin/bash
+# ROS2 Jazzy Gazebo Harmonic Native Install for MacOS (Apple Silicon)
 ################################################################################
 ######### ROS2 Jazzy Gazebo Harmonic Install for MacOS (Apple Silicon) #########
 ################################################################################
@@ -462,7 +463,7 @@ curl -sSL \
 # Patch for fastrtps
 echo -e "\033[36m> Applying patch for fastrtps of Fast-DDS ...\033[0m"
 curl -sSL \
-  https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/version_update/patches/fastrtps.patch \
+  https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/fastrtps.patch \
   | patch -p1 -Ns
 
 # Fix brew linking of qt5
@@ -567,8 +568,12 @@ trap 'echo -e "\033[31m\nInstallation aborted.\033[0m"; exit' SIGINT
 
 # Check if the script is running in a GitHub Actions workflow
 if [[ -z "$GITHUB_ACTIONS" ]]; then
+    # Clear any pending keyboard input
+    # shellcheck disable=SC2034
+    stty -icanon min 0 time 0; read -t 0.1 -n 10000 discard; stty icanon
+
     # Prompt the user and wait for a response with a timeout of 20 seconds
-    echo -e '\033[96m\n💡 The installation will continue automatically in 20 seconds unless you respond. \033[0m'
+    echo -e '\033[96m\n💡 The installation will continue automatically in 20 seconds.\033[0m'
     read -p $'\033[96m   Do you want to proceed now? [y/n]: \033[0m' -n 1 -r -t 20 response
     echo # Move to a new line after the user input
 
