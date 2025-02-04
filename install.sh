@@ -336,7 +336,7 @@ python3 -m pip install -U \
   flake8-docstrings flake8-import-order flake8-quotes \
   importlib-metadata jsonschema lark==1.1.1 lxml matplotlib mock mypy==0.931 netifaces \
   nose pep8 psutil pydocstyle pydot pyparsing==2.4.7 \
-  pytest-mock rosdep rosdistro setuptools==59.6.0 vcstool2
+  pytest-mock rosdep rosdistro setuptools==59.6.0 vcstool2 setuptools
 python3 -m pip install \
   --config-settings="--global-option=build_ext" \
   --config-settings="--global-option=-I$(brew --prefix graphviz)/include/" \
