@@ -1,4 +1,5 @@
 #!/bin/bash
+# ROS2 Jazzy Gazebo Harmonic Native Install for MacOS (Apple Silicon)
 ################################################################################
 ######### ROS2 Jazzy Gazebo Harmonic Install for MacOS (Apple Silicon) #########
 ################################################################################
@@ -25,7 +26,7 @@
 # Also, need to make this script executable
 # chmod +x install.sh
 ################################################################################
-JAZZY_RELEASE_TAG_DEFAULT="release-jazzy-20240523" # you may change with option -t
+JAZZY_RELEASE_TAG_DEFAULT="release-jazzy-20241223" # you may change with option -t
 ROS_INSTALL_ROOT_DEFAULT="ros2_jazzy" # you may change with option -d
 VIRTUAL_ENV_ROOT_DEFAULT=".ros2_venv" # you may change with option -v
 # ------------------------------------------------------------------------------
@@ -121,6 +122,9 @@ LATEST_COMMIT_HASH=$(curl -s "https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Nativ
         head -n 1 | \
         cut -d'/' -f2 | \
         cut -c1-7)
+LATEST_COMMIT_DATE=$(curl -s "https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/commits/main" | \
+        grep -o 'title":"[A-Za-z]\{3\} [0-9]\{1,2\}, [0-9]\{4\}' | head -n 1 | sed 's/title":"//')
+
 
 # ------------------------------------------------------------------------------
 # Initiation
@@ -142,9 +146,9 @@ echo "|                                                                         
 echo "| 👋 Welcome to the Instllation of ROS2 Jazzy on MacOS(Apple Silicon)  🚧 |"
 echo "| 🍎 (Apple Silicon)+🤖 = 🚀❤️🤩🎉🥳                                       |"
 echo "|                                                                         |"
-echo "|  First created at 2024.6.15       by Choi Woen-Sug(Github:woensug-choi) |"
+echo "|                                   by Choi Woen-Sug(Github:woensug-choi) |"
 echo "▣-------------------------------------------------------------------------▣"
-echo -e "| Current Installer Version Hash : \033[94m$LATEST_COMMIT_HASH\033[0m   \033[32m"
+echo -e "| Current Installer Version Hash : \033[94m$LATEST_COMMIT_DATE ($LATEST_COMMIT_HASH)\033[0m   \033[32m"
 echo -e "| Target Jazzy Release Version   :" "\033[94m$JAZZY_RELEASE_TAG\033[0m"
 echo -e "\033[32m|\033[0m Target Installation Directory  :" "\033[94m$HOME/$ROS_INSTALL_ROOT\033[0m"
 echo -e "\033[32m|\033[0m Virtual Environment Directory  :" "\033[94m$HOME/$VIRTUAL_ENV_ROOT\033[0m"
@@ -156,16 +160,17 @@ echo -e "\033[0m"
 echo -e "Source code at: "
 echo -e "https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/install.sh\n"
 echo -e "\033[33m⚠️  WARNING: The FAN WILL BURST out and make macbook to take off. Be warned!\033[0m"
-echo -e "\033[33m         To terminate at any process, press Ctrl+C.\033[0m"
+echo -e "\033[33m            It will take upto 30 minutes depending on hardware and network.\033[0m"
+echo -e "\033[33m            To terminate at any process, press Ctrl+C.\033[0m"
 
 # Trap SIGINT (Ctrl+C) and exit cleanly
 trap 'echo -e "\033[31m\nInstallation aborted.\033[0m"; exit' SIGINT
 
 # Check if the script is running in a GitHub Actions workflow
 if [[ -z "$GITHUB_ACTIONS" ]]; then
-    # Prompt the user and wait for a response with a timeout of 10 seconds
-    echo -e '\033[96m\n💡 The installation will continue automatically in 10 seconds unless you respond. \033[0m'
-    read -p $'\033[96m   Do you want to proceed now? [y/n]: \033[0m' -n 1 -r -t 10 response
+    # Prompt the user and wait for a response with a timeout of 20 seconds
+    echo -e '\033[96m\n💡 The installation will continue automatically in 20 seconds.\033[0m'
+    read -p $'\033[96m   Do you want to proceed now? [y/n]: \033[0m' -n 1 -r -t 20 response
     echo # Move to a new line after the user input
 
     # Default to 'y' if no response is given within the timeout
@@ -191,7 +196,7 @@ echo -e "Checking System Requirements..."
 # Check XCode installation"
 if [ ! -e "/Applications/Xcode.app/Contents/Developer" ]; then
     echo -e "\033[31m❌ Error: Xcode is not installed. Please install Xcode through the App Store."
-    echo -e "\033[31m       You can download it from: https://apps.apple.com/app/xcode/id497799835\033[0m"
+    echo -e "\033[31m          You can download it from: https://apps.apple.com/app/xcode/id497799835\033[0m"
     exit 1
 else
     echo -e "\033[36m> Xcode installation confirmed\033[0m"
@@ -298,10 +303,10 @@ brew install asio assimp bison bullet cmake console_bridge cppcheck \
 echo -e "\033[36m> Setting Environment Variables of Brew packages...(OPENSSL_ROOT_DIR, CMAKE_PREFIX_PATH, PATH)\033[0m"
 # shellcheck disable=SC2155
 export OPENSSL_ROOT_DIR=$(brew --prefix openssl@3)
-PATH_TO_QT5="/opt/homebrew/opt/qt@5"
 # shellcheck disable=SC2155
-export CMAKE_PREFIX_PATH=${PATH_TO_QT5}:$(brew --prefix qt@5)/lib:/opt/homebrew/opt:$(brew --prefix)/lib
-export PATH=$PATH:${PATH_TO_QT5}/bin
+export CMAKE_PREFIX_PATH=$(brew --prefix qt@5)/lib:$(brew --prefix qt@5)/lib/cmake:/opt/homebrew/opt:${CMAKE_PREFIX_PATH}
+# shellcheck disable=SC2155
+export PATH=$PATH:$(brew --prefix qt@5)/bin
 # Disable notification error on mac
 export COLCON_EXTENSION_BLOCKLIST=colcon_core.event_handler.desktop_notification
 
@@ -334,8 +339,8 @@ python3 -m pip install -U \
   pytest-mock rosdep rosdistro setuptools==59.6.0 vcstool
 python3 -m pip install \
   --config-settings="--global-option=build_ext" \
-  --config-settings="--global-option=-I/opt/homebrew/opt/graphviz/include/" \
-  --config-settings="--global-option=-L/opt/homebrew/opt/graphviz/lib/" \
+  --config-settings="--global-option=-I$(brew --prefix graphviz)/include/" \
+  --config-settings="--global-option=-L$(brew --prefix graphviz)/lib/" \
     pygraphviz
 
 # Confirm message
@@ -355,8 +360,8 @@ fi
 
 # Get ROS2 Jazzy Source Code (Jazzy-Release Version of $JAZZY_RELEASE_TAG)
 echo -e "\033[36m\n> Getting ROS2 Jazzy Source Code (Jazzy-Release tag of $JAZZY_RELEASE_TAG)...\033[0m"
-echo -e "As long as the spinner at of the terminal is running, it is downloading the source code. It does take long."
-echo -e "If you see 'E' in the progress, it means the download failed (slow connection does this), it will try again."
+echo -e "As long as the spinner at of the terminal is running, it is downloading the source code."
+echo -e "'E' in the progress means that the download has failed (slow connection?), it will try again."
 echo -e "If it takes too long, please check your network connection and try again. To cancel, Ctrl+C."
 echo -e "\033[33mSTART----------------------------------    DOWNLOADING...  ---------------------------------------------END\033[0m"
 
@@ -389,8 +394,10 @@ echo -e "\033[36m  Only for generating compile output structure, not for actual 
 python3 -m colcon build --symlink-install --cmake-args -DBUILD_TESTING=OFF -Wno-dev \
              -Wno-sign-conversion -Wno-infinite-recursion \
              --packages-skip-by-dep python_qt_binding --packages-up-to cyclonedds \
-             --event-handlers console_cohesion+
+             --event-handlers console_cohesion+ || true
 # Confirm message
+echo -e "\033[36m> Don't panic. It's correct that above colcon build to fail.\033[0m"
+echo -e "\033[36m> It was for generation build structure to apply patches.\033[0m\n"
 echo -e "\033[36m> ROS2 Jazzy Source Code Download and Preparation Completed.\033[0m"
 
 # ------------------------------------------------------------------------------
@@ -453,6 +460,12 @@ curl -sSL \
   https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/rosbag2_transport.patch \
   | patch -p1 -Ns
 
+# Patch for fastrtps
+echo -e "\033[36m> Applying patch for fastrtps of Fast-DDS ...\033[0m"
+curl -sSL \
+  https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/fastrtps.patch \
+  | patch -p1 -Ns
+
 # Fix brew linking of qt5
 echo -e "\033[36m> Fixing brew linking of qt5...\033[0m"
 brew unlink qt && brew link qt@5
@@ -486,8 +499,8 @@ if ! python3.11 -m colcon build  --symlink-install \
     -DINSTALL_EXAMPLES=ON \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
-    -DCMAKE_OSX_ARCHITECTURES="arm64" \
-    -DPython3_EXECUTABLE="$HOME/$VIRTUAL_ENV_ROOT/bin/python3" \
+    -DCMAKE_OSX_ARCHITECTURES=arm64 \
+    -DPython3_EXECUTABLE=$HOME/$VIRTUAL_ENV_ROOT/bin/python3 \
     -Wno-dev --event-handlers console_cohesion+;
     then
     echo -e "\033[31m❌ Error: Build failed, aborting script.\033[0m"
@@ -541,17 +554,23 @@ echo
 echo "To deactivate this workspace, run:"
 echo -e "\033[33mdeactivate\033[0m"
 
-# Ask if user wants to install Gazebo Harmonic too (gz_install.sh)
-echo -e "\n\n\033[32mGazebo Harmonic is simulator that is LTS pair with ROS2 Jazzy\033[0m"
+# ------------------------------------------------------------------------------
+# Gazebo Installation 
+printf '\n\n\033[34m'; printf '=%.0s' {1..75}; printf '\033[0m\n'
+echo -e "\033[34m### [Optional] Gazebo Harmonic Installation\033[0m"
+printf '\033[34m%.0s=\033[0m' {1..75} && echo
+# ------------------------------------------------------------------------------
+# Ask if user wants to install Gazebo Harmonic too
+echo -e "\n\033[32mGazebo Harmonic is simulator that is LTS pair with ROS2 Jazzy\033[0m"
 
 # Trap SIGINT (Ctrl+C) and exit cleanly
 trap 'echo -e "\033[31m\nInstallation aborted.\033[0m"; exit' SIGINT
 
 # Check if the script is running in a GitHub Actions workflow
 if [[ -z "$GITHUB_ACTIONS" ]]; then
-    # Prompt the user and wait for a response with a timeout of 10 seconds
-    echo -e '\033[96m\n💡 The installation will continue automatically in 10 seconds unless you respond. \033[0m'
-    read -p $'\033[96m   Do you want to proceed now? [y/n]: \033[0m' -n 1 -r -t 10 response
+    # Prompt the user and wait for a response with a timeout of 20 seconds
+    echo -e '\033[96m\n💡 The installation will continue automatically in 20 seconds.\033[0m'
+    read -p $'\033[96m   Do you want to proceed now? [y/n]: \033[0m' -n 1 -r -t 20 response
     echo # Move to a new line after the user input
 
     # Default to 'y' if no response is given within the timeout
@@ -570,8 +589,11 @@ fi
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     echo -e "\033[36m> Installing Gazebo Harmonic...\033[0m"
     # shellcheck disable=SC2086
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/gz_install.sh)" \
-        -- -r $ROS_INSTALL_ROOT -v $VIRTUAL_ENV_ROOT
+    # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/gz_install.sh)" \
+    #     -- -r $ROS_INSTALL_ROOT -v $VIRTUAL_ENV_ROOT
+    brew tap osrf/simulation
+    ulimit -n 4096
+    brew install gz-harmonic
 fi
 
 popd || exit

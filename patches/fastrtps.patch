@@ -1,0 +1,11 @@
+--- ./src/eProsima/Fast-DDS/CMakeLists.txt
++++ ./src/eProsima/Fast-DDS/CMakeLists.txt
+@@ -240,7 +240,7 @@
+ 
+ find_package(foonathan_memory REQUIRED)
+ message(STATUS "Found foonathan_memory: ${foonathan_memory_DIR}")
+-find_package(ThirdpartyBoost REQUIRED)
++include_directories(thirdparty/boost/include)
+ 
+ if(ANDROID)
+     if((ANDROID_PLATFORM LESS_EQUAL 23) OR (ANDROID_NATIVE_API_LEVEL LESS_EQUAL 23))

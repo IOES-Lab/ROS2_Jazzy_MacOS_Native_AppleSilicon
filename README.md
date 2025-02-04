@@ -1,11 +1,12 @@
 # Install ROS-Gazebo(Jazzy-Harmonic) Framework natively on Apple Silicon Macbooks
 
-  - [![Build on macOS](https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/actions/workflows/build.yml/badge.svg)](https://github.com/IOES-Lab/dave/actions/workflows/build.yml)
+  [![Build on macOS](https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/actions/workflows/build.yml/badge.svg)](https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/actions/workflows/build.yml)
 
 ## One-liner installation code (🍎 (Apple Silicon) + 🤖 = 🚀❤️🤩🎉🥳)
 - Copy and paste it on terminal
 
 ### For full installation (ROS2 Jazzy and Gazebo Harmonic, in order)
+- May take upto 45 minutes depending on your system. (took about 30 minutes with M3 Max MBP)
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/install.sh)"
@@ -53,21 +54,9 @@ The reasons for installing ROS2 Jazzy natively on Apple Silicon Macbooks are:
   6. Post Installation
     - Generate a config file in the workspace
     - Make source script
-### Gazebo Harmonic Installation (`gz_install.sh`)
-  1. Checking System Requirements
-    - Create a workspace for Gazebo Harmonic (default: `~/gz_harmonic`)
-    - Check the Python virtual environment
-  2. Install Dependencies
-    - Install Brew dependencies
-    - Install Python dependencies
-    - Set environmetnal variables for brew packages
-    - Install xquartz
-  3. Download Gazebo Harmonic Source Code
-    - Clone Gazebo Harmonic Source Code
-  4. Compile Gazebo Harmonic
-  5. Post Installation
-    - Read/append to the config file in the workspace
-    - Regenerate source script
+  
+### Gazebo Harmonic Installation
+  - Install the binary package provided by the OSRF with homebrew
 
 ## Notes
 - `eclipse-cyclonedds` is excluded from the installation process
@@ -76,6 +65,11 @@ The reasons for installing ROS2 Jazzy natively on Apple Silicon Macbooks are:
 
 ## For MAVROS
 - Visit https://github.com/IOES-Lab/ROS2_MAVROS_AppleSilicon
+
+## For Docker + Remote Desktop approach
+- The native install may give you chance to exploit maximum performance of the apple hardware but the ROS-Gazebo framework and related dependencies may cause issues constantly.
+- It's often very useful to use Docker-powered methods.
+- Visit [ROS2 Jazzy - Gazebo Humble Docker Installation Tutorial](https://dave-ros2.notion.site/Docker-Installation-Manual-efbf75623fc743e9b0e55c94c211a1dd#b581997fcbc0475697d6d021e7d26fb1)
 
 ## References: (None of below worked for me, so I made this script)
 - https://github.com/pfavr2/install_ros2_rolling_on_mac_m1
