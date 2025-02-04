@@ -1,0 +1,274 @@
+From e8dbc1f058a64b33666cfd36e5b42688e63f1ad7 Mon Sep 17 00:00:00 2001
+From: Woen-Sug Choi <woensug.choi@gmail.com>
+Date: Tue, 4 Feb 2025 12:34:26 +0900
+Subject: [PATCH] patch for ros jazzy
+
+---
+ ros_gz_bridge/CMakeLists.txt | 24 ++++++++++--------------
+ ros_gz_bridge/package.xml    |  7 ++++---
+ ros_gz_image/CMakeLists.txt  | 16 +++++++---------
+ ros_gz_image/package.xml     |  4 ++--
+ ros_gz_sim/CMakeLists.txt    | 29 +++++++++++++----------------
+ ros_gz_sim/package.xml       |  8 ++++----
+ ros_gz_sim_demos/package.xml |  2 +-
+ 7 files changed, 41 insertions(+), 49 deletions(-)
+
+diff --git a/ros_gz_bridge/CMakeLists.txt b/ros_gz_bridge/CMakeLists.txt
+index 4491157..393a7ad 100644
+--- a/ros_gz_bridge/CMakeLists.txt
++++ b/ros_gz_bridge/CMakeLists.txt
+@@ -13,14 +13,12 @@ endif()
+ find_package(ament_cmake REQUIRED)
+ find_package(rclcpp REQUIRED)
+ find_package(rclcpp_components REQUIRED)
+-find_package(yaml_cpp_vendor REQUIRED)
++# find_package(yaml_cpp_vendor REQUIRED)
+ find_package(yaml-cpp REQUIRED)
+ 
+-find_package(gz_transport_vendor REQUIRED)
+-find_package(gz-transport REQUIRED)
++find_package(gz-transport13 REQUIRED)
+ 
+-find_package(gz_msgs_vendor REQUIRED)
+-find_package(gz-msgs REQUIRED)
++find_package(gz-msgs10 REQUIRED)
+ 
+ # Install the python module for this package
+ ament_python_install_package(${PROJECT_NAME})
+@@ -99,8 +97,8 @@ add_library(${bridge_lib}
+ 
+ target_link_libraries(${bridge_lib}
+   PUBLIC
+-    gz-msgs::core
+-    gz-transport::core
++    gz-msgs10::core
++    gz-transport13::core
+   PRIVATE
+     yaml-cpp::yaml-cpp
+ )
+@@ -176,7 +174,7 @@ if(BUILD_TESTING)
+     ${PROJECT_SOURCE_DIR}/src/convert/rcl_interfaces_TEST.cpp
+   )
+   target_link_libraries(test_rcl_interfaces
+-    gz-msgs::core
++    gz-msgs10::core
+     ${rcl_interfaces_TARGETS}
+     gtest
+     gtest_main
+@@ -211,8 +209,8 @@ if(BUILD_TESTING)
+   )
+   target_link_libraries(test_utils
+     ${GTEST_LIBRARIES}
+-    gz-msgs::core
+-    gz-transport::core
++    gz-msgs10::core
++    gz-transport13::core
+   )
+   ament_target_dependencies(test_utils
+     rclcpp
+@@ -324,10 +322,8 @@ ament_export_targets(export_${PROJECT_NAME})
+ # specific order: dependents before dependencies
+ ament_export_dependencies(rclcpp)
+ ament_export_dependencies(rclcpp_components)
+-ament_export_dependencies(gz_msgs_vendor)
+-ament_export_dependencies(gz-msgs)
+-ament_export_dependencies(gz_transport_vendor)
+-ament_export_dependencies(gz-transport)
++ament_export_dependencies(gz-msgs10)
++ament_export_dependencies(gz-transport13)
+ ament_export_dependencies(${BRIDGE_MESSAGE_TYPES})
+ 
+ ament_package()
+diff --git a/ros_gz_bridge/package.xml b/ros_gz_bridge/package.xml
+index 49cf0e6..87b0a4f 100644
+--- a/ros_gz_bridge/package.xml
++++ b/ros_gz_bridge/package.xml
+@@ -32,11 +32,12 @@
+   <depend>std_msgs</depend>
+   <depend>tf2_msgs</depend>
+   <depend>trajectory_msgs</depend>
+-  <depend>yaml_cpp_vendor</depend>
++  <!-- <depend>yaml_cpp_vendor</depend> -->
++  <depend>yaml-cpp</depend>
+   <depend>vision_msgs</depend>
+ 
+-  <depend>gz_msgs_vendor</depend>
+-  <depend>gz_transport_vendor</depend>
++  <depend>gz-msgs10</depend>
++  <depend>gz-transport13</depend>
+ 
+   <test_depend>ament_cmake_gtest</test_depend>
+   <test_depend>ament_lint_auto</test_depend>
+diff --git a/ros_gz_image/CMakeLists.txt b/ros_gz_image/CMakeLists.txt
+index e6e8de2..27ac546 100644
+--- a/ros_gz_image/CMakeLists.txt
++++ b/ros_gz_image/CMakeLists.txt
+@@ -16,11 +16,9 @@ find_package(ros_gz_bridge REQUIRED)
+ find_package(rclcpp REQUIRED)
+ find_package(sensor_msgs REQUIRED)
+ 
+-find_package(gz_transport_vendor REQUIRED)
+-find_package(gz-transport REQUIRED)
++find_package(gz-transport13 REQUIRED)
+ 
+-find_package(gz_msgs_vendor REQUIRED)
+-find_package(gz-msgs REQUIRED)
++find_package(gz-msgs10 REQUIRED)
+ 
+ include_directories(include)
+ 
+@@ -33,8 +31,8 @@ add_executable(${executable}
+ )
+ 
+ target_link_libraries(${executable}
+-  gz-msgs::core
+-  gz-transport::core
++  gz-msgs10::core
++  gz-transport13::core
+ )
+ 
+ ament_target_dependencies(${executable}
+@@ -69,7 +67,7 @@ if(BUILD_TESTING)
+   #   target_link_libraries(${test_publisher}_image
+   #     ${catkin_LIBRARIES}
+   #     $gz-msgs$::core
+-  #     $gz-transport::core
++  #     $gz-transport13::core
+   #     gtest
+   #     gtest_main
+   #   )
+@@ -81,8 +79,8 @@ if(BUILD_TESTING)
+   #     test/subscribers/${test_subscriber}.cpp)
+   #   target_link_libraries(test_${test_subscriber}_image
+   #     ${catkin_LIBRARIES}
+-  #     $gz-msgs::core
+-  #     $gz-transport::core
++  #     $gz-msgs10::core
++  #     $gz-transport13::core
+   #   )
+   # endforeach(test_subscriber)
+ endif()
+diff --git a/ros_gz_image/package.xml b/ros_gz_image/package.xml
+index 54474da..0a87906 100644
+--- a/ros_gz_image/package.xml
++++ b/ros_gz_image/package.xml
+@@ -16,8 +16,8 @@
+   <depend>rclcpp</depend>
+   <depend>sensor_msgs</depend>
+ 
+-  <depend>gz_msgs_vendor</depend>
+-  <depend>gz_transport_vendor</depend>
++  <depend>gz-msgs10</depend>
++  <depend>gz-transport13</depend>
+ 
+   <test_depend>ament_lint_auto</test_depend>
+   <test_depend>ament_lint_common</test_depend>
+diff --git a/ros_gz_sim/CMakeLists.txt b/ros_gz_sim/CMakeLists.txt
+index dc8deb0..901f3c2 100644
+--- a/ros_gz_sim/CMakeLists.txt
++++ b/ros_gz_sim/CMakeLists.txt
+@@ -16,17 +16,14 @@ find_package(rclcpp_components REQUIRED)
+ find_package(rcpputils REQUIRED)
+ find_package(std_msgs REQUIRED)
+ 
+-find_package(gz_math_vendor REQUIRED)
+-find_package(gz-math REQUIRED)
++find_package(gz-math7 REQUIRED)
+ 
+-find_package(gz_transport_vendor REQUIRED)
+-find_package(gz-transport REQUIRED)
++find_package(gz-transport13 REQUIRED)
+ 
+-find_package(gz_msgs_vendor REQUIRED)
+-find_package(gz-msgs REQUIRED)
++find_package(gz-msgs10 REQUIRED)
++
++find_package(gz-sim8 REQUIRED)
+ 
+-find_package(gz_sim_vendor REQUIRED)
+-find_package(gz-sim REQUIRED)
+ # Needed in launch/gz_sim.launch.py.in
+ set(GZ_SIM_VER ${gz-sim_VERSION_MAJOR})
+ 
+@@ -45,9 +42,9 @@ ament_target_dependencies(create
+ )
+ target_link_libraries(create
+   gflags
+-  gz-math::core
+-  gz-msgs::core
+-  gz-transport::core
++  gz-math7::core
++  gz-msgs10::core
++  gz-transport13::core
+   rcpputils::rcpputils
+ )
+ 
+@@ -58,8 +55,8 @@ ament_target_dependencies(remove
+ )
+ 
+ target_link_libraries(remove
+-  gz-msgs::core
+-  gz-transport::core
++  gz-msgs10::core
++  gz-transport13::core
+ )
+ 
+ add_library(${PROJECT_NAME} SHARED src/Stopwatch.cpp)
+@@ -84,7 +81,7 @@ ament_target_dependencies(gzserver_component
+   std_msgs
+ )
+ target_link_libraries(gzserver_component
+-  gz-sim::core
++  gz-sim8::core
+ )
+ ament_target_dependencies(gzserver_component std_msgs)
+ rclcpp_components_register_node(
+@@ -181,11 +178,11 @@ if(BUILD_TESTING)
+     ${PROJECT_NAME}
+   )
+   target_link_libraries(test_create
+-    gz-transport::core
++    gz-transport13::core
+   )
+ 
+   target_link_libraries(test_remove
+-    gz-transport::core
++    gz-transport13::core
+   )
+ 
+   install(
+diff --git a/ros_gz_sim/package.xml b/ros_gz_sim/package.xml
+index 0f9b908..1698615 100644
+--- a/ros_gz_sim/package.xml
++++ b/ros_gz_sim/package.xml
+@@ -26,10 +26,10 @@
+   <depend>rcpputils</depend>
+   <depend>std_msgs</depend>
+ 
+-  <depend>gz_math_vendor</depend>
+-  <depend>gz_msgs_vendor</depend>
+-  <depend>gz_sim_vendor</depend>
+-  <depend>gz_transport_vendor</depend>
++  <depend>gz-math7</depend>
++  <depend>gz-msgs10</depend>
++  <depend>gz-sim8</depend>
++  <depend>gz-transport13</depend>
+ 
+   <test_depend>ament_lint_auto</test_depend>
+   <test_depend>ament_lint_common</test_depend>
+diff --git a/ros_gz_sim_demos/package.xml b/ros_gz_sim_demos/package.xml
+index 27fc980..b1716f3 100644
+--- a/ros_gz_sim_demos/package.xml
++++ b/ros_gz_sim_demos/package.xml
+@@ -10,7 +10,7 @@
+ 
+   <buildtool_depend>ament_cmake</buildtool_depend>
+ 
+-  <depend>gz_sim_vendor</depend>
++  <depend>gz-sim8</depend>
+ 
+   <exec_depend>image_transport_plugins</exec_depend>
+   <exec_depend>robot_state_publisher</exec_depend>
+-- 
+2.39.5 (Apple Git-154)
+

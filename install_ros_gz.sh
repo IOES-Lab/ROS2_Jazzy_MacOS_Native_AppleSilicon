@@ -12,6 +12,18 @@ export GZ_VERSION=harmonic
 cd "$ROS_INSTALL_ROOT/src" || exit
 git clone --branch 1.0.8 https://github.com/gazebosim/ros_gz.git
 
+# -------- Clone other dependency packages
+git clone https://github.com/swri-robotics/gps_umd.git
+git clone https://github.com/ros-perception/vision_msgs.git
+git clone https://github.com/rudislabs/actuator_msgs.git
+
+# -------- Patch ROS_GZ source (remove vendor package)
+cd ros_gz || exit
+curl -sSL \
+  https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/ros_gz/patches/0001-patch-for-ros-jazzy.patch \
+  -o 0001-patch-for-ros-jazzy.patch
+git apply 0001-patch-for-ros-jazzy.patch
+
 # -------- Build ROS_GZ
 cd "$ROS_INSTALL_ROOT" || exit
 # shellcheck disable=SC2086

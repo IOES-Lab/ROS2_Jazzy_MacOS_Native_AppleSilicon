@@ -297,7 +297,7 @@ printf '\033[34m%.0s=\033[0m' {1..75} && echo
 echo -e "\033[36m> Installing ROS2 dependencies with Brew...\033[0m"
 brew install asio assimp bison bullet cmake console_bridge cppcheck \
   cunit eigen freetype graphviz opencv openssl orocos-kdl pcre poco \
-  pyqt@5 python@3.11 qt@5 sip spdlog tinyxml tinyxml2
+  pyqt@5 python@3.12 qt@5 sip spdlog tinyxml tinyxml2
 
 # Set Environment Variables of Brew packages
 echo -e "\033[36m> Setting Environment Variables of Brew packages...(OPENSSL_ROOT_DIR, CMAKE_PREFIX_PATH, PATH)\033[0m"
@@ -313,21 +313,21 @@ export COLCON_EXTENSION_BLOCKLIST=colcon_core.event_handler.desktop_notification
 # Confirm message
 echo -e "\033[36m\n> Packages installation with Brew completed.\033[0m"
 
-# Check Python3.11 installation
-if ! python3.11 --version > /dev/null 2>&1; then
-    echo -e "\033[31m❌ Error: Python3.11 installation failed. Please check the installation.\033[0m"
+# Check python3.12 installation
+if ! python3.12 --version > /dev/null 2>&1; then
+    echo -e "\033[31m❌ Error: python3.12 installation failed. Please check the installation.\033[0m"
     exit 1
 fi
-# Generate Python3.11 virtual environment
-echo -e "\033[36m> Generating Python3.11 virtual environment at $HOME/$VIRTUAL_ENV_ROOT\033[0m"
-python3.11 -m venv "$HOME/$VIRTUAL_ENV_ROOT"
+# Generate python3.12 virtual environment
+echo -e "\033[36m> Generating python3.12 virtual environment at $HOME/$VIRTUAL_ENV_ROOT\033[0m"
+python3.12 -m venv "$HOME/$VIRTUAL_ENV_ROOT"
 
-# Activate Python3.11 virtual environment
+# Activate python3.12 virtual environment
 # shellcheck disable=SC1091,SC1090
 source "$HOME/$VIRTUAL_ENV_ROOT"/bin/activate
 
-# Install Python3.11 dependencies with pip
-echo -e "\033[36m> Installing Python3.11 dependencies with PIP in virtual environment...\033[0m"
+# Install python3.12 dependencies with pip
+echo -e "\033[36m> Installing python3.12 dependencies with PIP in virtual environment...\033[0m"
 python3 -m pip install --upgrade pip
 python3 -m pip install -U \
   argcomplete catkin_pkg colcon-common-extensions coverage \
@@ -491,7 +491,7 @@ echo -e "\033[34m### [5/6] Building ROS2 Jazzy (This may take about 15 minutes)\
 printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # ------------------------------------------------------------------------------
 # if ! colcon build --symlink-install --cmake-args -DBUILD_TESTING=OFF -Wno-dev --packages-skip-by-dep python_qt_binding;
-if ! python3.11 -m colcon build  --symlink-install \
+if ! python3.12 -m colcon build  --symlink-install \
     --packages-skip-by-dep python_qt_binding \
     --cmake-args \
     --no-warn-unused-cli \
