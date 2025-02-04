@@ -281,7 +281,7 @@ mkdir -p "$HOME/$ROS_INSTALL_ROOT"/src
 chown -R "$USER": "$HOME/$ROS_INSTALL_ROOT" > /dev/null 2>&1
 
 # Move to working directory
-pushd "$HOME/$ROS_INSTALL_ROOT" || { 
+pushd "$HOME/$ROS_INSTALL_ROOT" > /dev/null 2>&1 || { 
     echo -e "\033[31m❌ Error: Failed to change to directory $HOME/$ROS_INSTALL_ROOT. \
     Please check if the directory exists and you have the necessary permissions.\033[0m"
     exit 1
