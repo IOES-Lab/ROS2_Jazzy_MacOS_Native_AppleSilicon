@@ -25,7 +25,7 @@
 # Also, need to make this script executable
 # chmod +x install.sh
 ################################################################################
-JAZZY_RELEASE_TAG_DEFAULT="release-jazzy-20240523" # you may change with option -t
+JAZZY_RELEASE_TAG_DEFAULT="release-jazzy-20241223" # you may change with option -t
 ROS_INSTALL_ROOT_DEFAULT="ros2_jazzy" # you may change with option -d
 VIRTUAL_ENV_ROOT_DEFAULT=".ros2_venv" # you may change with option -v
 # ------------------------------------------------------------------------------
