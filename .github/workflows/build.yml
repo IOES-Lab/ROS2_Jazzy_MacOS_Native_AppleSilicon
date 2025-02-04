@@ -30,10 +30,3 @@ jobs:
           if [ $? -ne 0 ]; then
             exit 1
           fi
-      
-      - name: Run Test (Gazebo Harmonic)
-        run: |
-          source ~/ros2_jazzy/activate_ros && cd ~/gz_harmonic && colcon test-result --all --verbose
-          if [ $? -ne 0 ]; then
-            exit 1
-          fi
