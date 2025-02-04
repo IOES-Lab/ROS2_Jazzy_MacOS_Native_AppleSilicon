@@ -4,6 +4,9 @@
 # shellcheck disable=SC1091
 source "$HOME/VIRTUAL_ENV_ROOT/bin/activate"
 
+# Add CMAKE path for Qt5
+CMAKE_PREFIX_PATH=$(brew --prefix qt@5)/lib/cmake:/opt/homebrew/opt:${CMAKE_PREFIX_PATH}
+
 # Source ROS
 if [[ $SHELL == *"bash"* ]]; then
     # shellcheck disable=SC1091
@@ -20,5 +23,5 @@ else
     exit 1
 fi
 
-# Source Brew-installed Ruby into Path
-export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+# Start ROS2 Daemon
+ros2 daemon start
