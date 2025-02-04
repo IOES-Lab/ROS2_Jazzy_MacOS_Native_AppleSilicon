@@ -54,21 +54,9 @@ The reasons for installing ROS2 Jazzy natively on Apple Silicon Macbooks are:
   6. Post Installation
     - Generate a config file in the workspace
     - Make source script
-### Gazebo Harmonic Installation (`gz_install.sh`)
-  1. Checking System Requirements
-    - Create a workspace for Gazebo Harmonic (default: `~/gz_harmonic`)
-    - Check the Python virtual environment
-  2. Install Dependencies
-    - Install Brew dependencies
-    - Install Python dependencies
-    - Set environmetnal variables for brew packages
-    - Install xquartz
-  3. Download Gazebo Harmonic Source Code
-    - Clone Gazebo Harmonic Source Code
-  4. Compile Gazebo Harmonic
-  5. Post Installation
-    - Read/append to the config file in the workspace
-    - Regenerate source script
+  
+### Gazebo Harmonic Installation
+  - Install the binary package provided by the OSRF with homebrew
 
 ## Notes
 - `eclipse-cyclonedds` is excluded from the installation process
