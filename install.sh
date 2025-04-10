@@ -26,7 +26,7 @@
 # Also, need to make this script executable
 # chmod +x install.sh
 ################################################################################
-JAZZY_RELEASE_TAG_DEFAULT="release-jazzy-20240523" # you may change with option -t
+JAZZY_RELEASE_TAG_DEFAULT="release-jazzy-20250407" # you may change with option -t
 ROS_INSTALL_ROOT_DEFAULT="ros2_jazzy" # you may change with option -d
 VIRTUAL_ENV_ROOT_DEFAULT=".ros2_venv" # you may change with option -v
 # ------------------------------------------------------------------------------
@@ -295,7 +295,7 @@ printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # ------------------------------------------------------------------------------
 # Installing ros2 dependencies with brew
 echo -e "\033[36m> Installing ROS2 dependencies with Brew...\033[0m"
-brew install asio assimp bison bullet cmake console_bridge cppcheck \
+brew install asio assimp bison bullet console_bridge cppcheck \
   cunit eigen freetype graphviz opencv openssl orocos-kdl pcre poco \
   pyqt@5 python@3.11 qt@5 sip spdlog tinyxml tinyxml2
 
@@ -336,7 +336,7 @@ python3 -m pip install -U \
   flake8-docstrings flake8-import-order flake8-quotes \
   importlib-metadata jsonschema lark==1.1.1 lxml matplotlib mock mypy==0.931 netifaces \
   nose pep8 psutil pydocstyle pydot pyparsing==2.4.7 \
-  pytest-mock rosdep rosdistro setuptools==59.6.0 vcstool
+  pytest-mock rosdep rosdistro setuptools==59.6.0 vcstool cmake==3.31.6
 python3 -m pip install \
   --config-settings="--global-option=build_ext" \
   --config-settings="--global-option=-I$(brew --prefix graphviz)/include/" \

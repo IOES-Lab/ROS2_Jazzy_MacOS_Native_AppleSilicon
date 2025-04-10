@@ -2,6 +2,12 @@
 
   [![Build on macOS](https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/actions/workflows/build.yml/badge.svg)](https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/actions/workflows/build.yml)
 
+## Tested environment
+- MacOS Sequoia 14.5
+
+## Requirements
+- > `CURRENTLY ONLY XCODE VERSION 16.2 WORKS!` (16.3 is default bundle with macOS 14.5). You need to downgrade to 16.2. To do so, follow instruction at https://www.antonseagull.com/post/how-to-downgrade-xcode
+
 ## One-liner installation code (🍎 (Apple Silicon) + 🤖 = 🚀❤️🤩🎉🥳)
 - Copy and paste it on terminal
 
@@ -15,7 +21,7 @@
 ## Introduction
 This is the source code behind the one-line installation command to install ROS2 Jazzy and Gazebo Harmonic on Apple Silicon Macbooks.
 
-Tested and designed on macOS Sonoma 14.5 with an Apple M3 chip (36 GB), it took about 15 minutes each to install ROS2 Jazzy and Gazebo Harmonic.
+Tested on an Apple M3 chip (36 GB), it took about 15 minutes each to install ROS2 Jazzy and Gazebo Harmonic.
 
 The reasons for installing ROS2 Jazzy natively on Apple Silicon Macbooks are:
 - Faster performance
@@ -51,6 +57,7 @@ The reasons for installing ROS2 Jazzy natively on Apple Silicon Macbooks are:
   
 ### Gazebo Harmonic Installation
   - Install the binary package provided by the OSRF with homebrew
+  - If fails, try reinstall with `brew reinstall $(brew deps gz-harmonic) gz-harmonic`
 
 ## Notes
 - `eclipse-cyclonedds` is excluded from the installation process
