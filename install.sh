@@ -203,14 +203,18 @@ else
 fi
 
 # Check Xcode version
-XCODE_VERSION=$(xcodebuild -version | grep '^Xcode\s' | sed -E 's/^Xcode[[:space:]]+([0-9\.]+)/\1/')
-if [ "$XCODE_VERSION" != "16.2" ]; then
-    echo -e "\033[31m❌ Error: Xcode version $XCODE_VERSION is installed. This script requires Xcode version 16.2.\033[0m"
-    echo -e "\033[33m💡 Please follow the guide to downgrade Xcode to version 16.2:\033[0m"
-    echo -e "\033[34m   https://www.antonseagull.com/post/how-to-downgrade-xcode\033[0m"
-    exit 1
+if [[ -z "$GITHUB_ACTIONS" ]]; then
+    XCODE_VERSION=$(xcodebuild -version | grep '^Xcode\s' | sed -E 's/^Xcode[[:space:]]+([0-9\.]+)/\1/')
+    if [ "$XCODE_VERSION" != "16.2" ]; then
+        echo -e "\033[31m❌ Error: Xcode version $XCODE_VERSION is installed. This script requires Xcode version 16.2.\033[0m"
+        echo -e "\033[33m💡 Please follow the guide to downgrade Xcode to version 16.2:\033[0m"
+        echo -e "\033[34m   https://www.antonseagull.com/post/how-to-downgrade-xcode\033[0m"
+        exit 1
+    else
+        echo -e "\033[36m> Xcode version 16.2 confirmed\033[0m"
+    fi
 else
-    echo -e "\033[36m> Xcode version 16.2 confirmed\033[0m"
+    echo -e "\033[33m⚠️  Skipping Xcode version check in GitHub Actions.\033[0m"
 fi
 
 # Check if the Xcode path is correct
