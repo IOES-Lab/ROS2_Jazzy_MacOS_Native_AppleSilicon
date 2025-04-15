@@ -295,9 +295,15 @@ printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # ------------------------------------------------------------------------------
 # Installing ros2 dependencies with brew
 echo -e "\033[36m> Installing ROS2 dependencies with Brew...\033[0m"
-brew install asio assimp bison bullet console_bridge cppcheck \
+brew install assimp bison bullet console_bridge cppcheck \
   cunit eigen freetype graphviz opencv openssl orocos-kdl pcre poco \
   pyqt@5 python@3.11 qt@5 sip spdlog tinyxml tinyxml2
+
+# Install asio 1.30.2 maually
+brew unlink asio > /dev/null 2>&1 && brew uninstall asio > /dev/null 2>&1
+wget https://raw.githubusercontent.com/Homebrew/homebrew-core/502489d3a4c1ca0a3854830eb5da2327b6feb54d/Formula/a/asio.rb > /dev/null 2>&1
+brew install asio.rb && rm asio.rb
+brew unlink asio && brew link --force asio
 
 # Set Environment Variables of Brew packages
 echo -e "\033[36m> Setting Environment Variables of Brew packages...(OPENSSL_ROOT_DIR, CMAKE_PREFIX_PATH, PATH)\033[0m"
@@ -588,12 +594,12 @@ fi
 
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
     echo -e "\033[36m> Installing Gazebo Harmonic...\033[0m"
+    ulimit -n unlimited
     # shellcheck disable=SC2086
-    # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/gz_install.sh)" \
-    #     -- -r $ROS_INSTALL_ROOT -v $VIRTUAL_ENV_ROOT
-    brew tap osrf/simulation
-    ulimit -n 4096
-    brew install gz-harmonic
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/gz_install.sh)" \
+        -- -r $ROS_INSTALL_ROOT -v $VIRTUAL_ENV_ROOT
+    # brew tap osrf/simulation
+    # brew install gz-harmonic
 fi
 
 popd || exit
