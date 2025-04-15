@@ -299,52 +299,6 @@ if [ -f "$HOME/$ROS_INSTALL_ROOT/activate_ros" ]; then
 fi
 mv setenv_gz.sh "$HOME/$ROS_INSTALL_ROOT/activate_ros"
 
-# Check if 'ros' alias is set and verify its correctness
-if alias ros &> /dev/null; then
-    # Get the current alias value
-    CURRENT_ALIAS=$(alias ros | sed -E "s/alias ros='(.*)'/\1/")
-    EXPECTED_ALIAS="source $HOME/$ROS_INSTALL_ROOT/activate_ros"
-
-    if [ "$CURRENT_ALIAS" == "$EXPECTED_ALIAS" ]; then
-        echo -e "\033[32m✅ 'ros' alias is already set correctly.\033[0m"
-    else
-        echo -e "\033[33m⚠️  'ros' alias is set but points to a different location. Updating it...\033[0m"
-        # Determine the shell configuration file
-        if [ -n "$ZSH_VERSION" ]; then
-            SHELL_RC="$HOME/.zshrc"
-        elif [ -n "$BASH_VERSION" ]; then
-            SHELL_RC="$HOME/.bashrc"
-        elif [ -f "$HOME/.zprofile" ]; then
-            SHELL_RC="$HOME/.zprofile"
-        else
-            echo -e "\033[31m❌ Error: Unsupported shell. Please manually update the alias in your shell configuration file.\033[0m"
-            exit 1
-        fi
-
-        # Update the alias in the shell configuration file
-        sed -i '' "/alias ros=/d" "$SHELL_RC"
-        echo "alias ros='source $HOME/$ROS_INSTALL_ROOT/activate_ros'" >> "$SHELL_RC"
-        echo -e "\033[32m✅ 'ros' alias updated in $SHELL_RC. Please restart your terminal or run 'source $SHELL_RC' to apply changes.\033[0m"
-    fi
-else
-    echo -e "\033[33m⚠️  'ros' alias is not set. Adding it...\033[0m"
-    # Determine the shell configuration file
-    if [ -n "$ZSH_VERSION" ]; then
-        SHELL_RC="$HOME/.zshrc"
-    elif [ -n "$BASH_VERSION" ]; then
-        SHELL_RC="$HOME/.bashrc"
-    elif [ -f "$HOME/.zprofile" ]; then
-        SHELL_RC="$HOME/.zprofile"
-    else
-        echo -e "\033[31m❌ Error: Unsupported shell. Please manually add the alias to your shell configuration file.\033[0m"
-        exit 1
-    fi
-
-    # Add the alias to the shell configuration file
-    echo "alias ros='source $HOME/$ROS_INSTALL_ROOT/activate_ros'" >> "$SHELL_RC"
-    echo -e "\033[32m✅ 'ros' alias added to $SHELL_RC. Please restart your terminal or run 'source $SHELL_RC' to apply changes.\033[0m"
-fi
-
 # Print post messages
 printf '\033[32m%.0s=\033[0m' {1..75} && echo
 echo -e "\033[32m🎉 Done. Hurray! 🍎 (Apple Silicon) + 🤖 = 🚀❤️🤩🎉🥳 \033[0m"
@@ -358,7 +312,10 @@ echo -e "\033[31m(IMPORTANT, both terminals should have \033[0m'source $HOME/$VI
 echo -e "  [1st Terminal with ($VIRTUAL_ENV_ROOT)]\033[32m gz sim shapes.sdf -s \033[0m"
 echo -e "  [2nd Terminal with ($VIRTUAL_ENV_ROOT)]\033[32m gz sim -g \033[0m"
 printf '\033[32m%.0s=\033[0m' {1..75} && echo
-echo -e "You can start ROS2 Jazzy - Gazebo Harmonic framework by typing '\033[34mros\033[0m' in the terminal (new terminal)."
+echo "To make alias for fast start, run the following command to add to ~/.zprofile:"
+echo -e "\033[34mecho 'alias ros=\"source $HOME/$ROS_INSTALL_ROOT/activate_ros\"' >> ~/.zprofile && source ~/.zprofile\033[0m"
+echo
+echo -e "Then, you can start ROS2 Jazzy by typing '\033[34mros\033[0m' in the terminal (new terminal)."
 echo -e "You may change the alias name to your preference in above alias command."
 echo
 echo "To deactivate this workspace, run:"
