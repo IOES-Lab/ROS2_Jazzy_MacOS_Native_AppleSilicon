@@ -307,7 +307,7 @@ echo "To activate the new ROS2 Jazzy - Gazebo Harmonic framework, run the follow
 echo -e "\033[32msource $HOME/$ROS_INSTALL_ROOT/activate_ros\033[0m"
 echo -e "\nThen, try '\033[32mros2\033[0m' or '\033[32mrviz2\033[0m' in the terminal to start ROS2 Jazzy."
 echo -e "\nTo test gazebo, \033[33mrun following commands separately in two termianls (one for server(-s) and one for gui(-g))"
-echo -e "\033[31m(IMPORTANT, both terminals should have \033[0m'source $HOME/$VIRTUAL_ENV_ROOT/activate_ros'\033[31m activated)\033[0m"
+echo -e "\033[31m(IMPORTANT, You should run \033[0m'source $HOME/$ROS_INSTALL_ROOT/activate_ros'\033[31m on both terminals)\033[0m"
 # shellcheck disable=SC2016
 echo -e "  [1st Terminal with ($VIRTUAL_ENV_ROOT)]\033[32m gz sim shapes.sdf -s \033[0m"
 echo -e "  [2nd Terminal with ($VIRTUAL_ENV_ROOT)]\033[32m gz sim -g \033[0m"
