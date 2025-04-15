@@ -193,13 +193,24 @@ echo -e "\033[34m### [1/6] Checking System Requirements\033[0m"
 printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # ------------------------------------------------------------------------------
 echo -e "Checking System Requirements..."
-# Check XCode installation"
+# Check XCode installation
 if [ ! -e "/Applications/Xcode.app/Contents/Developer" ]; then
     echo -e "\033[31m❌ Error: Xcode is not installed. Please install Xcode through the App Store."
     echo -e "\033[31m          You can download it from: https://apps.apple.com/app/xcode/id497799835\033[0m"
     exit 1
 else
     echo -e "\033[36m> Xcode installation confirmed\033[0m"
+fi
+
+# Check Xcode version
+XCODE_VERSION=$(xcodebuild -version | grep '^Xcode\s' | sed -E 's/^Xcode[[:space:]]+([0-9\.]+)/\1/')
+if [ "$XCODE_VERSION" != "16.2" ]; then
+    echo -e "\033[31m❌ Error: Xcode version $XCODE_VERSION is installed. This script requires Xcode version 16.2.\033[0m"
+    echo -e "\033[33m💡 Please follow the guide to downgrade Xcode to version 16.2:\033[0m"
+    echo -e "\033[34m   https://www.antonseagull.com/post/how-to-downgrade-xcode\033[0m"
+    exit 1
+else
+    echo -e "\033[36m> Xcode version 16.2 confirmed\033[0m"
 fi
 
 # Check if the Xcode path is correct
