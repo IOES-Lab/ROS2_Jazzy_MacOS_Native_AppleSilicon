@@ -403,16 +403,15 @@ for ((i=1;i<=max_retries;i++)); do
     sleep 5
 done
 
-# Get third-part ASIO version 1.10.8
-echo -e "\033[36m> Getting third-party ASIO version 1.10.8...\033[0m"
-wget -O "$TMPDIR/asio-1-10-8.tar.gz" "$ARCHIVE_URL"
+# Get third-part ASIO version 1.30.2
+echo -e "\033[36m> Getting third-party ASIO version 1.30.2...\033[0m"
 TMPDIR="$(mktemp -d)"
-ARCHIVE_URL="https://github.com/chriskohlhoff/asio/archive/refs/tags/asio-1-10-8.tar.gz"
+ARCHIVE_URL="https://github.com/chriskohlhoff/asio/archive/refs/tags/asio-1-30-2.tar.gz"
 TARGET="./src/eProsima/Fast-DDS/thirdparty"
 mkdir -p "$TARGET"
-curl -L -o "$TMPDIR/asio-1-10-8.tar.gz" "$ARCHIVE_URL"
-tar -xzf "$TMPDIR/asio-1-10-8.tar.gz" -C "$TMPDIR"
-cp -a "$TMPDIR"/asio-asio-1-10-8/asio "$TARGET"/
+curl -L -o "$TMPDIR/asio-1-30-2.tar.gz" "$ARCHIVE_URL"
+tar -xzf "$TMPDIR/asio-1-30-2.tar.gz" -C "$TMPDIR"
+cp -a "$TMPDIR"/asio-asio-1-30-2/asio "$TARGET"/
 rm -rf "$TMPDIR"
 
 # Run partially to generate compile output structure
