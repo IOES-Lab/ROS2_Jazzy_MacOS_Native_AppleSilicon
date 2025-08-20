@@ -312,7 +312,7 @@ printf '\033[34m%.0s=\033[0m' {1..75} && echo
 echo -e "\033[36m> Installing ROS2 dependencies with Brew...\033[0m"
 brew install wget assimp bison bullet console_bridge cppcheck \
   cunit eigen freetype graphviz opencv openssl orocos-kdl pcre poco \
-  pyqt@5 python@3.11 qt@5 sip spdlog tinyxml tinyxml2
+  pyqt@5 python@3.11 qt@5 sip spdlog tinyxml2
 
 # Set Environment Variables of Brew packages
 echo -e "\033[36m> Setting Environment Variables of Brew packages...(OPENSSL_ROOT_DIR, CMAKE_PREFIX_PATH, PATH)\033[0m"
@@ -404,15 +404,12 @@ for ((i=1;i<=max_retries;i++)); do
 done
 
 # Get third-part ASIO version 1.30.2
-echo -e "\033[36m> Getting third-party ASIO version 1.30.2...\033[0m"
-TMPDIR="$(mktemp -d)"
+echo -e "\033[36m> Getting third-party ASIO 1.30.2...\033[0m"
 ARCHIVE_URL="https://github.com/chriskohlhoff/asio/archive/refs/tags/asio-1-30-2.tar.gz"
 TARGET="./src/eProsima/Fast-DDS/thirdparty"
 mkdir -p "$TARGET"
-curl -L -o "$TMPDIR/asio-1-30-2.tar.gz" "$ARCHIVE_URL"
-tar -xzf "$TMPDIR/asio-1-30-2.tar.gz" -C "$TMPDIR"
-cp -a "$TMPDIR"/asio-asio-1-30-2/asio "$TARGET"/
-rm -rf "$TMPDIR"
+curl -L "$ARCHIVE_URL" \
+  | tar -xz -C "$TARGET" --strip-components=1 "asio-asio-1-30-2/asio"
 
 # Run partially to generate compile output structure
 echo -e "\033[36m> Running colcon build packages-up-to cyclonedds\033[0m"
