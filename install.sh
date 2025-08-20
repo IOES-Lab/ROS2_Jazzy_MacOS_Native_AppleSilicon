@@ -310,7 +310,7 @@ printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # ------------------------------------------------------------------------------
 # Installing ros2 dependencies with brew
 echo -e "\033[36m> Installing ROS2 dependencies with Brew...\033[0m"
-brew install asio wget assimp bison bullet console_bridge cppcheck \
+brew install wget assimp bison bullet console_bridge cppcheck \
   cunit eigen freetype graphviz opencv openssl orocos-kdl pcre poco \
   pyqt@5 python@3.11 qt@5 sip spdlog tinyxml tinyxml2
 
@@ -345,7 +345,7 @@ source "$HOME/$VIRTUAL_ENV_ROOT"/bin/activate
 echo -e "\033[36m> Installing Python3.11 dependencies with PIP in virtual environment...\033[0m"
 python3 -m pip install --upgrade pip
 python3 -m pip install -U \
-  asio wget argcomplete catkin_pkg colcon-common-extensions coverage \
+  wget argcomplete catkin_pkg colcon-common-extensions coverage \
   cryptography empy==3.3.4 flake8 flake8-blind-except==0.1.1 flake8-builtins \
   flake8-class-newline flake8-comprehensions flake8-deprecated \
   flake8-docstrings flake8-import-order flake8-quotes \
@@ -402,6 +402,18 @@ for ((i=1;i<=max_retries;i++)); do
     # Wait before retrying
     sleep 5
 done
+
+# Get third-part ASIO version 1.10.8
+echo -e "\033[36m> Getting third-party ASIO version 1.10.8...\033[0m"
+wget -O "$TMPDIR/asio-1-10-8.tar.gz" "$ARCHIVE_URL"
+TMPDIR="$(mktemp -d)"
+ARCHIVE_URL="https://github.com/chriskohlhoff/asio/archive/refs/tags/asio-1-10-8.tar.gz"
+TARGET="./src/eProsima/Fast-DDS/thirdparty"
+mkdir -p "$TARGET"
+curl -L -o "$TMPDIR/asio-1-10-8.tar.gz" "$ARCHIVE_URL"
+tar -xzf "$TMPDIR/asio-1-10-8.tar.gz" -C "$TMPDIR"
+cp -a "$TMPDIR"/asio-asio-1-10-8/asio "$TARGET"/
+rm -rf "$TMPDIR"
 
 # Run partially to generate compile output structure
 echo -e "\033[36m> Running colcon build packages-up-to cyclonedds\033[0m"

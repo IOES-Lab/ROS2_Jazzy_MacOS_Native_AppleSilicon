@@ -1,6 +1,14 @@
 --- ./src/eProsima/Fast-DDS/CMakeLists.txt
 +++ ./src/eProsima/Fast-DDS/CMakeLists.txt
-@@ -240,7 +240,7 @@
+@@ -235,12 +235,15 @@
+ endif()
+ 
+ eprosima_find_package(fastcdr REQUIRED)
++set(THIRDPARTY_Asio FORCE CACHE STRING "Force use of thirdparty Asio")
++include_directories(thirdparty/asio)
++set(Asio_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/thirdparty/asio/include")
+ eprosima_find_thirdparty(Asio asio VERSION 1.10.8)
+ eprosima_find_thirdparty(TinyXML2 tinyxml2)
  
  find_package(foonathan_memory REQUIRED)
  message(STATUS "Found foonathan_memory: ${foonathan_memory_DIR}")
