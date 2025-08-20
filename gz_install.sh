@@ -167,13 +167,14 @@ brew install libyaml libzip assimp boost bullet cppzmq dartsim doxygen \
      eigen fcl ffmpeg flann freeimage freetype gdal gflags google-benchmark \
      gts ipopt jsoncpp libccd libyaml libzzip libzip nlopt ode open-scene-graph \
      ossp-uuid ogre2.3 pkg-config protobuf qt@5 qwt-qt5 rapidjson ruby \
-     tbb tinyxml tinyxml2 urdfdom zeromq
+     tbb tinyxml2 urdfdom zeromq
 
 # Install ogre1.9 manually so that it won't upgrade cmake
-brew unlink ogre1.9 > /dev/null 2>&1 && brew uninstall ogre1.9 > /dev/null 2>&1
-wget https://raw.githubusercontent.com/osrf/homebrew-simulation/refs/heads/master/Formula/ogre1.9.rb > /dev/null 2>&1
-brew install ogre1.9.rb && rm ogre1.9.rb
-brew unlink ogre1.9 && brew link --force ogre1.9
+# brew unlink ogre1.9 > /dev/null 2>&1 && brew uninstall ogre1.9 > /dev/null 2>&1
+# wget https://raw.githubusercontent.com/osrf/homebrew-simulation/refs/heads/master/Formula/ogre1.9.rb > /dev/null 2>&1
+# HOMEBREW_DEVELOPER=1 brew install ogre1.9.rb && rm ogre1.9.rb
+# brew unlink ogre1.9 && brew link --force ogre1.9
+brew install ogre1.9
 
 # Install Python3.11 dependencies with pip
 echo -e "\033[36m\n> Installing Python3.11 dependencies with PIP in virtual environment...\033[0m"
