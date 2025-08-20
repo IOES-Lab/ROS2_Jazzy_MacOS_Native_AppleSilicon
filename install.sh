@@ -310,15 +310,9 @@ printf '\033[34m%.0s=\033[0m' {1..75} && echo
 # ------------------------------------------------------------------------------
 # Installing ros2 dependencies with brew
 echo -e "\033[36m> Installing ROS2 dependencies with Brew...\033[0m"
-brew install assimp bison bullet console_bridge cppcheck \
+brew install asio wget assimp bison bullet console_bridge cppcheck \
   cunit eigen freetype graphviz opencv openssl orocos-kdl pcre poco \
   pyqt@5 python@3.11 qt@5 sip spdlog tinyxml tinyxml2
-
-# Install asio 1.30.2 maually
-brew unlink asio > /dev/null 2>&1 && brew uninstall asio > /dev/null 2>&1
-wget https://raw.githubusercontent.com/Homebrew/homebrew-core/502489d3a4c1ca0a3854830eb5da2327b6feb54d/Formula/a/asio.rb > /dev/null 2>&1
-brew install asio.rb && rm asio.rb
-brew unlink asio && brew link --force asio
 
 # Set Environment Variables of Brew packages
 echo -e "\033[36m> Setting Environment Variables of Brew packages...(OPENSSL_ROOT_DIR, CMAKE_PREFIX_PATH, PATH)\033[0m"
@@ -351,7 +345,7 @@ source "$HOME/$VIRTUAL_ENV_ROOT"/bin/activate
 echo -e "\033[36m> Installing Python3.11 dependencies with PIP in virtual environment...\033[0m"
 python3 -m pip install --upgrade pip
 python3 -m pip install -U \
-  argcomplete catkin_pkg colcon-common-extensions coverage \
+  asio wget argcomplete catkin_pkg colcon-common-extensions coverage \
   cryptography empy==3.3.4 flake8 flake8-blind-except==0.1.1 flake8-builtins \
   flake8-class-newline flake8-comprehensions flake8-deprecated \
   flake8-docstrings flake8-import-order flake8-quotes \
