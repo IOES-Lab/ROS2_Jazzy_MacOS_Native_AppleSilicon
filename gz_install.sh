@@ -163,6 +163,7 @@ printf '\033[34m%.0s=\033[0m' {1..75} && echo
 echo -e "\033[36m> Installing Gazebo Harmonic dependencies with Brew...\033[0m"
 brew update
 brew tap osrf/simulation
+brew update
 brew install libyaml libzip assimp boost bullet cppzmq dartsim doxygen \
      eigen fcl ffmpeg flann freeimage freetype gdal gflags google-benchmark \
      gts ipopt jsoncpp libccd libyaml libzzip libzip nlopt ode open-scene-graph \
