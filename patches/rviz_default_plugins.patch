@@ -4,7 +4,7 @@
    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
    $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
    ${Qt5Widgets_INCLUDE_DIRS}
-+   "/opt/homebrew/Cellar/orocos-kdl/1.5.1/include/"
++   "/opt/homebrew/Cellar/orocos-kdl/1.5.3/include/"
  )
  
  target_link_libraries(rviz_default_plugins PUBLIC
