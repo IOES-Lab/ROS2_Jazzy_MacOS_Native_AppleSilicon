@@ -465,6 +465,8 @@ curl -sSL \
 curl -sSL \
   https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/kdl_parser.patch \
   | patch -p1 -Ns
+ln -s /opt/homebrew/Cellar/orocos-kdl/1.5.3 /opt/homebrew/Cellar/orocos-kdl/1.5.1
+
 
 # Patch for rviz_ogre_vendor
 echo -e "\033[36m> Applying patch for rviz_ogre_vendor...\033[0m"
