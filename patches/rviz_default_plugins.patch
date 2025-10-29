@@ -1,4 +1,4 @@
---- CMakeLists.txt.orig	2025-10-29 14:11:20
+--- CMakeLists.txt	2025-10-29 14:11:20
 +++ CMakeLists.txt	2025-10-29 14:10:16
 @@ -242,6 +242,7 @@
  target_include_directories(rviz_default_plugins PUBLIC
