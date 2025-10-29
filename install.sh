@@ -26,7 +26,7 @@
 # Also, need to make this script executable
 # chmod +x install.sh
 ################################################################################
-JAZZY_RELEASE_TAG_DEFAULT="release-jazzy-20240523" # you may change with option -t
+JAZZY_RELEASE_TAG_DEFAULT="release-jazzy-20250820" # you may change with option -t
 ROS_INSTALL_ROOT_DEFAULT="ros2_jazzy" # you may change with option -d
 VIRTUAL_ENV_ROOT_DEFAULT=".ros2_venv" # you may change with option -v
 # ------------------------------------------------------------------------------
@@ -465,7 +465,6 @@ curl -sSL \
 curl -sSL \
   https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/kdl_parser.patch \
   | patch -p1 -Ns
-ln -s /opt/homebrew/Cellar/orocos-kdl/1.5.3 /opt/homebrew/Cellar/orocos-kdl/1.5.1
 
 
 # Patch for rviz_ogre_vendor

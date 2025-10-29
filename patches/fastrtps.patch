@@ -3,8 +3,8 @@
 @@ -235,12 +235,14 @@
  endif()
  
- eprosima_find_package(fastcdr REQUIRED)
--eprosima_find_thirdparty(Asio asio VERSION 1.10.8)
+ eprosima_find_package(fastcdr 2 REQUIRED)
+-eprosima_find_thirdparty(Asio asio VERSION 1.13.0)
 +set(THIRDPARTY_Asio FORCE CACHE STRING "Force use of thirdparty Asio")
 +include_directories(thirdparty/asio)
 +set(Asio_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/thirdparty/asio/include")
