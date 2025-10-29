@@ -1,5 +1,5 @@
---- CMakeLists.txt	2025-10-29 14:11:20
-+++ CMakeLists.txt	2025-10-29 14:10:16
+--- ./src/ros2/rviz/rviz_default_plugins/CMakeLists.txt
++++ ./src/ros2/rviz/rviz_default_plugins/CMakeLists.txt
 @@ -242,6 +242,7 @@
  target_include_directories(rviz_default_plugins PUBLIC
    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

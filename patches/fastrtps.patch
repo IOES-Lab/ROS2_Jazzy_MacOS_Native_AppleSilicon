@@ -1,5 +1,5 @@
---- CMakeLists.txt	2025-10-29 14:08:29
-+++ CMakeLists.txt	2025-10-29 14:12:52
+--- ./src/eProsima/Fast-DDS/CMakeLists.txt
++++ ./src/eProsima/Fast-DDS/CMakeLists.txt
 @@ -235,12 +235,14 @@
  endif()
  
