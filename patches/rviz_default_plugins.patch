@@ -1,10 +1,10 @@
---- ./src/ros2/rviz/rviz_default_plugins/CMakeLists.txt
-+++ ./src/ros2/rviz/rviz_default_plugins/CMakeLists.txt
-@@ -241,6 +241,7 @@
+--- CMakeLists.txt.orig	2025-10-29 14:11:20
++++ CMakeLists.txt	2025-10-29 14:10:16
+@@ -242,6 +242,7 @@
+ target_include_directories(rviz_default_plugins PUBLIC
    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
    $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
-   ${Qt5Widgets_INCLUDE_DIRS}
-+   "/opt/homebrew/Cellar/orocos-kdl/1.5.3/include/"
++  "/opt/homebrew/Cellar/orocos-kdl/1.5.3/include/"
  )
  
  target_link_libraries(rviz_default_plugins PUBLIC
