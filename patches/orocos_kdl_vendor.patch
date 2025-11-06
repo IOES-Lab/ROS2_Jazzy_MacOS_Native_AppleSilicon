@@ -1,0 +1,23 @@
+--- ./src/ros2/orocos_kdl_vendor/orocos_kdl_vendor/CMakeLists.txt
++++ ./src/ros2/orocos_kdl_vendor/orocos_kdl_vendor/CMakeLists.txt
+@@ -5,17 +5,18 @@
+ find_package(ament_cmake_vendor_package REQUIRED)
+ 
+ # Set minimum version to find matching what would be built because PyKDL vendor will require it
+-find_package(orocos_kdl 1.5.1 QUIET)
++find_package(orocos_kdl 1.5.3 QUIET)
+ 
+ ament_vendor(orocos_kdl_vendor
+   SATISFIED ${orocos_kdl_FOUND}
+   VCS_URL https://github.com/orocos/orocos_kinematics_dynamics.git
+-  VCS_VERSION ce4bcb65a050615b6d7f21bc60fbb2656515791b
++  VCS_VERSION 0c97c6abd9e8856d6906fe05cabf3c21fe21052e
+   SOURCE_SUBDIR orocos_kdl
+   GLOBAL_HOOK
+   CMAKE_ARGS
+     -DENABLE_TESTS:BOOL=OFF
+     -DENABLE_EXAMPLES:BOOL=OFF
++    -DCMAKE_POLICY_VERSION_MINIMUM=3.20
+   PATCHES patches
+ )
+ 

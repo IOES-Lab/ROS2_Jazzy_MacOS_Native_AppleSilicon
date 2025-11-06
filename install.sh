@@ -312,8 +312,8 @@ printf '\033[34m%.0s=\033[0m' {1..75} && echo
 echo -e "\033[36m> Installing ROS2 dependencies with Brew...\033[0m"
 brew update
 brew install wget assimp bison bullet console_bridge cppcheck \
-  cunit eigen freetype graphviz opencv openssl orocos-kdl pcre poco \
-  pyqt@5 python@3.11 qt@5 sip spdlog tinyxml2
+  cunit eigen freetype graphviz opencv openssl pcre poco \
+  pyqt@5 python@3.11 qt@5 sip spdlog tinyxml2 pybind11 orocos-kdl
 
 # Set Environment Variables of Brew packages
 echo -e "\033[36m> Setting Environment Variables of Brew packages...(OPENSSL_ROOT_DIR, CMAKE_PREFIX_PATH, PATH)\033[0m"
@@ -454,24 +454,32 @@ ln -s "../../iceoryx_hoofs/lib/libiceoryx_platform.dylib" install/iceoryx_bindin
 #   https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/python_setuptools_easy_install.patch \
 #   | patch -p1 -Ns
 
-# Patch for orocos-kdl
-echo -e "\033[36m> Applying patch for orocos-kdl (to use brew installed package)...\033[0m"
+# Patch for orocos-kdl-vendor
+echo -e "\033[36m> Applying patch for orocos-kdl-vendor (to use brew installed package)...\033[0m"
 curl -sSL \
-  https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/geometry2_tf2_eigen_kdl.patch \
+  https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/orocos_kdl_vendor.patch \
   | patch -p1 -Ns
 curl -sSL \
-  https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/ros_visualization_interactive_markers.patch \
-  | patch -p1 -Ns
-curl -sSL \
-  https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/kdl_parser.patch \
+  https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/python_orocos_kdl_vendor.patch \
   | patch -p1 -Ns
 
+# Patch for orocos-kdl
+# echo -e "\033[36m> Applying patch for orocos-kdl (to use brew installed package)...\033[0m"
+# curl -sSL \
+#   https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/geometry2_tf2_eigen_kdl.patch \
+#   | patch -p1 -Ns
+# curl -sSL \
+#   https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/ros_visualization_interactive_markers.patch \
+#   | patch -p1 -Ns
+# curl -sSL \
+#   https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/kdl_parser.patch \
+#   | patch -p1 -Ns
 
 # Patch for rviz_ogre_vendor
 echo -e "\033[36m> Applying patch for rviz_ogre_vendor...\033[0m"
-curl -sSL \
-  https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/rviz_default_plugins.patch \
-  | patch -p1 -Ns
+# curl -sSL \
+#   https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/rviz_default_plugins.patch \
+#   | patch -p1 -Ns
 curl -sSL \
   https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/patches/rviz_ogre_vendor.patch \
   | patch -p1 -Ns
@@ -519,6 +527,7 @@ printf '\033[34m%.0s=\033[0m' {1..75} && echo
 if ! python3.11 -m colcon build  --symlink-install \
     --packages-skip-by-dep python_qt_binding \
     --cmake-args \
+    -Dpybind11_DIR="$(python3 -m pybind11 --cmakedir)" \
     --no-warn-unused-cli \
     -DBUILD_TESTING=OFF \
     -DINSTALL_EXAMPLES=ON \
