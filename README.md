@@ -3,10 +3,10 @@
   [![Build on macOS](https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/actions/workflows/build.yml/badge.svg)](https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/actions/workflows/build.yml)
 
 ## Tested environment
-- MacOS Sequoia 14.5
+- MacOS Tahoe 26.0.1
 
 ## Requirements
-- > `CURRENTLY ONLY XCODE VERSION 16.2 WORKS!` (16.3 is default bundle with macOS 14.5). You need to downgrade to 16.2. To do so, follow instruction at https://www.antonseagull.com/post/how-to-downgrade-xcode
+- > `CURRENTLY ONLY XCODE VERSION 16.2 WORKS!` (This is not the default bundle XCode with macOS Tahoe 26). You need to downgrade to 16.2. To do so, follow instruction at https://www.antonseagull.com/post/how-to-downgrade-xcode
 
 ## One-liner installation code (🍎 (Apple Silicon) + 🤖 = 🚀❤️🤩🎉🥳)
 - Copy and paste it on terminal
@@ -43,12 +43,12 @@ The reasons for installing ROS2 Jazzy natively on Apple Silicon Macbooks are:
     - Install Python dependencies
   3. Download ROS2 Jazzy Source Code
     - Clone the ROS2 Jazzy source code
-      - It's using release tag (default: `release-jazzy-20240523`)
+      - It's using release tag (default: `release-jazzy-20250820`)
     - Partial compile to generate structure
   4. Patch for macOS X Installation
     - Patch for cyclondds, orocos-kdl, rviz_ogre_vendor, rosbag2_transport
     - Ensure link with qt5
-    - Revert python_orocos_kdl_vendor back to 0.4.1
+    - Update python_orocos_kdl_vendor cmake to use 1.5.3 (the version of orocos-kdl installed with brew)
     - Remove eclipse-cyclonedds
   5. Compile ROS2 Jazzy
   6. Post Installation

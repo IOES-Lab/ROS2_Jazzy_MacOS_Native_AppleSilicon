@@ -37,7 +37,7 @@ VIRTUAL_ENV_ROOT_DEFAULT=".ros2_venv" # you may change with option -v
 usage() {
     echo "Usage: [-d ROS_INSTALL_ROOT] [-t JAZZY_RELEASE_TAG] [-v VIRTUAL_ENV_ROOT] [-h] [-u to uninstall]"
     echo "  -t    Set the Jazzy release tag (default: $JAZZY_RELEASE_TAG_DEFAULT)"
-    echo "        (e.g., release-jazzy-20240523, you may find tag at https://github.com/ros2/ros2/tags"
+    echo "        (e.g., release-jazzy-20250820, you may find tag at https://github.com/ros2/ros2/tags"
     echo "  -d    Set the ROS installation root directory (default: $ROS_INSTALL_ROOT_DEFAULT)"
     echo "  -v    Set the Python Virtual Environment directory (default: $VIRTUAL_ENV_ROOT_DEFAULT)"
     echo "  -u    To uninstall"
