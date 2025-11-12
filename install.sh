@@ -313,7 +313,7 @@ echo -e "\033[36m> Installing ROS2 dependencies with Brew...\033[0m"
 brew update
 brew install wget assimp bison bullet console_bridge cppcheck \
   cunit eigen freetype graphviz opencv openssl pcre poco \
-  pyqt@5 python@3.11 qt@5 sip spdlog tinyxml2 pybind11 orocos-kdl
+  pyqt@5 python@3.11 qt@5 sip spdlog tinyxml2 orocos-kdl
 
 # Set Environment Variables of Brew packages
 echo -e "\033[36m> Setting Environment Variables of Brew packages...(OPENSSL_ROOT_DIR, CMAKE_PREFIX_PATH, PATH)\033[0m"
@@ -352,7 +352,7 @@ python3 -m pip install -U \
   flake8-docstrings flake8-import-order flake8-quotes \
   importlib-metadata jsonschema lark==1.1.1 lxml matplotlib mock mypy==0.931 netifaces \
   nose pep8 psutil pydocstyle pydot pyparsing==2.4.7 \
-  pytest-mock rosdep rosdistro setuptools==59.6.0 vcstool cmake==3.31.6
+  pytest-mock rosdep rosdistro setuptools==59.6.0 vcstool cmake==3.31.6 pybind11
 python3 -m pip install \
   --config-settings="--global-option=build_ext" \
   --config-settings="--global-option=-I$(brew --prefix graphviz)/include/" \
@@ -504,12 +504,12 @@ echo -e "\033[36m> Fixing brew linking of qt5...\033[0m"
 brew unlink qt && brew link qt@5
 
 # Revert python_orocos_kdl_vendor back to 0.4.1
-echo -e "\033[36m> Reverting python_orocos_kdl_vendor back to 0.4.1...\033[0m"
-if [ -d "src/ros2/orocos_kdl_vendor" ]; then
-    rm -rf src/ros2/orocos_kdl_vendor
-    git clone https://github.com/ros2/orocos_kdl_vendor.git src/ros2/orocos_kdl_vendor
-    ( cd ./src/ros2/orocos_kdl_vendor/python_orocos_kdl_vendor || exit; git checkout 0.4.1 )
-fi
+# echo -e "\033[36m> Reverting python_orocos_kdl_vendor back to 0.4.1...\033[0m"
+# if [ -d "src/ros2/orocos_kdl_vendor" ]; then
+#     rm -rf src/ros2/orocos_kdl_vendor
+#     git clone https://github.com/ros2/orocos_kdl_vendor.git src/ros2/orocos_kdl_vendor
+#     ( cd ./src/ros2/orocos_kdl_vendor/python_orocos_kdl_vendor || exit; git checkout 0.4.1 )
+# fi
 
 # Remove eclipse-cyclonedds (compile error)
 echo -e "\033[36m> Removing eclipse-cyclonedds (compile errors)\033[0m"
