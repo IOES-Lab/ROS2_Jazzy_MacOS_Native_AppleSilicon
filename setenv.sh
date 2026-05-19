@@ -4,6 +4,10 @@
 # shellcheck disable=SC1091
 source "$HOME/VIRTUAL_ENV_ROOT/bin/activate"
 
+# SHM transport is not supported on macOS, so we set the default transport to UDPv4
+export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+export FASTDDS_BUILTIN_TRANSPORTS=UDPv4
+
 # Add CMAKE path for Qt5
 CMAKE_PREFIX_PATH=$(brew --prefix qt@5)/lib/cmake:/opt/homebrew/opt:${CMAKE_PREFIX_PATH}
 

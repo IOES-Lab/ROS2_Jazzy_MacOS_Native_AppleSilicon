@@ -165,7 +165,7 @@ brew update
 brew tap osrf/simulation
 brew update
 brew install libyaml libzip assimp boost@1.85 bullet cppzmq dartsim doxygen \
-     eigen@3 fcl ffmpeg flann freeimage freetype gdal gflags google-benchmark \
+     eigen@3 fcl ffmpeg flann freeimage freetype gdal geos gflags google-benchmark \
      gts ipopt jsoncpp libccd libyaml libzzip libzip nlopt ode open-scene-graph \
      ossp-uuid ogre2.3 pkg-config protobuf qt@5 qwt-qt5 rapidjson ruby \
      tbb tinyxml2 urdfdom zeromq
@@ -310,6 +310,17 @@ chmod o-w "$HOME"
 # Remove empty gui.config (set to default if already exists)
 if [ -f "$HOME/.gz/sim/8/gui.config" ]; then
     rm "$HOME/.gz/sim/8/gui.config"
+fi
+
+# Patch gz launcher to use Homebrew Ruby directly.
+# This avoids macOS SIP stripping DYLD_* variables through /usr/bin/env or /usr/bin/ruby.
+GZ_BIN="$HOME/$GZ_INSTALL_ROOT/install/bin/gz"
+BREW_RUBY="$(brew --prefix ruby)/bin/ruby"
+if [ -f "$GZ_BIN" ]; then
+    cp "$GZ_BIN" "$GZ_BIN.bak"
+    sed -i '' '1s|^#!.*ruby.*|#!'"$BREW_RUBY"'|' "$GZ_BIN"
+    echo "Patched gz shebang for homebrew RUBY:"
+    head -1 "$GZ_BIN"
 fi
 
 # save GZ_INSTALL_ROOT in a file
