@@ -313,14 +313,16 @@ echo -e "\033[36m> Installing ROS2 dependencies with Brew...\033[0m"
 brew update
 brew install wget assimp bison bullet console_bridge cppcheck \
   cunit eigen@3 freetype graphviz opencv openssl pcre poco \
-  pyqt@5 python@3.11 qt@5 sip spdlog tinyxml2 orocos-kdl
+  pyqt@5 python@3.11 qt@5 sip spdlog fmt tinyxml2 orocos-kdl
 
 # Set Environment Variables of Brew packages
 echo -e "\033[36m> Setting Environment Variables of Brew packages...(OPENSSL_ROOT_DIR, CMAKE_PREFIX_PATH, PATH)\033[0m"
 # shellcheck disable=SC2155
 export OPENSSL_ROOT_DIR=$(brew --prefix openssl@3)
 # shellcheck disable=SC2155
-export CMAKE_PREFIX_PATH=$(brew --prefix qt@5)/lib:$(brew --prefix qt@5)/lib/cmake:/opt/homebrew/opt:${CMAKE_PREFIX_PATH}
+export CMAKE_PREFIX_PATH=$(brew --prefix fmt):$(brew --prefix spdlog):$(brew --prefix qt@5)/lib:$(brew --prefix qt@5)/lib/cmake:/opt/homebrew/opt:${CMAKE_PREFIX_PATH}
+# shellcheck disable=SC2155
+export DYLD_LIBRARY_PATH=$(brew --prefix fmt)/lib:$(brew --prefix spdlog)/lib:${DYLD_LIBRARY_PATH}
 # shellcheck disable=SC2155
 export PATH=$PATH:$(brew --prefix qt@5)/bin
 # Disable notification error on mac
@@ -535,6 +537,8 @@ if ! python3.11 -m colcon build  --symlink-install \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
     -DCMAKE_OSX_ARCHITECTURES=arm64 \
+    -Dfmt_DIR="$(brew --prefix fmt)/lib/cmake/fmt" \
+    -Dspdlog_DIR="$(brew --prefix spdlog)/lib/cmake/spdlog" \
     -DPython3_EXECUTABLE=$HOME/$VIRTUAL_ENV_ROOT/bin/python3 \
     -Wno-dev --event-handlers console_cohesion+;
     then

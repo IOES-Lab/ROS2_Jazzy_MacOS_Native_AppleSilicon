@@ -164,11 +164,28 @@ echo -e "\033[36m> Installing Gazebo Harmonic dependencies with Brew...\033[0m"
 brew update
 brew tap osrf/simulation
 brew update
-brew install libyaml libzip assimp boost bullet cppzmq dartsim doxygen \
+brew install libyaml libzip assimp boost@1.85 bullet cppzmq dartsim doxygen \
      eigen@3 fcl ffmpeg flann freeimage freetype gdal gflags google-benchmark \
      gts ipopt jsoncpp libccd libyaml libzzip libzip nlopt ode open-scene-graph \
      ossp-uuid ogre2.3 pkg-config protobuf qt@5 qwt-qt5 rapidjson ruby \
      tbb tinyxml2 urdfdom zeromq
+
+# fix for ffi
+# shellcheck disable=SC2155
+export PATH="$(brew --prefix ruby)/bin:$PATH"
+brew install pkgconf libffi
+
+# shellcheck disable=SC2155
+export PKG_CONFIG_PATH="$(brew --prefix libffi)/lib/pkgconfig:$PKG_CONFIG_PATH"
+# shellcheck disable=SC2155
+export CPPFLAGS="-I$(brew --prefix libffi)/include $CPPFLAGS"
+# shellcheck disable=SC2155
+export LDFLAGS="-L$(brew --prefix libffi)/lib $LDFLAGS"
+
+"$(brew --prefix ruby)/bin/gem" uninstall ffi -v 1.16.3 -aIx 2>/dev/null || true
+"$(brew --prefix ruby)/bin/gem" install ffi -- \
+  --enable-system-libffi \
+  --with-libffi-dir="$(brew --prefix libffi)" || true
 
 # Install ogre1.9 manually so that it won't upgrade cmake
 # brew unlink ogre1.9 > /dev/null 2>&1 && brew uninstall ogre1.9 > /dev/null 2>&1
@@ -181,6 +198,7 @@ brew install ogre1.9
 echo -e "\033[36m\n> Installing Python3.11 dependencies with PIP in virtual environment...\033[0m"
 python3 -m pip install --upgrade pip
 python3 -m pip install swig pybind11
+PYBIND11_DIR="$("$HOME/$VIRTUAL_ENV_ROOT/bin/python3" -m pybind11 --cmakedir)"
 
 # Confirm message
 echo -e "\033[36m> Packages installation with PIP completed.\033[0m"
@@ -189,7 +207,7 @@ echo -e "\033[36m> Packages installation with PIP completed.\033[0m"
 echo -e "\033[36m> Setting Environment Variables of Brew packages...\033[0m"
 export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
 export CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/homebrew/opt/dartsim
-export DYLD_FALLBACK_LIBRARY_PATH=${DYLD_FALLBACK_LIBRARY_PATH}:/opt/homoebrew/opt/dartsim/lib:/opt/homebrew/opt/octomap/local
+export DYLD_FALLBACK_LIBRARY_PATH=${DYLD_FALLBACK_LIBRARY_PATH}:/opt/homebrew/opt/dartsim/lib:/opt/homebrew/opt/octomap/local
 export PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:/opt/homebrew/opt/dartsim/lib/pkgconfig
 export CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/homebrew/opt/qt@5:/opt/homebrew/opt/qt@5/lib/cmake
 
@@ -245,6 +263,18 @@ done
 echo -e "\033[36m> Fixing brew linking of qt5...\033[0m"
 brew unlink qt && brew link qt@5
 
+# Fix stale libccd SDK reference
+OLD_SDK="/Library/Developer/CommandLineTools/SDKs/MacOSX14.sdk"
+NEW_SDK="$(xcrun --sdk macosx --show-sdk-path)"
+CCD_FILE="$(brew --prefix libccd)/lib/ccd/ccd-targets-release.cmake"
+
+if grep -q "$OLD_SDK" "$CCD_FILE"; then
+    echo "Patching stale SDK path in libccd:"
+    echo "  $CCD_FILE"
+    cp "$CCD_FILE" "$CCD_FILE.bak"
+    perl -pi -e "s|\Q$OLD_SDK\E|$NEW_SDK|g" "$CCD_FILE"
+fi
+
 # ------------------------------------------------------------------------------
 # Building Gazebo Harmonic
 printf '\n\n\033[34m'; printf '=%.0s' {1..75}; printf '\033[0m\n'
@@ -254,6 +284,12 @@ printf '\033[34m%.0s=\033[0m' {1..75} && echo
 if ! python3.11 -m colcon build \
     --cmake-args -DBUILD_TESTING=OFF -DCMAKE_MACOSX_RPATH=FALSE -DBUILD_DOCS=OFF \
     -DPython3_EXECUTABLE="$HOME/$VIRTUAL_ENV_ROOT/bin/python3" \
+    -Dpybind11_DIR="$PYBIND11_DIR" \
+    -DDART_DIR="$(brew --prefix dartsim)/share/dart/cmake" \
+    -DCMAKE_OSX_SYSROOT="$(xcrun --sdk macosx --show-sdk-path)" \
+    -DEigen3_DIR=/opt/homebrew/opt/eigen@3/share/eigen3/cmake \
+    -DBoost_DIR=/opt/homebrew/opt/boost@1.85/lib/cmake/Boost-1.85.0 \
+    -Dboost_system_DIR=/opt/homebrew/opt/boost@1.85/lib/cmake/boost_system-1.85.0 \
     -DCMAKE_OSX_ARCHITECTURES=arm64 \
     -Wno-dev \
     --event-handlers console_cohesion+ --merge-install;

@@ -3,7 +3,7 @@
   [![Build on macOS](https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/actions/workflows/build.yml/badge.svg)](https://github.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/actions/workflows/build.yml)
 
 ## Tested environment
-- MacOS Tahoe 26.0.1
+- MacOS Tahoe 26.4.1
 
 ## Requirements
 - > `CURRENTLY ONLY XCODE VERSION 16.2 WORKS!` (This is not the default bundle XCode with macOS Tahoe 26). You need to downgrade to 16.2. To do so, follow instruction at https://www.antonseagull.com/post/how-to-downgrade-xcode
@@ -17,12 +17,6 @@
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/install.sh)"
 ```
-
-## Pre-built Mac Virtualization Image with ROS2 Jazzy and Gazebo Harmonic using Tart
-- If you prefer to skip native installation and avoid incompatibilities from macOS or Homebrew updates, use the pre-built Tart image:
-  - Install Tart : `brew install tart`
-  - Download the pre-built image (about 20 GB) : `tart pull ghcr.io/woensug-choi/ros2-jazzy:latest`
-  - Run the image : `tart run ros2-jazzy:latest`
 
 ## Introduction
 This is the source code behind the one-line installation command to install ROS2 Jazzy and Gazebo Harmonic on Apple Silicon Macbooks.
