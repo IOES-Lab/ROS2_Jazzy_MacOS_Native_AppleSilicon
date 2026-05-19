@@ -1,6 +1,6 @@
 --- ./src/ros2/orocos_kdl_vendor/python_orocos_kdl_vendor/CMakeLists.txt
 +++ ./src/ros2/orocos_kdl_vendor/python_orocos_kdl_vendor/CMakeLists.txt
-@@ -45,11 +45,8 @@
+@@ -45,11 +45,8 @@ macro(build_pykdl)
    # This version must match orocos_kdl_vendor exactly
    fetchcontent_declare(
      python_orocos_kdl
@@ -14,4 +14,3 @@
    )
  
    fetchcontent_getproperties(python_orocos_kdl)
- 

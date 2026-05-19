@@ -165,7 +165,7 @@ brew update
 brew tap osrf/simulation
 brew update
 brew install libyaml libzip assimp boost bullet cppzmq dartsim doxygen \
-     eigen fcl ffmpeg flann freeimage freetype gdal gflags google-benchmark \
+     eigen@3 fcl ffmpeg flann freeimage freetype gdal gflags google-benchmark \
      gts ipopt jsoncpp libccd libyaml libzzip libzip nlopt ode open-scene-graph \
      ossp-uuid ogre2.3 pkg-config protobuf qt@5 qwt-qt5 rapidjson ruby \
      tbb tinyxml2 urdfdom zeromq
@@ -180,7 +180,7 @@ brew install ogre1.9
 # Install Python3.11 dependencies with pip
 echo -e "\033[36m\n> Installing Python3.11 dependencies with PIP in virtual environment...\033[0m"
 python3 -m pip install --upgrade pip
-python3 -m pip install swig
+python3 -m pip install swig pybind11
 
 # Confirm message
 echo -e "\033[36m> Packages installation with PIP completed.\033[0m"

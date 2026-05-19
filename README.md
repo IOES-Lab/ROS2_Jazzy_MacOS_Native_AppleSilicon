@@ -18,6 +18,12 @@
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/IOES-Lab/ROS2_Jazzy_MacOS_Native_AppleSilicon/main/install.sh)"
 ```
 
+## Pre-built Mac Virtualization Image with ROS2 Jazzy and Gazebo Harmonic using Tart
+- If you prefer to skip native installation and avoid incompatibilities from macOS or Homebrew updates, use the pre-built Tart image:
+  - Install Tart : `brew install tart`
+  - Download the pre-built image (about 20 GB) : `tart pull ghcr.io/woensug-choi/ros2-jazzy:latest`
+  - Run the image : `tart run ros2-jazzy:latest`
+
 ## Introduction
 This is the source code behind the one-line installation command to install ROS2 Jazzy and Gazebo Harmonic on Apple Silicon Macbooks.
 
