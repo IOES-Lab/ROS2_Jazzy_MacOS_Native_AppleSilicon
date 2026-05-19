@@ -531,6 +531,7 @@ if ! python3.11 -m colcon build  --symlink-install \
     --no-warn-unused-cli \
     -DBUILD_TESTING=OFF \
     -DINSTALL_EXAMPLES=ON \
+    -DCMAKE_CXX_STANDARD=17 \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk \
     -DCMAKE_OSX_ARCHITECTURES=arm64 \
