@@ -16,7 +16,13 @@ export GZ_ROOT="$HOME/gz_harmonic/install"
 
 # Use Homebrew Ruby before macOS system Ruby
 # shellcheck disable=SC2155
-export PATH="$(brew --prefix ruby)/bin:$PATH"
+export PATH="$(brew --prefix ruby)/bin:$GZ_ROOT/bin:$PATH"
+
+# shellcheck disable=SC2155
+export CMAKE_PREFIX_PATH="$GZ_ROOT:$GZ_ROOT/lib/cmake:$GZ_ROOT/share/cmake:${CMAKE_PREFIX_PATH:-}"
+export PKG_CONFIG_PATH="$GZ_ROOT/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
+export GZ_SIM_SYSTEM_PLUGIN_PATH="$GZ_ROOT/lib:${GZ_SIM_SYSTEM_PLUGIN_PATH:-}"
+export GZ_GUI_PLUGIN_PATH="$GZ_ROOT/lib:${GZ_GUI_PLUGIN_PATH:-}"
 
 # Gazebo / Homebrew dynamic libraries
 export DYLD_LIBRARY_PATH="$GZ_ROOT/lib:/opt/homebrew/lib:/opt/homebrew/opt/qt@5/lib:$DYLD_LIBRARY_PATH"
