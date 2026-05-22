@@ -367,6 +367,9 @@ echo
 echo -e "Then, you can start ROS2 Jazzy by typing '\033[34mros\033[0m' in the terminal (new terminal)."
 echo -e "You may change the alias name to your preference in above alias command."
 echo
+echo "To use ros_gz (ROS-Gazebo integration), check out:"
+echo -e "\033[34mhttps://github.com/IOES-Lab/ros_gz_for_mac\033[0m"
+echo
 echo "To deactivate this workspace, run:"
 echo -e "\033[33mdeactivate\n\n\033[0m"
 

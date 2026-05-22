@@ -43,7 +43,7 @@ The reasons for installing ROS2 Jazzy natively on Apple Silicon Macbooks are:
     - Install Python dependencies
   3. Download ROS2 Jazzy Source Code
     - Clone the ROS2 Jazzy source code
-      - It's using release tag (default: `release-jazzy-20250820`)
+      - It's using release tag (default: `release-jazzy-20260128`)
     - Partial compile to generate structure
   4. Patch for macOS X Installation
     - Patch for cyclondds, orocos-kdl, rviz_ogre_vendor, rosbag2_transport
@@ -77,7 +77,7 @@ The reasons for installing ROS2 Jazzy natively on Apple Silicon Macbooks are:
   - Ref : https://ros.org/reps/rep-2000.html
 
 ## For ROS_GZ
-- I need help... Some progress (but not done) at https://github.com/IOES-Lab/ros_gz_for_mac
+- https://github.com/IOES-Lab/ros_gz_for_mac
 
 ## For MAVROS
 - Visit https://github.com/IOES-Lab/ROS2_MAVROS_AppleSilicon
